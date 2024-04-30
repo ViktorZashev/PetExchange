@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Viktor\\Desktop\\Course Project\\PetExchange\\PetExchange\\BusinessLayer\\BusinessLayer.csproj",
+      "projectUniqueName": "C:\\Users\\Viktor\\Desktop\\Course Project\\PetExchange\\BusinessLayer\\BusinessLayer.csproj",
       "projectName": "BusinessLayer",
-      "projectPath": "C:\\Users\\Viktor\\Desktop\\Course Project\\PetExchange\\PetExchange\\BusinessLayer\\BusinessLayer.csproj",
+      "projectPath": "C:\\Users\\Viktor\\Desktop\\Course Project\\PetExchange\\BusinessLayer\\BusinessLayer.csproj",
       "packagesPath": "C:\\Users\\Viktor\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Viktor\\Desktop\\Course Project\\PetExchange\\PetExchange\\BusinessLayer\\obj\\",
+      "outputPath": "C:\\Users\\Viktor\\Desktop\\Course Project\\PetExchange\\BusinessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Viktor\\AppData\\Roaming\\NuGet\\NuGet.Config",
