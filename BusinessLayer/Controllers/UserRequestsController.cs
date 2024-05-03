@@ -20,6 +20,14 @@ namespace BusinessLayer.Functions
             // Validation
             _UserRequestsContext.Create(request);
         }
+
+        public static void Create(List<UserRequests> requests)
+        {
+            foreach (var request in requests)
+            {
+                Create(request);
+            }
+        }
         public static UserRequests Read(Guid idt, bool useNav = false, bool isReadOnly = false)
         {
             

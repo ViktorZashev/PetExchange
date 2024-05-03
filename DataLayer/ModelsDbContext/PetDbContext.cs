@@ -24,6 +24,13 @@ namespace DataLayer
         {
             try
             {
+
+                var _existingUser = _dbcontext.Users.FirstOrDefault(c => c.Id == entity.User.Id);
+                if (_existingUser != null)
+                {
+                    // Town with the same Name already exists, throw an exception or handle the error
+                    entity.User = _existingUser;
+                }
                 _dbcontext.Pets.Add(entity);
                 _dbcontext.SaveChanges();
             }
@@ -32,13 +39,7 @@ namespace DataLayer
                 throw ex;
             }
         }
-        public void Create(List<Pet> entities)
-        {
-            foreach (var pet in entities)
-            {
-                Create(pet);
-            }
-        }
+       
         public Pet Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

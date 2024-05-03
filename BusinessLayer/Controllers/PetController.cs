@@ -19,6 +19,13 @@ namespace BusinessLayer.Functions
             // Validation
             _PetContext.Create(pet);
         }
+        public static void Create(List<Pet> entities)
+        {
+            foreach (var pet in entities)
+            {
+                Create(pet);
+            }
+        }
         public static Pet Read(Guid idt, bool useNav = false, bool isReadOnly = false)
         {
             

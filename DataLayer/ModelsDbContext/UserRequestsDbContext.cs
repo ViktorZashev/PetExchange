@@ -24,6 +24,12 @@ namespace DataLayer
         {
             try
             {
+                var _existingOffer = _dbcontext.PublicOffers.FirstOrDefault(c => c.Id == entity.PublicOffer.Id);
+                if (_existingOffer != null)
+                {
+                    
+                    entity.PublicOffer = _existingOffer;
+                }
                 _dbcontext.Requests.Add(entity);
                 _dbcontext.SaveChanges();
             }
@@ -33,13 +39,6 @@ namespace DataLayer
             }
         }
 
-        public void Create(List<UserRequests> requests)
-        {
-            foreach (var request in requests)
-            {
-                Create(request);
-            }
-        }
         public UserRequests Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

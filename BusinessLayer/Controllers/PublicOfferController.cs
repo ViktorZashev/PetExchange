@@ -20,6 +20,14 @@ namespace BusinessLayer.Functions
             // Validation
             _PublicOfferContext.Create(offer);
         }
+
+        public static void Create(List<PublicOffer> offers)
+        {
+            foreach (var offer in offers)
+            {
+                Create(offer);
+            }
+        }
         public static PublicOffer Read(Guid idt, bool useNav = false, bool isReadOnly = false)
         {
             

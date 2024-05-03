@@ -24,20 +24,18 @@ namespace DataLayer
         {
             try
             {
+                var _existingPet = _dbcontext.Pets.FirstOrDefault(c => c.Id == entity.Pet.Id);
+                if (_existingPet != null)
+                {
+          
+                    entity.Pet = _existingPet;
+                }
                 _dbcontext.PublicOffers.Add(entity);
                 _dbcontext.SaveChanges();
             }
             catch(Exception ex)
             {
                 throw ex;
-            }
-        }
-
-        public void Create(List<PublicOffer> offers)
-        {
-            foreach (var offer in offers)
-            {
-                Create(offer);
             }
         }
 

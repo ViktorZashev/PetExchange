@@ -24,6 +24,17 @@ namespace DataLayer
         {
             try
             {
+                if (_dbcontext.Towns.Any(c => c.Name == entity.Name))
+                {
+                    
+                    throw new InvalidOperationException("A town with the same name already exists.");
+                }
+                var _existingCountry = _dbcontext.Countries.FirstOrDefault(c => c.Id == entity.Country.Id);
+                if (_existingCountry != null)
+                {
+                   
+                    entity.Country = _existingCountry;
+                }
                 _dbcontext.Towns.Add(entity);
                 _dbcontext.SaveChanges();
             }
@@ -32,13 +43,7 @@ namespace DataLayer
                 throw ex;
             }
         }
-        public void Create(List<Town> towns)
-        {
-            foreach (var town in towns)
-            {
-                Create(town);
-            }
-        }
+       
         public Town Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

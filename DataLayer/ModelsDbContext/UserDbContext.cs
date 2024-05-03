@@ -24,6 +24,12 @@ namespace DataLayer
         {
             try
             {
+                var _existingTown = _dbcontext.Towns.FirstOrDefault(c => c.Id == entity.Town.Id);
+                if (_existingTown != null)
+                {
+                    
+                    entity.Town = _existingTown;
+                }
                 _dbcontext.Users.Add(entity);
                 _dbcontext.SaveChanges();
             }
@@ -33,13 +39,6 @@ namespace DataLayer
             }
         }
 
-        public void Create(List<User> users)
-        {
-            foreach (var user in users)
-            {
-                Create(user);
-            }
-        }
         public User Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

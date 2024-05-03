@@ -20,6 +20,14 @@ namespace BusinessLayer.Functions
             // Validation
             _UserContext.Create(user);
         }
+
+        public static void Create(List<User> users)
+        {
+            foreach (var user in users)
+            {
+                Create(user);
+            }
+        }
         public static User Read(Guid idt, bool useNav = false, bool isReadOnly = false)
         {
             

@@ -20,6 +20,14 @@ namespace BusinessLayer.Functions
             // Validation
             _TownContext.Create(town);
         }
+
+        public static void Create(List<Town> towns)
+        {
+            foreach (var town in towns)
+            {
+                Create(town);
+            }
+        }
         public static Town Read(Guid idt, bool useNav = false, bool isReadOnly = false)
         {
             

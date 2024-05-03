@@ -9,13 +9,7 @@ namespace ConsolePresentationLayer
 
         static void Main(string[] args)
         {
-            
-            var Countries = CountryController.ReadAll();
-            foreach(var country in Countries)
-            {
-                Console.WriteLine(country.Id + " " + country.Name);
-            }
-            DatabaseFunctions.DeleteAllEntries();
+            DatabaseFunctions.InitialSetup();
         }
     }
 }

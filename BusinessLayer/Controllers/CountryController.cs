@@ -20,12 +20,20 @@ namespace BusinessLayer.Functions
             // Validation
             _CountryContext.Create(country);
         }
-        public static Country Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+       
+        public static void Create(List<Country> entities)
         {
-            
-            return _CountryContext.Read(idt, useNav,isReadOnly);
+            foreach (var country in entities)
+            {
+                Create(country);
+            }
         }
 
+        public static Country Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+        {
+
+            return _CountryContext.Read(idt, useNav, isReadOnly);
+        }
         public static List<Country> ReadAll(bool useNav = false, bool isReadOnly = false)
         {
   
