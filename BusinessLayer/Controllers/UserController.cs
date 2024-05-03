@@ -41,5 +41,14 @@ namespace BusinessLayer.Functions
             // validation
             _UserContext.Delete(id);
         }
+
+        public static void DeleteAll()
+        {
+            var Users = ReadAll();
+            foreach (var User in Users)
+            {
+                Delete(User.Id);
+            }
+        }
     }
 }

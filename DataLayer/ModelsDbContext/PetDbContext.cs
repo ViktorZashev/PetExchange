@@ -86,7 +86,7 @@ namespace DataLayer
             {
                 var foundEntity = Read(entity.Id, false, false);
 
-                if (foundEntity != null)
+                if (foundEntity == null)
                 {
                     throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
                 }
@@ -106,7 +106,7 @@ namespace DataLayer
             {
                 var foundEntity = Read(id, false, false);
 
-                if (foundEntity != null)
+                if (foundEntity == null)
                 {
                     throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
                 }

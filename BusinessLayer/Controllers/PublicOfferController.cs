@@ -41,5 +41,13 @@ namespace BusinessLayer.Functions
             // validation
             _PublicOfferContext.Delete(id);
         }
+        public static void DeleteAll()
+        {
+            var Offers = ReadAll();
+            foreach (var Offer in Offers)
+            {
+                Delete(Offer.Id);
+            }
+        }
     }
 }

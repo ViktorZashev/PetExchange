@@ -40,5 +40,13 @@ namespace BusinessLayer.Functions
             // validation
             _PetContext.Delete(id);
         }
+        public static void DeleteAll()
+        {
+            var Pets = ReadAll();
+            foreach (var Pet in Pets)
+            {
+                Delete(Pet.Id);
+            }
+        }
     }
 }

@@ -41,5 +41,13 @@ namespace BusinessLayer.Functions
             // validation
             _CountryContext.Delete(id);
         }
+        public static void DeleteAll()
+        {
+            var Countries = ReadAll();
+            foreach (var Country in Countries)
+            {
+                Delete(Country.Id);
+            }
+        }
     }
 }

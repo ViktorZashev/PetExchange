@@ -41,5 +41,13 @@ namespace BusinessLayer.Functions
             // validation
             _TownContext.Delete(id);
         }
+        public static void DeleteAll()
+        {
+            var Towns = ReadAll();
+            foreach (var Town in Towns)
+            {
+                Delete(Town.Id);
+            }
+        }
     }
 }
