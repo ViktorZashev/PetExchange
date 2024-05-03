@@ -31,6 +31,13 @@ namespace DataLayer.ModelsDbContext
                 throw ex;
             }
         }
+        public void Create(List<Country> entities)
+        {
+            foreach(var country in entities)
+            {
+                Create(country);
+            }
+        }
         public Country Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

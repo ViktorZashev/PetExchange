@@ -32,6 +32,15 @@ namespace DataLayer
                 throw ex;
             }
         }
+
+        public void Create(List<PublicOffer> offers)
+        {
+            foreach (var offer in offers)
+            {
+                Create(offer);
+            }
+        }
+
         public PublicOffer Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

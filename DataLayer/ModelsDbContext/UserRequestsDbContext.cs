@@ -32,6 +32,14 @@ namespace DataLayer
                 throw ex;
             }
         }
+
+        public void Create(List<UserRequests> requests)
+        {
+            foreach (var request in requests)
+            {
+                Create(request);
+            }
+        }
         public UserRequests Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

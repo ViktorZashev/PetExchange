@@ -32,6 +32,14 @@ namespace DataLayer
                 throw ex;
             }
         }
+
+        public void Create(List<User> users)
+        {
+            foreach (var user in users)
+            {
+                Create(user);
+            }
+        }
         public User Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

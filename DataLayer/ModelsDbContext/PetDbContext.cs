@@ -32,6 +32,13 @@ namespace DataLayer
                 throw ex;
             }
         }
+        public void Create(List<Pet> entities)
+        {
+            foreach (var pet in entities)
+            {
+                Create(pet);
+            }
+        }
         public Pet Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

@@ -32,6 +32,13 @@ namespace DataLayer
                 throw ex;
             }
         }
+        public void Create(List<Town> towns)
+        {
+            foreach (var town in towns)
+            {
+                Create(town);
+            }
+        }
         public Town Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try
