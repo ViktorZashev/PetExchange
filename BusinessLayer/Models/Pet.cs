@@ -11,10 +11,6 @@ namespace BusinessLayer.Models
 		[Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-		[JsonPropertyName("user_id")]
-		[ForeignKey("User")]
-		public Guid UserId { get; set; } = Guid.NewGuid();
-
 		[JsonPropertyName("user")]
 		public User User { get; set; }
 
@@ -42,7 +38,6 @@ namespace BusinessLayer.Models
 		public Pet(Guid id, User user, string name, string photoPath, int age, string animalType, string description, bool includesCage)
 		{
 			Id = id;
-			UserId = user.Id;
 			User = user;
 			Name = name;
 			PhotoPath = photoPath;

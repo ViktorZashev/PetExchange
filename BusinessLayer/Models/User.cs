@@ -8,14 +8,10 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Models
 {
-	public class User
+    public class User
 	{
 		[JsonPropertyName("id")]
 		public Guid Id { get; set; } = Guid.NewGuid();
-
-		[JsonPropertyName("town_id")]
-		[ForeignKey("Town")]
-		public Guid TownId { get; set; } = Guid.NewGuid();
 
 		[JsonPropertyName("town")]
 		public Town Town { get; set; }
@@ -44,12 +40,15 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("password")]
 		public string Password { get; set; } = string.Empty;
 
-		private User() { }
+		private User() {
+			Pets = new List<Pet>();
+			Requests = new List<UserRequests>();
+		
+		}
 
 		public User(Guid id,Town town, List<Pet> pets, List<UserRequests> requests, string name, string photo_path, bool isAdmin, string contactInfo, string username, string password)
 		{
 			Id = id;
-			TownId = town.Id;
 			Town = town;
 			Pets = pets;
 			Requests = requests;

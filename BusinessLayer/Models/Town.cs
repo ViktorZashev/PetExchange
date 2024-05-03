@@ -9,15 +9,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Models
 {
-	public class Town
+    public class Town
 	{
 		[JsonPropertyName("id")]
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
-
-		[JsonPropertyName("country_id")]
-		[ForeignKey("Country")]
-		public Guid CountryId { get; set; } = Guid.NewGuid();
 
 		public Country Country { get; set; }
 
@@ -30,7 +26,6 @@ namespace BusinessLayer.Models
 		public Town(Guid id, Country country, string name)
 		{
 			Id = id;
-			CountryId = country.Id;
 			Country = country;
 			Name = name;
 		}
