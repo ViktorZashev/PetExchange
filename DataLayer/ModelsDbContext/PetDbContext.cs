@@ -11,7 +11,7 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-    internal class PetDbContext : IDb<Pet, Guid>
+    public class PetDbContext : IDb<Pet, Guid>
     {
         private readonly PetExchangeDbContext _dbcontext;
 

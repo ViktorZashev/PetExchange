@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.ModelsDbContext
 {
-    internal class CountryDbContext : IDb<Country, Guid>
+    public class CountryDbContext : IDb<Country, Guid>
     {
         private readonly PetExchangeDbContext _dbcontext;
 
