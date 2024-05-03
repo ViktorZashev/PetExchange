@@ -8,13 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace DataLayer
+namespace DataLayer.ProjectDbContext
 {
 
     public class PetExchangeDbContext : DbContext
     {
         public static string connectionString = "Server=VIKTOR\\SQLEXPRESS;Database=PetExchange;Trusted_Connection=True;TrustServerCertificate=True;";
-       
+
         public PetExchangeDbContext()
         {
 
@@ -23,14 +23,14 @@ namespace DataLayer
         {
 
         }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString);
         }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
+        {
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Country> Countries { get; set; }
