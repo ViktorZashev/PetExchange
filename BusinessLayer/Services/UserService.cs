@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public static class UserController
+    public static class UserService
     {
         private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
         private static readonly UserDbContext _UserContext = new UserDbContext(_ProjectContext);

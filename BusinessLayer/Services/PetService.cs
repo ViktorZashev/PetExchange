@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public static class PetController
+    public static class PetService
     {
         private static readonly PetExchangeDbContext _ProjectContext = _ProjectContext = new PetExchangeDbContext();
         private static readonly PetDbContext  _PetContext = new PetDbContext(_ProjectContext);

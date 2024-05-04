@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public static class TownController
+    public static class TownService
     {
         private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
         private static readonly TownDbContext  _TownContext = new TownDbContext(_ProjectContext);
