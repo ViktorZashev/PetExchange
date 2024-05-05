@@ -19,9 +19,9 @@ namespace BusinessLayer.Models
 
 		private UserRequests() { }
 
-		public UserRequests(Guid id, PublicOffer publicOffer, bool isAccepted)
+		public UserRequests(PublicOffer publicOffer, bool isAccepted)
 		{
-			Id = id;
+			Id = Guid.NewGuid();
 			PublicOffer = publicOffer;
 			IsAccepted = isAccepted;
 		}

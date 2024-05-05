@@ -58,5 +58,24 @@ namespace BusinessLayer.Functions
                 Delete(User.Id);
             }
         }
+        public static int AuthenticateUserReturnsCode(string username, string password)
+        {
+            // 0 - no such username
+            // 1 - username found but incorrect password
+            // 2 - Authentication successful
+            if (_UserContext.CheckUsernameExists(username))
+            {
+                if(_UserContext.CheckPasswordCorrect(username, password))
+                {
+                    return 2;
+                }
+                else { return 1; }
+            }
+            else { return 0; }
+        }
+        public static void RegisterUser(User user)
+        {
+            _UserContext.Create(user);
+        }
     }
 }

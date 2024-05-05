@@ -46,9 +46,9 @@ namespace BusinessLayer.Models
 		
 		}
 
-		public User(Guid id,Town town, List<Pet> pets, List<UserRequests> requests, string name, string photo_path, bool isAdmin, string contactInfo, string username, string password)
+		public User(Town town, List<Pet> pets, List<UserRequests> requests, string name, string photo_path, bool isAdmin, string contactInfo, string username, string password)
 		{
-			Id = id;
+			Id = Guid.NewGuid();
 			Town = town;
 			Pets = pets;
 			Requests = requests;

@@ -26,14 +26,19 @@ namespace DataLayer
             {
                 if (_dbcontext.Towns.Any(c => c.Name == entity.Name))
                 {
-                    
-                    throw new InvalidOperationException("A town with the same name already exists.");
+
+                    return; // A town with this name already exists
                 }
                 var _existingCountry = _dbcontext.Countries.FirstOrDefault(c => c.Id == entity.Country.Id);
                 if (_existingCountry != null)
                 {
                    
                     entity.Country = _existingCountry;
+                }
+                else
+                {
+                    CountryDbContext countryContext = new CountryDbContext(_dbcontext);
+                    countryContext.Create(entity.Country);
                 }
                 _dbcontext.Towns.Add(entity);
                 _dbcontext.SaveChanges();

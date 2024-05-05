@@ -27,8 +27,12 @@ namespace DataLayer
                 var _existingTown = _dbcontext.Towns.FirstOrDefault(c => c.Id == entity.Town.Id);
                 if (_existingTown != null)
                 {
-                    
                     entity.Town = _existingTown;
+                }
+                else
+                {
+                    TownDbContext townContext = new TownDbContext(_dbcontext);
+                    townContext.Create(entity.Town);
                 }
                 _dbcontext.Users.Add(entity);
                 _dbcontext.SaveChanges();
@@ -128,6 +132,28 @@ namespace DataLayer
             {
                     throw ex;
             }
+        }
+
+        public bool CheckUsernameExists(string username)
+        {
+            var foundEntity = ReadAll().Where(x => x.Username == username).FirstOrDefault();
+
+            if (foundEntity == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool CheckPasswordCorrect(string username, string password)
+        {
+            var foundEntity = ReadAll().Where(x => x.Username == username && x.Password == password).FirstOrDefault();
+
+            if (foundEntity == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

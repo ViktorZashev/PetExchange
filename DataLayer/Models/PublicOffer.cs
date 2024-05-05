@@ -23,9 +23,9 @@ namespace BusinessLayer.Models
 
 		private PublicOffer() { }
 
-		public PublicOffer(Guid id, Pet pet, bool isResolved)
+		public PublicOffer(Pet pet, bool isResolved)
 		{
-			Id = id;
+			Id = Guid.NewGuid();
 			Pet = pet;
 			IsResolved = isResolved;
 		}

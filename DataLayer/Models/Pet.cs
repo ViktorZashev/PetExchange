@@ -35,9 +35,9 @@ namespace BusinessLayer.Models
 
 		private Pet() { }
 
-		public Pet(Guid id, User user, string name, string photoPath, int age, string animalType, string description, bool includesCage)
+		public Pet(User user, string name, string photoPath, int age, string animalType, string description, bool includesCage)
 		{
-			Id = id;
+			Id = Guid.NewGuid();
 			User = user;
 			Name = name;
 			PhotoPath = photoPath;

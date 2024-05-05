@@ -23,9 +23,9 @@ namespace BusinessLayer.Models
 
 		private Town() { }
 
-		public Town(Guid id, Country country, string name)
+		public Town(Country country, string name)
 		{
-			Id = id;
+			Id = Guid.NewGuid();
 			Country = country;
 			Name = name;
 		}
