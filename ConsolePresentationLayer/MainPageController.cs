@@ -54,11 +54,12 @@ namespace ConsolePresentationLayer
                     SignupUserFunction();
                     break;
                 case 4:
-                    LoginUserFunction();
+                    var loggedUser = LoginUserFunction();
+                    var loggedUserController = new LoggedUserController(loggedUser);
                     break;
             }
         }
-        private void LoginUserFunction()
+        private User LoginUserFunction()
         {
             PrintFunctions.PrintLoginMenu();
             var input = Console.ReadLine().Split();
@@ -82,7 +83,8 @@ namespace ConsolePresentationLayer
                 if(code == 2)
                 {
                     PrintFunctions.PrintSuccessMessage();
-                    break;
+                    var loggedUser = UserService.ReturnUser(username, password);
+                    return loggedUser;
                 }
             }
         }
@@ -112,7 +114,7 @@ namespace ConsolePresentationLayer
             }
             var contactInfo = Console.ReadLine();
             var newUser = new User(town, new List<Pet>(), new List<UserRequests>(), name, "photoPath", false, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
-            UserService.RegisterUser(newUser);
+            UserService.Create(newUser);
             PrintFunctions.PrintSuccessMessage();
         }
     }
