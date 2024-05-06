@@ -35,7 +35,7 @@ namespace DataLayer
                    
                     entity.Country = _existingCountry;
                 }
-                else
+                else // Country Hasn't been Created in country Database
                 {
                     CountryDbContext countryContext = new CountryDbContext(_dbcontext);
                     countryContext.Create(entity.Country);
@@ -134,6 +134,16 @@ namespace DataLayer
             {
                     throw ex;
             }
+        }
+
+        public bool CheckExists(string name)
+        {
+            var Towns = ReadAll();
+            if (Towns.Any(x => x.Name == name))
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }

@@ -34,6 +34,11 @@ namespace BusinessLayer
             Console.WriteLine("Password was incorrect! Try again.");
             Console.Write("Password: ");
         }
+        public static void PrintNeededCountryDataMessage()
+        {
+            Console.WriteLine("Enter country name for town!");
+            Console.Write("Country Name: ");
+        }
         public static void PrintSignupMenu()
         {
             Console.WriteLine("REGISTER:");

@@ -92,13 +92,28 @@ namespace ConsolePresentationLayer
             var usernameAndPassword = Console.ReadLine().Split();
             var name = Console.ReadLine();
             var townName = Console.ReadLine();
-            var town = new Town(new Country("Obristan"), townName);
+            Town town;
+            try
+            {
+
+                town = TownService.RetrieveTown(townName);
+            }
+            catch
+            {
+                PrintFunctions.PrintNeededCountryDataMessage();
+                var CountryName = Console.ReadLine();
+                Country newCountry;
+                newCountry = CountryService.RetrieveCountry(CountryName);
+                if(newCountry == null)
+                {
+                    newCountry = new Country(CountryName);
+                }
+                town = new Town(newCountry, townName);
+            }
             var contactInfo = Console.ReadLine();
             var newUser = new User(town, new List<Pet>(), new List<UserRequests>(), name, "photoPath", false, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
             UserService.RegisterUser(newUser);
             PrintFunctions.PrintSuccessMessage();
-
-            
         }
     }
 }

@@ -25,6 +25,10 @@ namespace DataLayer.ModelsDbContext
         {
             try
             {
+                if (_dbcontext.Countries.Any(x => x.Name == entity.Name)) // No need to create a duplicate country entry
+                {
+                    return;
+                }
                 _dbcontext.Countries.Add(entity);
                 _dbcontext.SaveChanges();
             }
@@ -120,6 +124,12 @@ namespace DataLayer.ModelsDbContext
             {
                 throw ex;
             }
+        }
+        public Country RetrieveCountry(string name)
+        {
+            var Countries = _dbcontext.Countries.ToList();
+
+            return Countries.Where(x => x.Name == name).FirstOrDefault();
         }
     }
 }

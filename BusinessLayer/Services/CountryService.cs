@@ -57,5 +57,9 @@ namespace BusinessLayer.Functions
                 Delete(Country.Id);
             }
         }
+        public static Country RetrieveCountry(string name)
+        {
+            return _CountryContext.RetrieveCountry(name);
+        }
     }
 }
