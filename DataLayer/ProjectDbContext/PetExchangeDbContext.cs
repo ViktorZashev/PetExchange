@@ -13,7 +13,9 @@ namespace DataLayer.ProjectDbContext
 
     public class PetExchangeDbContext : DbContext
     {
-        public static string connectionString = "Server=VIKTOR\\SQLEXPRESS;Database=PetExchange;Trusted_Connection=True;TrustServerCertificate=True;";
+		// Laptop string : VIKTORS-AWESOME\SQLEXPRESS
+		// PC string : VIKTOR\\SQLEXPRESS
+		public static string connectionString = "Server=VIKTORS-AWESOME\\SQLEXPRESS;Database=PetExchange;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public PetExchangeDbContext()
         {
