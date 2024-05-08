@@ -57,5 +57,18 @@ namespace BusinessLayer.Functions
                 Delete(Town.Id);
             }
         }
+        public static bool CheckIfExists(string name)
+        {
+            return _TownContext.CheckExists(name);
+        }
+        public static Town RetrieveTown(string name)
+        {
+            var foundTown = _TownContext.ReadAll().Where(x => x.Name == name).FirstOrDefault();
+            if(foundTown == null)
+            {
+                throw new IndexOutOfRangeException("No such town is found!");
+            }
+            return foundTown;
+        }
     }
 }

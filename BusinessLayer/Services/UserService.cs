@@ -73,9 +73,12 @@ namespace BusinessLayer.Functions
             }
             else { return 0; }
         }
-        public static void RegisterUser(User user)
+        public static User ReturnUser(string username, string password)
         {
-            _UserContext.Create(user);
+            var users = ReadAll();
+            var foundUser = users.Where(x => x.Username == username && x.Password == password).FirstOrDefault();
+            if (foundUser == null) throw new Exception("No such user found!");
+            return foundUser;
         }
     }
 }

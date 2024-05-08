@@ -46,5 +46,16 @@ namespace BusinessLayer.Models
 			Description = description;
 			IncludesCage = includesCage;
 		}
-	}
+        public Pet(Guid id,User user, string name, string photoPath, int age, string animalType, string description, bool includesCage)
+        {
+            Id = id;
+            User = user;
+            Name = name;
+            PhotoPath = photoPath;
+            Age = age;
+            AnimalType = animalType;
+            Description = description;
+            IncludesCage = includesCage;
+        }
+    }
 }

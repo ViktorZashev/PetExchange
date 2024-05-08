@@ -54,11 +54,12 @@ namespace ConsolePresentationLayer
                     SignupUserFunction();
                     break;
                 case 4:
-                    LoginUserFunction();
+                    var loggedUser = LoginUserFunction();
+                    var loggedUserController = new LoggedUserController(loggedUser);
                     break;
             }
         }
-        private void LoginUserFunction()
+        private User LoginUserFunction()
         {
             PrintFunctions.PrintLoginMenu();
             var input = Console.ReadLine().Split();
@@ -82,7 +83,8 @@ namespace ConsolePresentationLayer
                 if(code == 2)
                 {
                     PrintFunctions.PrintSuccessMessage();
-                    break;
+                    var loggedUser = UserService.ReturnUser(username, password);
+                    return loggedUser;
                 }
             }
         }
@@ -92,13 +94,28 @@ namespace ConsolePresentationLayer
             var usernameAndPassword = Console.ReadLine().Split();
             var name = Console.ReadLine();
             var townName = Console.ReadLine();
-            var town = new Town(new Country("Obristan"), townName);
+            Town town;
+            try
+            {
+
+                town = TownService.RetrieveTown(townName);
+            }
+            catch
+            {
+                PrintFunctions.PrintNeededCountryDataMessage();
+                var CountryName = Console.ReadLine();
+                Country newCountry;
+                newCountry = CountryService.RetrieveCountry(CountryName);
+                if(newCountry == null)
+                {
+                    newCountry = new Country(CountryName);
+                }
+                town = new Town(newCountry, townName);
+            }
             var contactInfo = Console.ReadLine();
             var newUser = new User(town, new List<Pet>(), new List<UserRequests>(), name, "photoPath", false, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
-            UserService.RegisterUser(newUser);
+            UserService.Create(newUser);
             PrintFunctions.PrintSuccessMessage();
-
-            
         }
     }
 }
