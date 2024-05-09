@@ -28,16 +28,16 @@ namespace BusinessLayer.Functions
                 Create(request);
             }
         }
-        public static UserRequests Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+        public static UserRequests Read(Guid idt, bool useNav = true)
         {
             
-            return _UserRequestsContext.Read(idt, useNav,isReadOnly);
+            return _UserRequestsContext.Read(idt, useNav);
         }
 
-        public static List<UserRequests> ReadAll(bool useNav = false, bool isReadOnly = false)
+        public static List<UserRequests> ReadAll(bool useNav = true)
         {
   
-            return _UserRequestsContext.ReadAll(useNav, isReadOnly);
+            return _UserRequestsContext.ReadAll(useNav);
         }
         public static void Update(UserRequests request)
         {

@@ -9,6 +9,7 @@ namespace ConsolePresentationLayer
     {
         static void Main(string[] args)
         {
+            //DatabaseFunctions.ReturnTownsAndCountries();
             var consoleController = new ConsoleController();
         }
     }

@@ -21,76 +21,61 @@ namespace DataLayer.ModelsDbContext
             _dbcontext = dbcontext;
         }
 
-        public void Create(Country entity)
+		public void Create(Country entity)
+		{
+			try
+			{
+				_dbcontext.Countries.Add(entity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public Country Read(Guid id, bool useNavigationalProperties = true)
         {
-            try
-            {
-                if (_dbcontext.Countries.Any(x => x.Name == entity.Name)) // No need to create a duplicate country entry
-                {
-                    return;
-                }
-                _dbcontext.Countries.Add(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+			try
+			{
+				Country foundCountry = _dbcontext.Countries.Where(x => x.Id == id).FirstOrDefault();
+				
+				if (useNavigationalProperties) // does nothing because there are no relations from country table
+				{
+					
+				}
+				return foundCountry;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
 
-        public Country Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        public List<Country> ReadAll(bool useNavigationalProperties = true)
         {
-            try
-            {
-                IQueryable<Country> query = _dbcontext.Countries;
+			try
+			{
+				List<Country> foundCountries = _dbcontext.Countries.ToList();
 
-                if (useNavigationalProperties) // No navigational Properties Exist
-                {
+				if (useNavigationalProperties) // does nothing because there are no relations from country table
+				{
+					
+				}
 
-                }
-
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.SingleOrDefault(e => e.Id == id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public List<Country> ReadAll(bool useNavigationalProperties = false, bool isReadOnly = true)
-        {
-            try
-            {
-                IQueryable<Country> query = _dbcontext.Countries;
-
-                if (useNavigationalProperties) // No navigational Properties Exist
-                {
-
-                }
-
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+				return foundCountries;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
 
         public void Update(Country entity, bool useNavigationalProperties = false)
         {
             try
             {
-                var foundEntity = Read(entity.Id, false, false);
+                var foundEntity = Read(entity.Id);
 
                 if (foundEntity == null)
                 {
@@ -110,7 +95,7 @@ namespace DataLayer.ModelsDbContext
         {
             try
             {
-                var foundEntity = Read(id, false, false);
+                var foundEntity = Read(id);
 
                 if (foundEntity == null)
                 {
@@ -127,7 +112,7 @@ namespace DataLayer.ModelsDbContext
         }
         public Country RetrieveCountry(string name)
         {
-            var Countries = _dbcontext.Countries.ToList();
+            var Countries = ReadAll();
 
             return Countries.Where(x => x.Name == name).FirstOrDefault();
         }

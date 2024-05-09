@@ -28,16 +28,16 @@ namespace BusinessLayer.Functions
                 Create(offer);
             }
         }
-        public static PublicOffer Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+        public static PublicOffer Read(Guid idt, bool useNav = true)
         {
             
-            return _PublicOfferContext.Read(idt, useNav,isReadOnly);
+            return _PublicOfferContext.Read(idt, useNav);
         }
 
-        public static List<PublicOffer> ReadAll(bool useNav = false, bool isReadOnly = false)
+        public static List<PublicOffer> ReadAll(bool useNav = true)
         {
   
-            return _PublicOfferContext.ReadAll(useNav, isReadOnly);
+            return _PublicOfferContext.ReadAll(useNav);
         }
         public static void Update(PublicOffer offer)
         {

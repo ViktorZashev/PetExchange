@@ -18,6 +18,9 @@ namespace BusinessLayer.Models
         [JsonPropertyName("pet")]
         public Pet Pet { get; set; }
 
+		[JsonPropertyName("pet_id")]
+		public Guid PetId { get; set; }
+
 		[JsonPropertyName("is_resolved")]
 		public bool IsResolved { get; set; } = false;
 
@@ -27,6 +30,7 @@ namespace BusinessLayer.Models
 		{
 			Id = Guid.NewGuid();
 			Pet = pet;
+			PetId = pet.Id;
 			IsResolved = isResolved;
 		}
 

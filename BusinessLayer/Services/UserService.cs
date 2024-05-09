@@ -20,7 +20,6 @@ namespace BusinessLayer.Functions
             // Validation
             _UserContext.Create(user);
         }
-
         public static void Create(List<User> users)
         {
             foreach (var user in users)
@@ -28,16 +27,16 @@ namespace BusinessLayer.Functions
                 Create(user);
             }
         }
-        public static User Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+        public static User Read(Guid idt, bool useNav = true)
         {
             
-            return _UserContext.Read(idt, useNav,isReadOnly);
+            return _UserContext.Read(idt, useNav);
         }
 
-        public static List<User> ReadAll(bool useNav = false, bool isReadOnly = false)
+        public static List<User> ReadAll(bool useNav = true)
         {
   
-            return _UserContext.ReadAll(useNav, isReadOnly);
+            return _UserContext.ReadAll(useNav);
         }
         public static void Update(User user)
         {

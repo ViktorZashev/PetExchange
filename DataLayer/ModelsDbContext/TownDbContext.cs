@@ -20,88 +20,83 @@ namespace DataLayer
             _dbcontext = dbcontext;
         }
 
-        public void Create(Town entity)
+		public void Create(Town entity)
+		{
+			try
+			{
+				if (_dbcontext.Towns.Any(c => c.Name == entity.Name))
+				{
+
+					return; // A town with this name already exists
+				}
+				var _existingCountry = _dbcontext.Countries.FirstOrDefault(c => c.Id == entity.Country.Id);
+				if (_existingCountry != null)
+				{
+
+					entity.Country = _existingCountry;
+				}
+				else
+				{
+					CountryDbContext countryContext = new CountryDbContext(_dbcontext);
+					countryContext.Create(entity.Country);
+				}
+				_dbcontext.Towns.Add(entity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+
+		public Town Read(Guid id, bool useNavigationalProperties = true)
+        {
+			try
+			{
+				Town foundTown = _dbcontext.Towns.Where(x => x.Id == id).FirstOrDefault();
+				Guid countryId = foundTown.CountryId;
+				if (useNavigationalProperties)
+				{
+					foundTown.Country = _dbcontext.Countries.Where(x => x.Id == countryId).FirstOrDefault();
+				}
+				return foundTown;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+		}
+
+		public List<Town> ReadAll(bool useNavigationalProperties = true)
+        {
+			try
+			{
+				List<Town> foundTowns = _dbcontext.Towns.ToList();
+
+				if (useNavigationalProperties)
+				{
+					foreach (var town in foundTowns)
+					{
+						Guid CountryId = town.CountryId;
+						town.Country = _dbcontext.Countries.Where(x => x.Id == CountryId).FirstOrDefault();
+					}
+				}
+				return foundTowns;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+		}
+
+		public void Update(Town entity, bool useNavigationalProperties = true)
         {
             try
             {
-                if (_dbcontext.Towns.Any(c => c.Name == entity.Name))
-                {
-
-                    return; // A town with this name already exists
-                }
-                var _existingCountry = _dbcontext.Countries.FirstOrDefault(c => c.Id == entity.Country.Id);
-                if (_existingCountry != null)
-                {
-                   
-                    entity.Country = _existingCountry;
-                }
-                else // Country Hasn't been Created in country Database
-                {
-                    CountryDbContext countryContext = new CountryDbContext(_dbcontext);
-                    countryContext.Create(entity.Country);
-                }
-                _dbcontext.Towns.Add(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-       
-        public Town Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
-        {
-            try
-            {
-                IQueryable<Town> query = _dbcontext.Towns;
-
-                if (useNavigationalProperties)
-                {
-                    query.Include(p => p.Country);
-                }
-
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.SingleOrDefault(e => e.Id == id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public List<Town> ReadAll(bool useNavigationalProperties = false, bool isReadOnly = true)
-        {
-            try
-            {
-                IQueryable<Town> query = _dbcontext.Towns;
-
-                if (useNavigationalProperties) 
-                {
-                    query.Include(p => p.Country);
-                }
-
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public void Update(Town entity, bool useNavigationalProperties = false)
-        {
-            try
-            {
-                var foundEntity = Read(entity.Id, false, false);
+                var foundEntity = Read(entity.Id);
 
                 if (foundEntity == null)
                 {
@@ -121,7 +116,7 @@ namespace DataLayer
         {
             try
             {
-                var foundEntity = Read(id, false, false);
+                var foundEntity = Read(id);
 
                 if (foundEntity == null)
                 {

@@ -29,15 +29,15 @@ namespace BusinessLayer.Functions
             }
         }
 
-        public static Country Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+        public static Country Read(Guid idt, bool useNav = true)
         {
 
-            return _CountryContext.Read(idt, useNav, isReadOnly);
+            return _CountryContext.Read(idt, useNav);
         }
-        public static List<Country> ReadAll(bool useNav = false, bool isReadOnly = false)
+        public static List<Country> ReadAll(bool useNav = true)
         {
   
-            return _CountryContext.ReadAll(useNav, isReadOnly);
+            return _CountryContext.ReadAll(useNav);
         }
         public static void Update(Country country)
         {

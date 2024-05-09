@@ -28,16 +28,16 @@ namespace BusinessLayer.Functions
                 Create(town);
             }
         }
-        public static Town Read(Guid idt, bool useNav = false, bool isReadOnly = false)
+        public static Town Read(Guid idt, bool useNav = true)
         {
             
-            return _TownContext.Read(idt, useNav,isReadOnly);
+            return _TownContext.Read(idt, useNav);
         }
 
-        public static List<Town> ReadAll(bool useNav = false, bool isReadOnly = false)
+        public static List<Town> ReadAll(bool useNav = true)
         {
   
-            return _TownContext.ReadAll(useNav, isReadOnly);
+            return _TownContext.ReadAll(useNav);
         }
         public static void Update(Town town)
         {
@@ -70,5 +70,12 @@ namespace BusinessLayer.Functions
             }
             return foundTown;
         }
+        /*
+        public static Country RetrieveCountry(Town town)
+        {
+            var countries = CountryService.ReadAll();
+            if(countries.Where(x => x.Id == town.Country.)
+        }
+        */
     }
 }

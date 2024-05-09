@@ -12,9 +12,14 @@ namespace BusinessLayer.Models
 	{
 		[JsonPropertyName("id")]
 		public Guid Id { get; set; } = Guid.NewGuid();
+
+		[JsonPropertyName("public_offer")]
 		public PublicOffer PublicOffer { get; set; }
 
-        [JsonPropertyName("is_accepted")]
+		[JsonPropertyName("public_offer_id")]
+		public Guid PublicOfferId { get; set; }
+
+		[JsonPropertyName("is_accepted")]
 		public bool IsAccepted { get; set; } = false;
 
 		private UserRequests() { }
@@ -23,6 +28,7 @@ namespace BusinessLayer.Models
 		{
 			Id = Guid.NewGuid();
 			PublicOffer = publicOffer;
+			PublicOfferId = publicOffer.Id;
 			IsAccepted = isAccepted;
 		}
 	}

@@ -20,36 +20,42 @@ namespace DataLayer
             _dbcontext = dbcontext;
         }
 
-        public void Create(Pet entity)
-        {
-            try
-            {
-                _dbcontext.Pets.Add(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-       
-        public Pet Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
-        {
-            try
-            {
-                IQueryable<Pet> query = _dbcontext.Pets;
+		public void Create(Pet entity)
+		{
+			try
+			{
 
+				var _existingUser = _dbcontext.Users.FirstOrDefault(c => c.Id == entity.User.Id);
+				if (_existingUser != null)
+				{
+		
+					entity.User = _existingUser;
+                    entity.User.Id = _existingUser.Id;
+				}
+              
+				_dbcontext.Pets.Add(entity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+
+		public Pet Read(Guid id, bool useNavigationalProperties = true)
+        {
+            try
+            {
+                Pet foundPet = _dbcontext.Pets.Where(x => x.Id == id).FirstOrDefault();
+                Guid userId = foundPet.UserId;
                 if (useNavigationalProperties)
                 {
-                    query.Include(p => p.User);
+                    foundPet.User = _dbcontext.Users.Where(x => x.Id == userId).FirstOrDefault();
                 }
 
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
 
-                return query.SingleOrDefault(e => e.Id == id);
+                return foundPet;
             }
             catch (Exception)
             {
@@ -57,24 +63,24 @@ namespace DataLayer
             }
         }
 
-        public List<Pet> ReadAll(bool useNavigationalProperties = false, bool isReadOnly = true)
+        public List<Pet> ReadAll(bool useNavigationalProperties = true)
         {
             try
             {
-                IQueryable<Pet> query = _dbcontext.Pets;
+				List<Pet> foundPets = _dbcontext.Pets.ToList();
+                
+				if (useNavigationalProperties)
+				{
+					foreach (var pet in foundPets)
+					{
+						Guid userId = pet.UserId;
+						pet.User = _dbcontext.Users.Where(x => x.Id == userId).FirstOrDefault();
+					}
+				}
 
-                if (useNavigationalProperties) 
-                {
-                    query.Include(p => p.User);
-                }
 
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.ToList();
-            }
+				return foundPets;
+			}
             catch (Exception)
             {
                 throw;
@@ -85,7 +91,7 @@ namespace DataLayer
         {
             try
             {
-                var foundEntity = Read(entity.Id, false, false);
+                var foundEntity = Read(entity.Id);
 
                 if (foundEntity == null)
                 {
@@ -105,7 +111,7 @@ namespace DataLayer
         {
             try
             {
-                var foundEntity = Read(id, false, false);
+                var foundEntity = Read(id);
 
                 if (foundEntity == null)
                 {

@@ -98,8 +98,8 @@ namespace BusinessLayer
                     if (p.IncludesCage) Console.WriteLine("Yes");
                     else Console.WriteLine("No");
                     Console.WriteLine("Description: " + p.Description);
-                }
-                Console.WriteLine("");
+					Console.WriteLine("");
+				}
             }
         }
 

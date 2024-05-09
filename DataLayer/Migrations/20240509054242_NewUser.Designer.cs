@@ -4,6 +4,7 @@ using DataLayer.ProjectDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(PetExchangeDbContext))]
-    partial class PetExchangeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240509054242_NewUser")]
+    partial class NewUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,16 +102,13 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "is_resolved");
 
                     b.Property<Guid>("PetId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasAnnotation("Relational:JsonPropertyName", "pet_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PetId");
 
                     b.ToTable("PublicOffers");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "public_offer");
                 });
 
             modelBuilder.Entity("BusinessLayer.Models.Town", b =>
@@ -119,8 +119,7 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasAnnotation("Relational:JsonPropertyName", "country_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -168,8 +167,7 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "photo_path");
 
                     b.Property<Guid>("TownId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasAnnotation("Relational:JsonPropertyName", "town_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -197,8 +195,7 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "is_accepted");
 
                     b.Property<Guid>("PublicOfferId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasAnnotation("Relational:JsonPropertyName", "public_offer_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");

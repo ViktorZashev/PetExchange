@@ -20,78 +20,72 @@ namespace DataLayer
             _dbcontext = dbcontext;
         }
 
-        public void Create(PublicOffer entity)
+		public void Create(PublicOffer entity)
+		{
+			try
+			{
+				var _existingPet = _dbcontext.Pets.FirstOrDefault(c => c.Id == entity.Pet.Id);
+				if (_existingPet != null)
+				{
+
+					entity.Pet = _existingPet;
+				}
+				_dbcontext.PublicOffers.Add(entity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+
+		public PublicOffer Read(Guid id, bool useNavigationalProperties = true)
+        {
+			try
+			{
+				PublicOffer foundOffer = _dbcontext.PublicOffers.Where(x => x.Id == id).FirstOrDefault();
+				Guid petId = foundOffer.PetId;
+				if (useNavigationalProperties)
+				{
+					foundOffer.Pet = _dbcontext.Pets.Where(x => x.Id == petId).FirstOrDefault();
+				}
+				return foundOffer;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+        public List<PublicOffer> ReadAll(bool useNavigationalProperties = true)
+        {
+			try
+			{
+				List<PublicOffer> foundOffers = _dbcontext.PublicOffers.ToList();
+
+				if (useNavigationalProperties)
+				{
+					foreach (var offer in foundOffers)
+					{
+						Guid petId = offer.PetId;
+						offer.Pet = _dbcontext.Pets.Where(x => x.Id == petId).FirstOrDefault();
+					}
+				}
+				return foundOffers;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+		}
+
+		public void Update(PublicOffer entity, bool useNavigationalProperties = false)
         {
             try
             {
-                var _existingPet = _dbcontext.Pets.FirstOrDefault(c => c.Id == entity.Pet.Id);
-                if (_existingPet != null)
-                {
-          
-                    entity.Pet = _existingPet;
-                }
-                _dbcontext.PublicOffers.Add(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public PublicOffer Read(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
-        {
-            try
-            {
-                IQueryable<PublicOffer> query = _dbcontext.PublicOffers;
-
-                if (useNavigationalProperties)
-                {
-                    query.Include(p => p.Pet);
-                }
-
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.SingleOrDefault(e => e.Id == id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public List<PublicOffer> ReadAll(bool useNavigationalProperties = false, bool isReadOnly = true)
-        {
-            try
-            {
-                IQueryable<PublicOffer> query = _dbcontext.PublicOffers;
-
-                if (useNavigationalProperties) 
-                {
-                    query.Include(p => p.Pet);
-                }
-
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-
-                return query.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public void Update(PublicOffer entity, bool useNavigationalProperties = false)
-        {
-            try
-            {
-                var foundEntity = Read(entity.Id, false, false);
+                var foundEntity = Read(entity.Id);
 
                 if (foundEntity == null)
                 {
@@ -111,7 +105,7 @@ namespace DataLayer
         {
             try
             {
-                var foundEntity = Read(id, false, false);
+                var foundEntity = Read(id);
 
                 if (foundEntity == null)
                 {

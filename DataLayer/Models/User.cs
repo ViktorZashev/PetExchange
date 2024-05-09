@@ -16,6 +16,9 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("town")]
 		public Town Town { get; set; }
 
+		[JsonPropertyName("town_id")]
+		public Guid TownId { get; set; }
+
 		[JsonPropertyName("pets")]
 		public List<Pet> Pets { get; set; }
 
@@ -50,6 +53,7 @@ namespace BusinessLayer.Models
 		{
 			Id = Guid.NewGuid();
 			Town = town;
+			TownId = town.Id;
 			Pets = pets;
 			Requests = requests;
 			Name = name;

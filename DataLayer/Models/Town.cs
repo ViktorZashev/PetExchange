@@ -17,6 +17,9 @@ namespace BusinessLayer.Models
 
 		public Country Country { get; set; }
 
+		[JsonPropertyName("country_id")]
+		public Guid CountryId { get; set; }
+
 		[JsonPropertyName("name")]
 		[Required]
 		public string Name { get; set; } = string.Empty;
@@ -27,6 +30,7 @@ namespace BusinessLayer.Models
 		{
 			Id = Guid.NewGuid();
 			Country = country;
+			CountryId = country.Id;
 			Name = name;
 		}
 	}
