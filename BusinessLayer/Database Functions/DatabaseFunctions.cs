@@ -51,12 +51,12 @@ namespace BusinessLayer.Database_Functions
 
             var users = new List<User>
                 {
-                    new User(towns[0],new List<Pet>(), new List<UserRequests>(),"John Doe","photoPath", true, "john@example.com", "john", "password"),
-                    new User(towns[1],new List<Pet>(),new List<UserRequests>(), "Alice Smith", "photoPath", false, "alice@example.com", "alice", "password"),
-                    new User(towns[2],new List<Pet>(), new List < UserRequests >(), "Bob Johnson", "photoPath", true, "bob@example.com", "bob", "password"),
-                    new User(towns[3],new List<Pet>(), new List < UserRequests >(), "Emily Brown", "photoPath", false, "emily@example.com", "emily", "password"),
-                    new User(towns[4],new List<Pet>(), new List < UserRequests >(), "Michael Wilson", "photoPath", true, "michael@example.com", "michael", "password"),
-                    new User(towns[5],new List<Pet>(), new List < UserRequests >(), "Viktor Zashev", "photoPath", true, "vbzashev@gmail.com", "vzashev", "TropchoEnjoyer")
+                    new User(towns[0],new List<Pet>(),"John Doe","photoPath", true, "john@example.com", "john", "password"),
+                    new User(towns[1],new List<Pet>(), "Alice Smith", "photoPath", false, "alice@example.com", "alice", "password"),
+                    new User(towns[2],new List<Pet>(), "Bob Johnson", "photoPath", true, "bob@example.com", "bob", "password"),
+                    new User(towns[3],new List<Pet>(), "Emily Brown", "photoPath", false, "emily@example.com", "emily", "password"),
+                    new User(towns[4],new List<Pet>(), "Michael Wilson", "photoPath", true, "michael@example.com", "michael", "password"),
+                    new User(towns[5],new List<Pet>(), "Viktor Zashev", "photoPath", true, "vbzashev@gmail.com", "vzashev", "TropchoEnjoyer")
                 };
 
             UserService.Create(users);
@@ -74,23 +74,23 @@ namespace BusinessLayer.Database_Functions
 
             var publicOffers = new List<PublicOffer>
                 {
-                    new PublicOffer(pets[0], true),
-                    new PublicOffer(pets[1], false),
-                    new PublicOffer(pets[2], true),
-                    new PublicOffer(pets[3], false),
-                    new PublicOffer(pets[4], true),
-                    new PublicOffer(pets[5], true)
+                    new PublicOffer(pets[0]),
+                    new PublicOffer(pets[1]),
+                    new PublicOffer(pets[2]),
+                    new PublicOffer(pets[3]),
+                    new PublicOffer(pets[4]),
+                    new PublicOffer(pets[5])
                 };
             PublicOfferService.Create(publicOffers);
 
             var userRequests = new List<UserRequests>
                 {
-                    new UserRequests(publicOffers[0], true),
-                    new UserRequests(publicOffers[1], false),
-                    new UserRequests(publicOffers[2], true),
-                    new UserRequests(publicOffers[3], false),
-                    new UserRequests(publicOffers[4], false),
-                    new UserRequests(publicOffers[5], true)
+                    new UserRequests(publicOffers[0],users[0], true),
+                    new UserRequests(publicOffers[1],users[1], true),
+                    new UserRequests(publicOffers[2], users[2], true),
+                    new UserRequests(publicOffers[3], users[3], true),
+                    new UserRequests(publicOffers[4], users[4], true),
+                    new UserRequests(publicOffers[5], users[5], true)
                 };
             UserRequestsService.Create(userRequests);
         }

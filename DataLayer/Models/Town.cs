@@ -15,10 +15,11 @@ namespace BusinessLayer.Models
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		public Country Country { get; set; }
-
 		[JsonPropertyName("country_id")]
 		public Guid CountryId { get; set; }
+
+		[ForeignKey("CountryId")]
+		public Country Country { get; set; }
 
 		[JsonPropertyName("name")]
 		[Required]

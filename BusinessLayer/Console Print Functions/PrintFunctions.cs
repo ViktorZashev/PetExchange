@@ -102,8 +102,28 @@ namespace BusinessLayer
 				}
             }
         }
+		public static void PrintPet(Pet pet)
+		{
+			if (pet == null)
+			{
+                throw new Exception("Pet is null!");
+			}
+			else
+			{
+				Console.WriteLine("");
+				Console.WriteLine("Pet Name: " + pet.Name);
+				Console.WriteLine("Animal Type: " + pet.AnimalType);
+				Console.WriteLine("Age: " + pet.Age);
+				Console.Write("Comes with cage: ");
+				if (pet.IncludesCage) Console.WriteLine("Yes");
+				else Console.WriteLine("No");
+				Console.WriteLine("Description: " + pet.Description);
+				Console.WriteLine("");
+				
+			}
+		}
 
-        public static void PrintPetRegistrationMenu()
+		public static void PrintPetRegistrationMenu()
         {
             Console.WriteLine("REGISTER PET:");
             Console.WriteLine("Enter: [Name]");
@@ -146,6 +166,26 @@ namespace BusinessLayer
             Console.WriteLine("No such pet name was found in database! Try Again.");
             Console.WriteLine();
         }
-        #endregion
-    }
+
+		public static void DisplayOffers(List<PublicOffer> offers, Town town)
+		{
+            Console.WriteLine("Town: " + town.Name);
+			if (offers == null || offers.Count == 0)
+			{
+				Console.WriteLine("There are no public offers in your town!");
+			}
+			else
+			{
+				Console.WriteLine("");
+				foreach (var  offer in offers)
+				{
+                    var offerPet = offer.Pet;
+                    Console.WriteLine("Pet information:");
+                    PrintPet(offerPet);
+                    Console.WriteLine();
+				}
+			}
+		}
+		#endregion
+	}
 }

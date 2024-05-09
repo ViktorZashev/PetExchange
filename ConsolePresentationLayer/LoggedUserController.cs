@@ -56,20 +56,33 @@ namespace ConsolePresentationLayer
                     UpdatePetComponent();
                     break;
                 case 5: // View all public offers in town
-                    
+                    ViewAvailablePublicOffers();
                     break;
                 case 6: // Register pet as public offer
-
+                    RegisterPetAsPublicOffer();
                     break;
                 case 7: // Delete public offer
-
+                    DeletePublicOffer();
                     break;
             }
         }
 
-        
+		private void DeletePublicOffer()
+		{
 
-        private void RegisterPetComponent()
+		}
+
+		private void RegisterPetAsPublicOffer()
+		{
+			throw new NotImplementedException();
+		}
+
+		private void ViewAvailablePublicOffers()
+		{
+			throw new NotImplementedException();
+		}
+
+		private void RegisterPetComponent()
         {
             PrintFunctions.PrintPetRegistrationMenu();
             var name = Console.ReadLine();

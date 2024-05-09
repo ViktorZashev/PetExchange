@@ -96,7 +96,8 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsResolved = table.Column<bool>(type: "bit", nullable: false)
+                    TownId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,8 +116,8 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PublicOfferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsAccepted = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,11 +128,6 @@ namespace DataLayer.Migrations
                         principalTable: "PublicOffers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Requests_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -148,11 +144,6 @@ namespace DataLayer.Migrations
                 name: "IX_Requests_PublicOfferId",
                 table: "Requests",
                 column: "PublicOfferId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Requests_UserId",
-                table: "Requests",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Towns_CountryId",

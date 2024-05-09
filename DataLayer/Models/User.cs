@@ -13,19 +13,17 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("id")]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		[JsonPropertyName("town")]
-		public Town Town { get; set; }
-
 		[JsonPropertyName("town_id")]
 		public Guid TownId { get; set; }
+
+		[ForeignKey("TownId")]
+		[JsonPropertyName("town")]
+		public Town Town { get; set; }
 
 		[JsonPropertyName("pets")]
 		public List<Pet> Pets { get; set; }
 
-        [JsonPropertyName("requests")]
-        public List<UserRequests> Requests { get; set; }
-
-        [JsonPropertyName("name")]
+		[JsonPropertyName("name")]
 		public string Name { get; set; } = string.Empty;
 
 		[JsonPropertyName("photo_path")] // Only for Web View
@@ -45,17 +43,14 @@ namespace BusinessLayer.Models
 
 		private User() {
 			Pets = new List<Pet>();
-			Requests = new List<UserRequests>();
-		
 		}
 
-		public User(Town town, List<Pet> pets, List<UserRequests> requests, string name, string photo_path, bool isAdmin, string contactInfo, string username, string password)
+		public User(Town town, List<Pet> pets, string name, string photo_path, bool isAdmin, string contactInfo, string username, string password)
 		{
 			Id = Guid.NewGuid();
 			Town = town;
 			TownId = town.Id;
 			Pets = pets;
-			Requests = requests;
 			Name = name;
 			PhotoPath = photo_path;
 			IsAdmin = isAdmin;

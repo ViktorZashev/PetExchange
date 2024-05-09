@@ -15,23 +15,28 @@ namespace BusinessLayer.Models
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-        [JsonPropertyName("pet")]
-        public Pet Pet { get; set; }
-
 		[JsonPropertyName("pet_id")]
 		public Guid PetId { get; set; }
 
-		[JsonPropertyName("is_resolved")]
-		public bool IsResolved { get; set; } = false;
+		[ForeignKey("PetId")]
+		[JsonPropertyName("pet")]
+		public Pet Pet { get; set; }
+
+		[JsonPropertyName("town_id")]
+		public Guid TownId { get; set; }
+
+		[JsonPropertyName("user_id")]
+		public Guid UserId { get; set; }
 
 		private PublicOffer() { }
 
-		public PublicOffer(Pet pet, bool isResolved)
+		public PublicOffer(Pet pet)
 		{
 			Id = Guid.NewGuid();
 			Pet = pet;
 			PetId = pet.Id;
-			IsResolved = isResolved;
+			TownId = Pet.User.TownId;
+			UserId = pet.UserId;
 		}
 
 	}

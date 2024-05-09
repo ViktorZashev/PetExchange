@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(PetExchangeDbContext))]
-    [Migration("20240509054242_NewUser")]
-    partial class NewUser
+    [Migration("20240509095558_root")]
+    partial class root
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,18 +97,25 @@ namespace DataLayer.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
-                    b.Property<bool>("IsResolved")
-                        .HasColumnType("bit")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_resolved");
-
                     b.Property<Guid>("PetId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "pet_id");
+
+                    b.Property<Guid>("TownId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "town_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "user_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PetId");
 
                     b.ToTable("PublicOffers");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "public_offer");
                 });
 
             modelBuilder.Entity("BusinessLayer.Models.Town", b =>
@@ -119,7 +126,8 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "country_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -167,7 +175,8 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "photo_path");
 
                     b.Property<Guid>("TownId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "town_id");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -195,20 +204,18 @@ namespace DataLayer.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "is_accepted");
 
                     b.Property<Guid>("PublicOfferId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "public_offer_id");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "user_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PublicOfferId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Requests");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "requests");
                 });
 
             modelBuilder.Entity("BusinessLayer.Models.Pet", b =>
@@ -263,18 +270,12 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessLayer.Models.User", null)
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("PublicOffer");
                 });
 
             modelBuilder.Entity("BusinessLayer.Models.User", b =>
                 {
                     b.Navigation("Pets");
-
-                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

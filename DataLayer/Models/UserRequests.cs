@@ -19,16 +19,21 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("public_offer_id")]
 		public Guid PublicOfferId { get; set; }
 
+		[JsonPropertyName("user_id")]
+		[ForeignKey("User")]
+		public Guid UserId { get; set; }
+
 		[JsonPropertyName("is_accepted")]
 		public bool IsAccepted { get; set; } = false;
 
 		private UserRequests() { }
 
-		public UserRequests(PublicOffer publicOffer, bool isAccepted)
+		public UserRequests(PublicOffer publicOffer, User user, bool isAccepted)
 		{
 			Id = Guid.NewGuid();
 			PublicOffer = publicOffer;
 			PublicOfferId = publicOffer.Id;
+			UserId = user.Id;
 			IsAccepted = isAccepted;
 		}
 	}

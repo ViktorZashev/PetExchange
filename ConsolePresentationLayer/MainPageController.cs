@@ -113,7 +113,7 @@ namespace ConsolePresentationLayer
                 town = new Town(newCountry, townName);
             }
             var contactInfo = Console.ReadLine();
-            var newUser = new User(town, new List<Pet>(), new List<UserRequests>(), name, "photoPath", false, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
+            var newUser = new User(town, new List<Pet>(), name, "photoPath", false, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
             UserService.Create(newUser);
             PrintFunctions.PrintSuccessMessage();
         }
