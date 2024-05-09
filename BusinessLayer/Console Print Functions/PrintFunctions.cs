@@ -106,7 +106,7 @@ namespace BusinessLayer
         public static void PrintPetRegistrationMenu()
         {
             Console.WriteLine("REGISTER PET:");
-            Console.WriteLine("Enter: [Name]]");
+            Console.WriteLine("Enter: [Name]");
             Console.WriteLine("Enter: [Animal Type]");
             Console.WriteLine("Enter: [Age]");
             Console.WriteLine("Enter: [Comes with cage](Y Or N)");
@@ -135,7 +135,7 @@ namespace BusinessLayer
         public static void UpdatePetMessageMenu()
         {
             Console.WriteLine("UPDATE PET BY NAME:");
-            Console.WriteLine("Enter: [Name]]");
+            Console.WriteLine("Enter: [Name]");
             Console.WriteLine("Enter: [Animal Type]");
             Console.WriteLine("Enter: [Age]");
             Console.WriteLine("Enter: [Comes with cage](Y Or N)");

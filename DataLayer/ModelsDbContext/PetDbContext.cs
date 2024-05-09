@@ -68,16 +68,14 @@ namespace DataLayer
             try
             {
 				List<Pet> foundPets = _dbcontext.Pets.ToList();
-                
+              
 				if (useNavigationalProperties)
 				{
-					foreach (var pet in foundPets)
+					for (int i = 0; i < foundPets.Count; i++)
 					{
-						Guid userId = pet.UserId;
-						pet.User = _dbcontext.Users.Where(x => x.Id == userId).FirstOrDefault();
+						foundPets[i] = Read(foundPets[i].Id);
 					}
 				}
-
 
 				return foundPets;
 			}

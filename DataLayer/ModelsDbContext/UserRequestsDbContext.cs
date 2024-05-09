@@ -65,12 +65,12 @@ namespace DataLayer
 
 				if (useNavigationalProperties)
 				{
-					foreach (var request in foundRequests)
+					for (int i = 0; i < foundRequests.Count; i++)
 					{
-						Guid publicOfferId = request.PublicOfferId;
-						request.PublicOffer = _dbcontext.PublicOffers.Where(x => x.Id == publicOfferId).FirstOrDefault();
+						foundRequests[i] = Read(foundRequests[i].Id);
 					}
 				}
+
 				return foundRequests;
 			}
 			catch (Exception)

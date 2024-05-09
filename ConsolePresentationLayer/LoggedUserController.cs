@@ -56,7 +56,7 @@ namespace ConsolePresentationLayer
                     UpdatePetComponent();
                     break;
                 case 5: // View all public offers in town
-
+                    
                     break;
                 case 6: // Register pet as public offer
 

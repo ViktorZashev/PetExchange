@@ -77,10 +77,9 @@ namespace DataLayer
 
 				if (useNavigationalProperties)
 				{
-					foreach (var town in foundTowns)
+					for (int i = 0; i < foundTowns.Count; i++)
 					{
-						Guid CountryId = town.CountryId;
-						town.Country = _dbcontext.Countries.Where(x => x.Id == CountryId).FirstOrDefault();
+						foundTowns[i] = Read(foundTowns[i].Id);
 					}
 				}
 				return foundTowns;

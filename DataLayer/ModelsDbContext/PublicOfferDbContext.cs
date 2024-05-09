@@ -66,10 +66,9 @@ namespace DataLayer
 
 				if (useNavigationalProperties)
 				{
-					foreach (var offer in foundOffers)
+					for (int i = 0; i < foundOffers.Count; i++)
 					{
-						Guid petId = offer.PetId;
-						offer.Pet = _dbcontext.Pets.Where(x => x.Id == petId).FirstOrDefault();
+						foundOffers[i] = Read(foundOffers[i].Id);
 					}
 				}
 				return foundOffers;
