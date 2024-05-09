@@ -57,5 +57,36 @@ namespace BusinessLayer.Functions
                 Delete(Request.Id);
             }
         }
+        public static List<UserRequests> ReadAll(User user)
+        {
+            try
+            {
+                return ReadAll().Where(x => x.UserId == user.Id).ToList();
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+        public static void DeleteRequest(User user, string petName)
+        {
+            var requests = ReadAll(user);
+            var deletedRequest = requests.Where(x => PetService.Read(x.PublicOffer.PetId).Name == petName).FirstOrDefault();
+            if (deletedRequest == null)
+            {
+                throw new Exception("No such request exists for this user!");
+            }
+            Delete(deletedRequest.Id);
+        }
+        public static void CreateRequest(User user, string petName)
+        {
+            var offer = PublicOfferService.ReadAll().Where(x => x.TownId == user.TownId).Where(x => x.Pet.Name == petName).FirstOrDefault();
+            if (offer == null)
+            {
+                throw new Exception("No such public offer exists for petName");
+            }
+            var request = new UserRequests(offer, user, false);
+            Create(request);
+        }
     }
 }

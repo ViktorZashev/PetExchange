@@ -65,8 +65,61 @@ namespace ConsolePresentationLayer
                 case 7: // Delete public offer
                     DeletePublicOffer();
                     break;
-            }
+				case 8: // Show all your requests
+					ShowAllRequests();
+					break;
+				case 9: // Create a request
+					CreateRequest();
+					break;
+				case 10: // Delete a request
+					DeleteRequest();
+					break;
+			}
         }
+
+		private void DeleteRequest()
+		{
+			PrintFunctions.PrintDeleteRequestMesage();
+			while (true)
+			{
+				try
+				{
+					var petName = Console.ReadLine();
+					UserRequestsService.DeleteRequest(LoggedUser, petName);
+					PrintFunctions.PrintSuccessMessage();
+					break;
+				}
+				catch
+				{
+					PrintFunctions.PrintPetNameNotFoundASRequestMessage();
+				}
+			}
+		}
+
+		private void CreateRequest()
+		{
+			PrintFunctions.PrintRequestPetMessage();
+			while (true)
+			{
+				try
+				{
+					var petName = Console.ReadLine();
+					UserRequestsService.CreateRequest(LoggedUser, petName);
+					PrintFunctions.PrintSuccessMessage();
+					break;
+				}
+				catch
+				{
+					PrintFunctions.PrintPetNameNotAsPublicOfferMessage();
+				}
+			}
+		}
+
+		private void ShowAllRequests()
+		{
+            var allRequests = UserRequestsService.ReadAll(LoggedUser);
+            PrintFunctions.PrintRequests(allRequests);
+		}
 
 		private void DeletePublicOffer()
 		{

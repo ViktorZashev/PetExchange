@@ -1,7 +1,9 @@
-﻿using BusinessLayer.Models;
+﻿using BusinessLayer.Functions;
+using BusinessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,6 +77,9 @@ namespace BusinessLayer
             Console.WriteLine("5 ---> See all public offers in your area");
             Console.WriteLine("6 ---> Register pet as public offer");
             Console.WriteLine("7 ---> Delete public offer");
+			Console.WriteLine("8 ---> Show all your requests");
+			Console.WriteLine("9 ---> Create a request for a public offer pet");
+            Console.WriteLine("10 ---> Delete a request for a public offer pet");
             Console.WriteLine("0 ---> Back to main menu");
             Console.WriteLine("");
             Console.Write("Enter a command: ");
@@ -201,6 +206,48 @@ namespace BusinessLayer
 				}
 			}
 		}
+
+		public static void PrintDeleteRequestMesage()
+		{
+            Console.WriteLine("Enter pet name linked to the request you wish to delete!");
+            Console.Write("Pet Name: ");
+		}
+
+		public static void PrintPetNameNotFoundASRequestMessage()
+		{
+            Console.WriteLine("No such pet name found in your existing requests. Try again!");
+		}
+
+		public static void PrintRequestPetMessage()
+		{
+            Console.WriteLine("Enter the pet's name you wish to requst!");
+			Console.Write("Pet Name: ");
+		}
+
+		public static void PrintPetNameNotAsPublicOfferMessage()
+		{
+			Console.WriteLine("No such pet name found in public offers. Try again!");
+			Console.Write("Pet Name: ");
+		}
+
+        public static void PrintRequests(List<UserRequests> requests)
+        {
+            if (requests.Count == 0) Console.WriteLine("You have no requests registered in system!");
+            else
+            {
+                foreach (var request in requests)
+                {
+                    Console.WriteLine();
+                    var pet = PetService.Read(request.PublicOffer.PetId);
+                    Console.WriteLine("Pet Name: " + pet.Name);
+                    Console.Write("Accepted: ");
+                    if (request.IsAccepted == true) Console.WriteLine("Yes");
+                    else Console.WriteLine("No");
+                    Console.WriteLine();
+                }
+            }
+        }
+
 		#endregion
 	}
 }
