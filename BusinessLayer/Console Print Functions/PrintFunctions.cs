@@ -147,12 +147,27 @@ namespace BusinessLayer
         {
             Console.Write("Enter pet name to be deleted: ");
         }
-        public static void PrintPetNameNotFoundMessage()
+        public static void PrintDeletePetPublicOfferMessage()
+        {
+			Console.Write("Enter to pet name to be deleted as Public Offer: ");
+		}
+		public static void PrintRegisterPetMessage()
+		{
+			Console.Write("Enter pet name to be registered: ");
+		}
+		public static void PrintRegisterPetAsPublicOfferMessage()
+		{
+			Console.Write("Enter pet name to be registered as Public Offer: ");
+		}
+		public static void PrintPetNameNotFoundMessage()
         {
             Console.WriteLine("No such pet registered in your profile! Try again.");
-            PrintDeletePetMessage();
         }
-        public static void UpdatePetMessageMenu()
+		public static void PrintPetNameAlreadyIsPublicOrDoesntExist()
+		{
+			Console.WriteLine("No such pet registered in your profile OR This pet already is logged as Public Offer! Try again.");
+		}
+		public static void UpdatePetMessageMenu()
         {
             Console.WriteLine("UPDATE PET BY NAME:");
             Console.WriteLine("Enter: [Name]");

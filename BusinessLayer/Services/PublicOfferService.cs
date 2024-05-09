@@ -2,6 +2,7 @@
 using DataLayer;
 using DataLayer.ModelsDbContext;
 using DataLayer.ProjectDbContext;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,17 @@ namespace BusinessLayer.Functions
             // validation
             _PublicOfferContext.Delete(id);
         }
+        public static void DeleteByPetName(string name, User LoggedUser)
+        {
+            var offers = ReadAll(true);
+            if (!offers.Exists(x => x.Pet.Name == name && x.Pet.UserId == LoggedUser.Id))
+            {
+                throw new Exception("Name doesn't match any of users pets!");
+            }
+            var foundOffer = offers.Where(x => x.Pet.Name == name && x.Pet.UserId == LoggedUser.Id).FirstOrDefault();
+            Delete(foundOffer.Id);
+
+		}
         public static void DeleteAll()
         {
             var Offers = ReadAll();
@@ -57,5 +69,20 @@ namespace BusinessLayer.Functions
                 Delete(Offer.Id);
             }
         }
-    }
+
+		public static void RegisterPet(string petName, User loggedUser)
+		{
+            var offers = ReadAll();
+            if (offers.Exists(x => x.Pet.Name == petName && x.Pet.UserId == loggedUser.Id))
+            {
+                throw new Exception("This pet is already registered!");
+            }
+            var pet = PetService.ReadAll().Where(x => x.UserId == loggedUser.Id && x.Name == petName).FirstOrDefault();
+            if (pet == null) {
+                throw new Exception("This pet doesn't exist in user's database!");
+            }
+            var newOffer = new PublicOffer(pet);
+            Create(newOffer);
+		}
+	}
 }

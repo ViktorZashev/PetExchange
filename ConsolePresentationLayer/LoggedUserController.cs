@@ -2,6 +2,7 @@
 using BusinessLayer.Database_Functions;
 using BusinessLayer.Functions;
 using BusinessLayer.Models;
+using DataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,17 +70,47 @@ namespace ConsolePresentationLayer
 
 		private void DeletePublicOffer()
 		{
-
+			PrintFunctions.PrintDeletePetPublicOfferMessage();
+			while (true)
+			{
+				try
+				{
+					var petName = Console.ReadLine();
+					PublicOfferService.DeleteByPetName(petName, LoggedUser);
+					PrintFunctions.PrintSuccessMessage();
+					break;
+				}
+				catch
+				{
+					PrintFunctions.PrintPetNameNotFoundMessage();
+				}
+			}
 		}
 
 		private void RegisterPetAsPublicOffer()
 		{
-			throw new NotImplementedException();
+			PrintFunctions.PrintRegisterPetAsPublicOfferMessage();
+			while (true)
+			{
+				try
+				{
+					var petName = Console.ReadLine();
+					PublicOfferService.RegisterPet(petName, LoggedUser);
+					PrintFunctions.PrintSuccessMessage();
+					break;
+				}
+				catch
+				{
+					PrintFunctions.PrintPetNameAlreadyIsPublicOrDoesntExist();
+				}
+			}
 		}
 
 		private void ViewAvailablePublicOffers()
 		{
-			throw new NotImplementedException();
+            var town = TownService.Read(LoggedUser.TownId);
+            var availableOffers = PublicOfferService.ReadAll().Where(x => x.TownId == town.Id).ToList();
+            PrintFunctions.DisplayOffers(availableOffers, town);
 		}
 
 		private void RegisterPetComponent()
