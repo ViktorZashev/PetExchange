@@ -16,7 +16,8 @@ namespace ConsolePresentationLayer
         public MainPageController() 
         { 
             PrintFunctions.PrintTitle();
-            PrintFunctions.PrintInitialMenu();
+			PrintFunctions.PrintArt(ASCIIArt.Dog3);
+			PrintFunctions.PrintInitialMenu();
             while (true)
             {
                 int command;

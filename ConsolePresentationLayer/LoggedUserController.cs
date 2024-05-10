@@ -18,7 +18,8 @@ namespace ConsolePresentationLayer
         public LoggedUserController(User user) 
         {
             LoggedUser = user;
-            PrintFunctions.PrintLoggedUserMenu();
+			PrintFunctions.PrintArt(ASCIIArt.Fish1);
+			PrintFunctions.PrintLoggedUserMenu();
             while (true)
             {
                 int command;

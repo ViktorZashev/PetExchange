@@ -2,6 +2,7 @@
 using BusinessLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,7 +12,8 @@ namespace BusinessLayer
 {
     public static class PrintFunctions
     {
-        public static void PrintInitialMenu()
+		#region Log in User Menu 
+		public static void PrintInitialMenu()
         {
             Console.WriteLine("");
             Console.WriteLine("Choose a command:");
@@ -53,8 +55,11 @@ namespace BusinessLayer
         }
         public static void PrintTitle()
         {
-            Console.WriteLine(ASCIIArt.Title);
-        }
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine(ASCIIArt.Title);
+			Console.ForegroundColor = ConsoleColor.White;
+		}
+	
         public static void PrintInvalidCommandError()
         {
             Console.WriteLine("Invalid command! Try again.");
@@ -62,11 +67,14 @@ namespace BusinessLayer
         }
         public static void PrintSuccessMessage()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Operation completed successfully!");
-        }
+			Console.ForegroundColor = ConsoleColor.White;
+		}
+		#endregion
 
-        #region Logged User Functions
-        public static void PrintLoggedUserMenu()
+		#region Logged User Functions
+		public static void PrintLoggedUserMenu()
         {
             Console.WriteLine("");
             Console.WriteLine("Choose a command:");
@@ -87,6 +95,7 @@ namespace BusinessLayer
 
         public static void PrintPets(List<Pet> pets)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             if (pets == null ||  pets.Count == 0)
             {
                 Console.WriteLine("You have no pets saved in database");
@@ -106,9 +115,11 @@ namespace BusinessLayer
 					Console.WriteLine("");
 				}
             }
-        }
+            Console.ForegroundColor = ConsoleColor.White; 
+		}
 		public static void PrintPet(Pet pet)
 		{
+			Console.ForegroundColor = ConsoleColor.Green;
 			if (pet == null)
 			{
                 throw new Exception("Pet is null!");
@@ -126,6 +137,7 @@ namespace BusinessLayer
 				Console.WriteLine("");
 				
 			}
+			Console.ForegroundColor = ConsoleColor.White;
 		}
 
 		public static void PrintPetRegistrationMenu()
@@ -189,7 +201,8 @@ namespace BusinessLayer
 
 		public static void DisplayOffers(List<PublicOffer> offers, Town town)
 		{
-            Console.WriteLine("Town: " + town.Name);
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine("Town: " + town.Name);
 			if (offers == null || offers.Count == 0)
 			{
 				Console.WriteLine("There are no public offers in your town!");
@@ -203,8 +216,10 @@ namespace BusinessLayer
                     Console.WriteLine("Pet information:");
                     PrintPet(offerPet);
                     Console.WriteLine();
+					Console.ForegroundColor = ConsoleColor.Green;
 				}
 			}
+			Console.ForegroundColor = ConsoleColor.White;
 		}
 
 		public static void PrintDeleteRequestMesage()
@@ -232,7 +247,8 @@ namespace BusinessLayer
 
         public static void PrintRequests(List<UserRequests> requests)
         {
-            if (requests.Count == 0) Console.WriteLine("You have no requests registered in system!");
+			Console.ForegroundColor = ConsoleColor.Green;
+			if (requests.Count == 0) Console.WriteLine("You have no requests registered in system!");
             else
             {
                 foreach (var request in requests)
@@ -246,8 +262,14 @@ namespace BusinessLayer
                     Console.WriteLine();
                 }
             }
-        }
+			Console.ForegroundColor = ConsoleColor.White;
+		}
 
-		#endregion
+        #endregion
+
+        public static void PrintArt(string art)
+        {
+            Console.WriteLine(art);
+        }
 	}
 }
