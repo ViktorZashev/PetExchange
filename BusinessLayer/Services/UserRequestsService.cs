@@ -81,6 +81,11 @@ namespace BusinessLayer.Functions
         public static void CreateRequest(User user, string petName)
         {
             var offer = PublicOfferService.ReadAll().Where(x => x.TownId == user.TownId).Where(x => x.Pet.Name == petName).FirstOrDefault();
+            if(PetService.ReturnAllPets(user).Any(x => x.Name == petName) == true)
+            {
+                PrintFunctions.PrintCantRequestOwnPetMessage();
+                throw new Exception("You can't create a request for a pet you own!");
+            }
             if (offer == null)
             {
                 throw new Exception("No such public offer exists for petName");

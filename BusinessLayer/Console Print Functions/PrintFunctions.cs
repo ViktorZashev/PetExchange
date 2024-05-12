@@ -249,7 +249,7 @@ namespace BusinessLayer
 
 		public static void PrintPetNameNotAsPublicOfferMessage()
 		{
-			Console.WriteLine("No such pet name found in public offers. Try again!");
+			Console.WriteLine("Error. Try again!");
 			Console.Write("Pet Name: ");
 		}
 
@@ -279,5 +279,10 @@ namespace BusinessLayer
         {
             Console.WriteLine(art);
         }
-	}
+
+        public static void PrintCantRequestOwnPetMessage()
+        {
+            Console.WriteLine("You can't create a request for your own pet! Try again.!");
+        }
+    }
 }
