@@ -73,22 +73,15 @@ namespace DataLayer.ModelsDbContext
 
         public void Update(Country entity, bool useNavigationalProperties = false)
         {
-            try
-            {
-                var foundEntity = Read(entity.Id);
+            var foundEntity = Read(entity.Id);
 
-                if (foundEntity == null)
-                {
-                    throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-                }
-
-                _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch (Exception ex)
+            if (foundEntity == null)
             {
-                throw ex;
+                throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
             }
+
+            _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
+            _dbcontext.SaveChanges();
         }
 
         public void Delete(Guid id)

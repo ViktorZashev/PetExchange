@@ -35,7 +35,7 @@ namespace DataLayer.ProjectDbContext
         {
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<PublicOffer> PublicOffers { get; set; }
         public DbSet<Town> Towns { get; set; }
