@@ -86,6 +86,7 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
+                    if (petName == "0") break;
 					UserRequestsService.DeleteRequest(LoggedUser, petName);
 					PrintFunctions.PrintSuccessMessage();
 					break;
@@ -105,7 +106,8 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
-					UserRequestsService.CreateRequest(LoggedUser, petName);
+                    if (petName == "0") break;
+                    UserRequestsService.CreateRequest(LoggedUser, petName);
 					PrintFunctions.PrintSuccessMessage();
 					break;
 				}
@@ -130,7 +132,8 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
-					PublicOfferService.DeleteByPetName(petName, LoggedUser);
+                    if (petName == "0") break;
+                    PublicOfferService.DeleteByPetName(petName, LoggedUser);
 					PrintFunctions.PrintSuccessMessage();
 					break;
 				}
@@ -149,7 +152,8 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
-					PublicOfferService.RegisterPet(petName, LoggedUser);
+                    if (petName == "0") break;
+                    PublicOfferService.RegisterPet(petName, LoggedUser);
 					PrintFunctions.PrintSuccessMessage();
 					break;
 				}
@@ -216,6 +220,7 @@ namespace ConsolePresentationLayer
                 try
                 {
                     var petName = Console.ReadLine();
+                    if (petName == "0") break;
                     PetService.Delete(petName, LoggedUser);
                     PrintFunctions.PrintSuccessMessage();
                     break;

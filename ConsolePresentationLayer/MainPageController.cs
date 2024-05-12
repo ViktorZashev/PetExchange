@@ -56,6 +56,7 @@ namespace ConsolePresentationLayer
                     break;
                 case 4:
                     var loggedUser = LoginUserFunction();
+                    if (loggedUser == null) break;
                     var loggedUserController = new LoggedUserController(loggedUser);
                     break;
             }
@@ -73,6 +74,7 @@ namespace ConsolePresentationLayer
                 if(code == 0) { 
                     PrintFunctions.PrintIncorrectUsernameMessage();
                     input = Console.ReadLine().Split();
+                    if (input[0] == "0") break;
                     username = input[0];
                     password = input[1];
                 }
@@ -80,6 +82,7 @@ namespace ConsolePresentationLayer
                 {
                     PrintFunctions.PrintIncorrectPasswordMessage();
                     password = Console.ReadLine();
+                    if (password == "0") break;
                 }
                 if(code == 2)
                 {
@@ -88,6 +91,7 @@ namespace ConsolePresentationLayer
                     return loggedUser;
                 }
             }
+            return null;
         }
         private void SignupUserFunction()
         {

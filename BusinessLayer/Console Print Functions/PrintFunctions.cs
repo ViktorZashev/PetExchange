@@ -29,6 +29,7 @@ namespace BusinessLayer
         public static void PrintLoginMenu()
         {
             Console.WriteLine("Enter: [username] [password]");
+            Console.WriteLine("Enter 0 to to back!");
         }
         public static void PrintIncorrectUsernameMessage()
         {
