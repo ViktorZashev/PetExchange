@@ -10,7 +10,6 @@ using System.Xml;
 
 namespace DataLayer.ProjectDbContext
 {
-
     public class PetExchangeDbContext : DbContext
     {
 		// Laptop string : VIKTORS-AWESOME\SQLEXPRESS
@@ -35,7 +34,7 @@ namespace DataLayer.ProjectDbContext
         {
             base.OnModelCreating(modelBuilder);
         }
-        public virtual DbSet<Country> Countries { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<PublicOffer> PublicOffers { get; set; }
         public DbSet<Town> Towns { get; set; }

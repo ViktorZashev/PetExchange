@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Models;
+using DataLayer;
 using DataLayer.ModelsDbContext;
 using DataLayer.ProjectDbContext;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +12,15 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetExchangeTests
+namespace PetExchangeTests.DataLayer
 {
-    public partial class DataLayerTests
+    public class CountryDbContextTests
     {
         public static CountryDbContext countryDbContext;
         public static Mock<PetExchangeDbContext> mockDbContext;
 
         [SetUp]
-        public void SetupCountryDbContext()
+        public void Setup()
         {
             mockDbContext = new Mock<PetExchangeDbContext>();
             countryDbContext = new CountryDbContext(mockDbContext.Object);
@@ -135,7 +136,7 @@ namespace PetExchangeTests
             var countryId = Guid.NewGuid();
             var ExistingCountry = new Country(countryId, "ExistingCountry");
             mockDbContext.Setup(db => db.Countries.Find(countryId)).Returns((Country)null);
-            var countries = new List<Country> { new Country("Country1"), ExistingCountry,new Country("Country2") };
+            var countries = new List<Country> { new Country("Country1"), ExistingCountry, new Country("Country2") };
             var mockSet = new Mock<DbSet<Country>>();
 
             // Set up behavior for the mock DbSet to return the collection of countries
@@ -143,7 +144,7 @@ namespace PetExchangeTests
             mockSet.As<IQueryable<Country>>().Setup(m => m.Expression).Returns(countries.AsQueryable().Expression);
             mockSet.As<IQueryable<Country>>().Setup(m => m.ElementType).Returns(countries.AsQueryable().ElementType);
             mockSet.As<IQueryable<Country>>().Setup(m => m.GetEnumerator()).Returns(countries.AsQueryable().GetEnumerator());
-            
+
             // Set up behavior for the mock DbContext's Countries property to return the mock DbSet
             mockDbContext.Setup(db => db.Countries).Returns(mockSet.Object);
 
@@ -184,7 +185,7 @@ namespace PetExchangeTests
             // Arrange
             var expectedName = "TestCountry";
             var expectedCountry = new Country(expectedName);
-            var countries = new List<Country> { new Country("Country1"), expectedCountry,new Country("Country2") };
+            var countries = new List<Country> { new Country("Country1"), expectedCountry, new Country("Country2") };
             var mockSet = new Mock<DbSet<Country>>();
 
             // Create a mock DbSet with the list of countries and setup the behavior
