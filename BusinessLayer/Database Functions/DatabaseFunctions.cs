@@ -14,6 +14,7 @@ namespace BusinessLayer.Database_Functions
 {
     public static class DatabaseFunctions
     {
+        public static string adminPassword = "admin";
         public static void DeleteAllEntries()
         {
             TownService.DeleteAll();
@@ -51,12 +52,12 @@ namespace BusinessLayer.Database_Functions
 
             var users = new List<User>
                 {
-                    new User(towns[0],new List<Pet>(),"John Doe","photoPath", true, "john@example.com", "john", "password"),
+                    new User(towns[0],new List<Pet>(),"John Doe","photoPath", false, "john@example.com", "john", "password"),
                     new User(towns[1],new List<Pet>(), "Alice Smith", "photoPath", false, "alice@example.com", "alice", "password"),
-                    new User(towns[2],new List<Pet>(), "Bob Johnson", "photoPath", true, "bob@example.com", "bob", "password"),
+                    new User(towns[2],new List<Pet>(), "Bob Johnson", "photoPath", false, "bob@example.com", "bob", "password"),
                     new User(towns[3],new List<Pet>(), "Emily Brown", "photoPath", false, "emily@example.com", "emily", "password"),
-                    new User(towns[4],new List<Pet>(), "Michael Wilson", "photoPath", true, "michael@example.com", "michael", "password"),
-                    new User(towns[5],new List<Pet>(), "Viktor Zashev", "photoPath", true, "vbzashev@gmail.com", "vzashev", "TropchoEnjoyer")
+                    new User(towns[4],new List<Pet>(), "Michael Wilson", "photoPath", false, "michael@example.com", "michael", "password"),
+                    new User(towns[5],new List<Pet>(), "Viktor Zashev", "photoPath", false, "vbzashev@gmail.com", "vzashev", "TropchoEnjoyer")
                 };
 
             UserService.Create(users);

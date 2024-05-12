@@ -17,15 +17,12 @@ namespace BusinessLayer
         {
             Console.WriteLine("");
             Console.WriteLine("Choose a command:");
-            Console.WriteLine("1 ---> Delete all entries in database");
-            Console.WriteLine("2 ---> Seed database with example values");
-            Console.WriteLine("3 ---> Sign up");
-            Console.WriteLine("4 ---> Log in");
+            Console.WriteLine("1 ---> Sign up");
+            Console.WriteLine("2 ---> Log in");
             Console.WriteLine("0 ---> Exit program");
             Console.WriteLine("");
             Console.Write("Enter a command: ");
         }
-
         public static void PrintLoginMenu()
         {
             Console.WriteLine("Enter: [username] [password]");
@@ -53,6 +50,13 @@ namespace BusinessLayer
             Console.WriteLine("Enter: [Name]");
             Console.WriteLine("Enter: [Town Name]");
             Console.WriteLine("Enter: [Contact Information]");
+            Console.WriteLine("Enter: [Admin password] - If you wish to be an admin, enter password. Otherwise leave blank!");
+        }
+
+        public static void PrintWrongAdminPassMessage()
+        {
+            Console.WriteLine("Wrong admin password! Try again!(Leave blank if you do not want to be admin)");
+            Console.Write("Admin Password: ");
         }
         public static void PrintTitle()
         {
@@ -75,7 +79,7 @@ namespace BusinessLayer
 		#endregion
 
 		#region Logged User Functions
-		public static void PrintLoggedUserMenu()
+		public static void PrintLoggedUserMenuNonAdmin()
         {
             Console.WriteLine("");
             Console.WriteLine("Choose a command:");
@@ -93,7 +97,27 @@ namespace BusinessLayer
             Console.WriteLine("");
             Console.Write("Enter a command: ");
         }
-
+        public static void PrintLoggedUserMenuAdmin()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Choose a command:");
+            Console.WriteLine("1 ---> Show pets");
+            Console.WriteLine("2 ---> Register pet");
+            Console.WriteLine("3 ---> Delete pet");
+            Console.WriteLine("4 ---> Update pet");
+            Console.WriteLine("5 ---> See all public offers in your area");
+            Console.WriteLine("6 ---> Register pet as public offer");
+            Console.WriteLine("7 ---> Delete public offer");
+            Console.WriteLine("8 ---> Show all your requests");
+            Console.WriteLine("9 ---> Create a request for a public offer pet");
+            Console.WriteLine("10 ---> Delete a request for a public offer pet");
+            Console.WriteLine("ADMIN FUNCTIONS:");
+            Console.WriteLine("11 ---> Delete all entries in database(dangerous)");
+            Console.WriteLine("12 ---> Seed database with example values");
+            Console.WriteLine("0 ---> Back to main menu");
+            Console.WriteLine("");
+            Console.Write("Enter a command: ");
+        }
         public static void PrintPets(List<Pet> pets)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -284,5 +308,6 @@ namespace BusinessLayer
         {
             Console.WriteLine("You can't create a request for your own pet! Try again.!");
         }
+
     }
 }
