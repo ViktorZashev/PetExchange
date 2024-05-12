@@ -65,6 +65,7 @@ namespace ConsolePresentationLayer
         {
             PrintFunctions.PrintLoginMenu();
             var input = Console.ReadLine().Split();
+            if (input[0] == "0") return null;
             string username = input[0];
             string password = input[1];
             int code;

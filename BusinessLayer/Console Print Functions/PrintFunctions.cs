@@ -163,20 +163,25 @@ namespace BusinessLayer
         }
         public static void PrintDeletePetMessage()
         {
-            Console.Write("Enter pet name to be deleted: ");
+            Console.WriteLine("Enter pet name to be deleted: ");
+            Console.WriteLine("Enter 0 to go back.");
+
         }
         public static void PrintDeletePetPublicOfferMessage()
         {
-			Console.Write("Enter to pet name to be deleted as Public Offer: ");
-		}
+			Console.WriteLine("Enter to pet name to be deleted as Public Offer: ");
+            Console.WriteLine("Enter 0 to go back.");
+        }
 		public static void PrintRegisterPetMessage()
 		{
-			Console.Write("Enter pet name to be registered: ");
-		}
+			Console.WriteLine("Enter pet name to be registered: ");
+            Console.WriteLine("Enter 0 to go back.");
+        }
 		public static void PrintRegisterPetAsPublicOfferMessage()
 		{
-			Console.Write("Enter pet name to be registered as Public Offer: ");
-		}
+			Console.WriteLine("Enter pet name to be registered as Public Offer: ");
+            Console.WriteLine("Enter 0 to go back.");
+        }
 		public static void PrintPetNameNotFoundMessage()
         {
             Console.WriteLine("No such pet registered in your profile! Try again.");
@@ -226,6 +231,7 @@ namespace BusinessLayer
 		public static void PrintDeleteRequestMesage()
 		{
             Console.WriteLine("Enter pet name linked to the request you wish to delete!");
+            Console.WriteLine("Enter 0 to go back.");
             Console.Write("Pet Name: ");
 		}
 
@@ -236,8 +242,9 @@ namespace BusinessLayer
 
 		public static void PrintRequestPetMessage()
 		{
-            Console.WriteLine("Enter the pet's name you wish to requst!");
-			Console.Write("Pet Name: ");
+            Console.WriteLine("Enter the pet's name you wish to request!");
+            Console.WriteLine("Enter 0 to go back.");
+            Console.Write("Pet Name: ");
 		}
 
 		public static void PrintPetNameNotAsPublicOfferMessage()
