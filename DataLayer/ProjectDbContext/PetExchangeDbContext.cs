@@ -28,7 +28,12 @@ namespace DataLayer.ProjectDbContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString);
+            if (!optionsBuilder.IsConfigured)
+            {
+				optionsBuilder.UseSqlServer(connectionString);
+			}
+            optionsBuilder.UseInMemory();
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
