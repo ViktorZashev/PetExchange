@@ -41,7 +41,7 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("password")]
 		public string Password { get; set; } = string.Empty;
 
-		private User() {
+		public User() {
 			Pets = new List<Pet>();
 		}
 
@@ -58,5 +58,16 @@ namespace BusinessLayer.Models
 			Username = username;
 			Password = password;
 		}
-	}
+
+        public User(Guid guid, string name)
+        {
+			Id = guid;
+			Name = name;
+        }
+
+        public User(string name)
+        {
+			Name = name;
+        }
+    }
 }

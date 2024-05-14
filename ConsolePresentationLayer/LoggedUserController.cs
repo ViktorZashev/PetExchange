@@ -19,7 +19,8 @@ namespace ConsolePresentationLayer
         {
             LoggedUser = user;
 			PrintFunctions.PrintArt(ASCIIArt.Fish1);
-			PrintFunctions.PrintLoggedUserMenu();
+            if (user.IsAdmin) PrintFunctions.PrintLoggedUserMenuAdmin();
+            else PrintFunctions.PrintLoggedUserMenuNonAdmin();
             while (true)
             {
                 int command;
@@ -28,6 +29,20 @@ namespace ConsolePresentationLayer
                     try
                     {
                         command = int.Parse(Console.ReadLine());
+                        if(LoggedUser.IsAdmin == false)
+                        {
+                            if (!(0 <= command && command <= 10))
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        else
+                        {
+                            if (!(0 <= command && command <= 12))
+                            {
+                                throw new Exception();
+                            }
+                        }
                         break;
                     }
                     catch
@@ -37,7 +52,8 @@ namespace ConsolePresentationLayer
                 }
                 if (command == 0) { break; }
                 HandleCommand(command);
-                PrintFunctions.PrintLoggedUserMenu();
+                if (user.IsAdmin) PrintFunctions.PrintLoggedUserMenuAdmin();
+                else PrintFunctions.PrintLoggedUserMenuNonAdmin();
             }
         }
 
@@ -75,7 +91,21 @@ namespace ConsolePresentationLayer
 				case 10: // Delete a request
 					DeleteRequest();
 					break;
-			}
+                case 11: // Delete all entries Admin
+                    if (LoggedUser.IsAdmin)
+                    {
+                        DatabaseFunctions.DeleteAllEntries();
+                        PrintFunctions.PrintSuccessMessage();
+                    }
+                    break;
+                case 12: // Seed database Admin
+                    if (LoggedUser.IsAdmin)
+                    {
+                        DatabaseFunctions.SeedDatabase();
+                        PrintFunctions.PrintSuccessMessage();
+                    }
+                    break;
+            }
         }
 
 		private void DeleteRequest()
@@ -86,6 +116,7 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
+                    if (petName == "0") break;
 					UserRequestsService.DeleteRequest(LoggedUser, petName);
 					PrintFunctions.PrintSuccessMessage();
 					break;
@@ -105,7 +136,8 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
-					UserRequestsService.CreateRequest(LoggedUser, petName);
+                    if (petName == "0") break;
+                    UserRequestsService.CreateRequest(LoggedUser, petName);
 					PrintFunctions.PrintSuccessMessage();
 					break;
 				}
@@ -130,7 +162,8 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
-					PublicOfferService.DeleteByPetName(petName, LoggedUser);
+                    if (petName == "0") break;
+                    PublicOfferService.DeleteByPetName(petName, LoggedUser);
 					PrintFunctions.PrintSuccessMessage();
 					break;
 				}
@@ -149,7 +182,8 @@ namespace ConsolePresentationLayer
 				try
 				{
 					var petName = Console.ReadLine();
-					PublicOfferService.RegisterPet(petName, LoggedUser);
+                    if (petName == "0") break;
+                    PublicOfferService.RegisterPet(petName, LoggedUser);
 					PrintFunctions.PrintSuccessMessage();
 					break;
 				}
@@ -216,6 +250,7 @@ namespace ConsolePresentationLayer
                 try
                 {
                     var petName = Console.ReadLine();
+                    if (petName == "0") break;
                     PetService.Delete(petName, LoggedUser);
                     PrintFunctions.PrintSuccessMessage();
                     break;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,3 +16,21 @@ namespace PetExchangeTests
 		}
 	}
 }
+=======
+namespace PetExchangeTests
+{
+    public class BusinessLayerTests
+    {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
+        [Test]
+        public void Test1()
+        {
+            Assert.Pass();
+        }
+    }
+}
+>>>>>>> 06eab96c85c295b360ffbdce85702ec741fb4156

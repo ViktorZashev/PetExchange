@@ -26,5 +26,10 @@ namespace BusinessLayer.Models
 			Id = Guid.NewGuid();
 			Name = name;
 		}
-	}
+        public Country(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+    }
 }
