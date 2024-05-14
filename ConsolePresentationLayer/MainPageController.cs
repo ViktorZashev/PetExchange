@@ -41,21 +41,14 @@ namespace ConsolePresentationLayer
 
         private void HandleCommand(int command) 
         {
-            switch(command)
+            switch (command)
             {
                 case 1:
-                    DatabaseFunctions.DeleteAllEntries();
-                    PrintFunctions.PrintSuccessMessage();
-                    break;
-                case 2:
-                    DatabaseFunctions.SeedDatabase();
-                    PrintFunctions.PrintSuccessMessage();
-                    break;
-                case 3:
                     SignupUserFunction();
                     break;
-                case 4:
+                case 2:
                     var loggedUser = LoginUserFunction();
+                    if (loggedUser == null) break;
                     var loggedUserController = new LoggedUserController(loggedUser);
                     break;
             }
@@ -64,6 +57,7 @@ namespace ConsolePresentationLayer
         {
             PrintFunctions.PrintLoginMenu();
             var input = Console.ReadLine().Split();
+            if (input[0] == "0") return null;
             string username = input[0];
             string password = input[1];
             int code;
@@ -73,6 +67,7 @@ namespace ConsolePresentationLayer
                 if(code == 0) { 
                     PrintFunctions.PrintIncorrectUsernameMessage();
                     input = Console.ReadLine().Split();
+                    if (input[0] == "0") break;
                     username = input[0];
                     password = input[1];
                 }
@@ -80,6 +75,7 @@ namespace ConsolePresentationLayer
                 {
                     PrintFunctions.PrintIncorrectPasswordMessage();
                     password = Console.ReadLine();
+                    if (password == "0") break;
                 }
                 if(code == 2)
                 {
@@ -88,6 +84,7 @@ namespace ConsolePresentationLayer
                     return loggedUser;
                 }
             }
+            return null;
         }
         private void SignupUserFunction()
         {
@@ -114,7 +111,23 @@ namespace ConsolePresentationLayer
                 town = new Town(newCountry, townName);
             }
             var contactInfo = Console.ReadLine();
-            var newUser = new User(town, new List<Pet>(), name, "photoPath", false, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
+            var EnteredaAdminPassword = Console.ReadLine();
+            bool adminStatus = false;
+            while (true)
+            {
+                if (EnteredaAdminPassword == "") break;
+                if(EnteredaAdminPassword == DatabaseFunctions.adminPassword)
+                {
+                    adminStatus = true;
+                    break;
+                }
+                else
+                {
+                    PrintFunctions.PrintWrongAdminPassMessage();
+                    EnteredaAdminPassword = Console.ReadLine();
+                }
+            }
+            var newUser = new User(town, new List<Pet>(), name, "photoPath", adminStatus, contactInfo, usernameAndPassword[0], usernameAndPassword[1]);
             UserService.Create(newUser);
             PrintFunctions.PrintSuccessMessage();
         }
