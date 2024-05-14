@@ -31,7 +31,7 @@ namespace DataLayer.ProjectDbContext
             {
 				optionsBuilder.UseSqlServer(connectionString);
 			}
-            optionsBuilder.UseInMemory();
+            //optionsBuilder.UseInMemory();
             
         }
 
