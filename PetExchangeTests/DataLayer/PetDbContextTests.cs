@@ -160,13 +160,13 @@ namespace PetExchangeTests.DataLayer
 		
 
 		[Test]
-		public void ReadMethod_ThrowsExceptionWhenPetDoesNotExist()
+		public void ReadMethod_ReturnsNullWhenPetDoesNotExist()
 		{
 			// Arrange
 			var nonExistentId = Guid.NewGuid();
 
 			// Act & Assert
-			Assert.Throws<Exception>(() => petContext.Read(nonExistentId), "Read method doesn't throw an exception when the pet does not exist in the database!");
+			Assert.That(petContext.Read(nonExistentId),Is.EqualTo(null), "Read method doesn't throw an exception when the pet does not exist in the database!");
 		}
 
 

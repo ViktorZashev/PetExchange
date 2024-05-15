@@ -45,11 +45,13 @@ namespace DataLayer
 		public Pet Read(Guid id, bool useNavigationalProperties = true)
 		{
 			Pet foundPet = _dbcontext.Pets.Where(x => x.Id == id).FirstOrDefault();
-			Guid userId = foundPet.UserId;
+
+			if (foundPet == null) return null;
 
 			if (useNavigationalProperties)
 			{
-				foundPet.User = _dbcontext.Users.Where(x => x.Id == userId).FirstOrDefault();
+                Guid userId = foundPet.UserId;
+                foundPet.User = _dbcontext.Users.Where(x => x.Id == userId).FirstOrDefault();
 			}
 
 			return foundPet;
