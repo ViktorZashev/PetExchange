@@ -24,6 +24,11 @@ namespace DataLayer
 		{
 			try
 			{
+				var existingUser = _dbcontext.Users.FirstOrDefault(x => x.Id == entity.Id);
+				if (existingUser != null)
+				{
+					throw new ArgumentException("Entered user already exists in database!");
+				}
 				var _existingTown = _dbcontext.Towns.FirstOrDefault(c => c.Id == entity.Town.Id);
 				if (_existingTown != null)
 				{
@@ -46,10 +51,11 @@ namespace DataLayer
 		public User Read(Guid id, bool useNavigationalProperties = true)
 		{
 			User foundUser = _dbcontext.Users.Where(x => x.Id == id).FirstOrDefault();
-			Guid townId = foundUser.TownId;
+			if (foundUser == null) return null;
 			if (useNavigationalProperties)
 			{
-				foundUser.Town = _dbcontext.Towns.Where(x => x.Id == townId).FirstOrDefault();
+                Guid townId = foundUser.TownId;
+                foundUser.Town = _dbcontext.Towns.Where(x => x.Id == townId).FirstOrDefault();
 			}
 			return foundUser;
 		}

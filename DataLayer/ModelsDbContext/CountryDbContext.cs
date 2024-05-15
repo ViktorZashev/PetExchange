@@ -14,8 +14,6 @@ namespace DataLayer.ModelsDbContext
 	{
 		private readonly PetExchangeDbContext _dbcontext;
 
-		// validation
-
 		public CountryDbContext(PetExchangeDbContext dbcontext)
 		{
 			_dbcontext = dbcontext;
