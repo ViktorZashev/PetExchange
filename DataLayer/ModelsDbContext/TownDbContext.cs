@@ -11,14 +11,14 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-    public class TownDbContext : IDb<Town, Guid>
-    {
-        private readonly PetExchangeDbContext _dbcontext;
+	public class TownDbContext : IDb<Town, Guid>
+	{
+		private readonly PetExchangeDbContext _dbcontext;
 
-        public TownDbContext(PetExchangeDbContext dbcontext)
-        {
-            _dbcontext = dbcontext;
-        }
+		public TownDbContext(PetExchangeDbContext dbcontext)
+		{
+			_dbcontext = dbcontext;
+		}
 
 		public void Create(Town entity)
 		{
@@ -51,93 +51,79 @@ namespace DataLayer
 
 
 		public Town Read(Guid id, bool useNavigationalProperties = true)
-        {
-			try
+		{
+			Town foundTown = _dbcontext.Towns.Where(x => x.Id == id).FirstOrDefault();
+			Guid countryId = foundTown.CountryId;
+
+			if (useNavigationalProperties)
 			{
-				Town foundTown = _dbcontext.Towns.Where(x => x.Id == id).FirstOrDefault();
-				Guid countryId = foundTown.CountryId;
-				if (useNavigationalProperties)
-				{
-					foundTown.Country = _dbcontext.Countries.Where(x => x.Id == countryId).FirstOrDefault();
-				}
-				return foundTown;
-			}
-			catch (Exception)
-			{
-				throw;
+				foundTown.Country = _dbcontext.Countries.Where(x => x.Id == countryId).FirstOrDefault();
 			}
 
+			return foundTown;
 		}
 
 		public List<Town> ReadAll(bool useNavigationalProperties = true)
-        {
-			try
-			{
-				List<Town> foundTowns = _dbcontext.Towns.ToList();
+		{
+			List<Town> foundTowns = _dbcontext.Towns.ToList();
 
-				if (useNavigationalProperties)
+			if (useNavigationalProperties)
+			{
+				for (int i = 0; i < foundTowns.Count; i++)
 				{
-					for (int i = 0; i < foundTowns.Count; i++)
-					{
-						foundTowns[i] = Read(foundTowns[i].Id);
-					}
+					foundTowns[i] = Read(foundTowns[i].Id);
 				}
-				return foundTowns;
 			}
-			catch (Exception)
-			{
-				throw;
-			}
-
+			return foundTowns;
 		}
 
 		public void Update(Town entity, bool useNavigationalProperties = true)
-        {
-            try
-            {
-                var foundEntity = Read(entity.Id);
+		{
+			try
+			{
+				var foundEntity = Read(entity.Id);
 
-                if (foundEntity == null)
-                {
-                    throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-                }
+				if (foundEntity == null)
+				{
+					throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
+				}
 
-                _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+				_dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 
-        public void Delete(Guid id)
-        {
-            try
-            {
-                var foundEntity = Read(id);
+		public void Delete(Guid id)
+		{
+			try
+			{
+				var foundEntity = Read(id);
 
-                if (foundEntity == null)
-                {
-                    throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-                }
-                _dbcontext.Towns.Remove(foundEntity);
-                _dbcontext.SaveChanges();
-            }
-            catch(Exception ex) 
-            {
-                    throw ex;
-            }
-        }
+				if (foundEntity == null)
+				{
+					throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
+				}
+				_dbcontext.Towns.Remove(foundEntity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 
-        public bool CheckExists(string name)
-        {
-            var Towns = ReadAll();
-            if (Towns.Any(x => x.Name == name))
-            {
-                return true;
-            }
-            else return false;
-        }
-    }
+		public bool CheckExists(string name)
+		{
+			var Towns = ReadAll();
+			if (Towns.Any(x => x.Name == name))
+			{
+				return true;
+			}
+			else return false;
+		}
+	}
 }

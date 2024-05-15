@@ -11,14 +11,14 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-    public class UserDbContext : IDb<User, Guid>
-    {
-        private readonly PetExchangeDbContext _dbcontext;
+	public class UserDbContext : IDb<User, Guid>
+	{
+		private readonly PetExchangeDbContext _dbcontext;
 
-        public UserDbContext(PetExchangeDbContext dbcontext)
-        {
-            _dbcontext = dbcontext;
-        }
+		public UserDbContext(PetExchangeDbContext dbcontext)
+		{
+			_dbcontext = dbcontext;
+		}
 
 		public void Create(User entity)
 		{
@@ -44,105 +44,90 @@ namespace DataLayer
 		}
 
 		public User Read(Guid id, bool useNavigationalProperties = true)
-        {
-			try
+		{
+			User foundUser = _dbcontext.Users.Where(x => x.Id == id).FirstOrDefault();
+			Guid townId = foundUser.TownId;
+			if (useNavigationalProperties)
 			{
-				User foundUser = _dbcontext.Users.Where(x => x.Id == id).FirstOrDefault();
-				Guid townId = foundUser.TownId;
-				if (useNavigationalProperties)
-				{
-					foundUser.Town = _dbcontext.Towns.Where(x => x.Id == townId).FirstOrDefault();
-				}
-				return foundUser;
+				foundUser.Town = _dbcontext.Towns.Where(x => x.Id == townId).FirstOrDefault();
 			}
-			catch (Exception)
-			{
-				throw;
-			}
+			return foundUser;
 		}
 
-        public List<User> ReadAll(bool useNavigationalProperties = true)
-        {
-			try
-			{
-				List<User> foundUsers = _dbcontext.Users.ToList();
+		public List<User> ReadAll(bool useNavigationalProperties = true)
+		{
+			List<User> foundUsers = _dbcontext.Users.ToList();
 
-				if (useNavigationalProperties)
+			if (useNavigationalProperties)
+			{
+				for (int i = 0; i < foundUsers.Count; i++)
 				{
-					for (int i = 0; i < foundUsers.Count; i++)
-					{
-						foundUsers[i] = Read(foundUsers[i].Id);
-					}
+					foundUsers[i] = Read(foundUsers[i].Id);
 				}
-
-				return foundUsers;
-			}
-			catch (Exception)
-			{
-				throw;
 			}
 
+			return foundUsers;
 		}
 
 		public void Update(User entity, bool useNavigationalProperties = false)
-        {
-            try
-            {
-                var foundEntity = Read(entity.Id);
+		{
+			try
+			{
+				var foundEntity = Read(entity.Id);
 
-                if (foundEntity == null)
-                {
-                    throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-                }
+				if (foundEntity == null)
+				{
+					throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
+				}
 
-                _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-                _dbcontext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+				_dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 
-        public void Delete(Guid id)
-        {
-            try
-            {
-                var foundEntity = Read(id);
+		public void Delete(Guid id)
+		{
+			try
+			{
+				var foundEntity = Read(id);
 
-                if (foundEntity == null)
-                {
-                    throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-                }
-                _dbcontext.Users.Remove(foundEntity);
-                _dbcontext.SaveChanges();
-            }
-            catch(Exception ex) 
-            {
-                    throw ex;
-            }
-        }
+				if (foundEntity == null)
+				{
+					throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
+				}
+				_dbcontext.Users.Remove(foundEntity);
+				_dbcontext.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 
-        public bool CheckUsernameExists(string username)
-        {
-            var foundEntity = ReadAll().Where(x => x.Username == username).FirstOrDefault();
+		public bool CheckUsernameExists(string username)
+		{
+			var foundEntity = ReadAll().Where(x => x.Username == username).FirstOrDefault();
 
-            if (foundEntity == null)
-            {
-                return false;
-            }
-            return true;
-        }
+			if (foundEntity == null)
+			{
+				return false;
+			}
+			return true;
+		}
 
-        public bool CheckPasswordCorrect(string username, string password)
-        {
-            var foundEntity = ReadAll().Where(x => x.Username == username && x.Password == password).FirstOrDefault();
+		public bool CheckPasswordCorrect(string username, string password)
+		{
+			var foundEntity = ReadAll().Where(x => x.Username == username && x.Password == password).FirstOrDefault();
 
-            if (foundEntity == null)
-            {
-                return false;
-            }
-            return true;
-        }
-    }
+			if (foundEntity == null)
+			{
+				return false;
+			}
+			return true;
+		}
+	}
 }
