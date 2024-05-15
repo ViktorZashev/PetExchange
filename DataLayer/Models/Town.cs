@@ -25,7 +25,7 @@ namespace BusinessLayer.Models
 		[Required]
 		public string Name { get; set; } = string.Empty;
 
-		private Town() { }
+		public Town() { }
 
 		public Town(Country country, string name)
 		{

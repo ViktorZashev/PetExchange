@@ -37,7 +37,7 @@ namespace BusinessLayer.Models
         [JsonPropertyName("includes_cage")]
         public bool IncludesCage { get; set; } = false;
 
-        private Pet() { }
+        public Pet() { }
 
         public Pet(User user, string name, string photoPath, int age, string animalType, string description, bool includesCage)
         {
@@ -58,16 +58,16 @@ namespace BusinessLayer.Models
             Id = id;
         }
 
-        public Pet(Guid guid, string v, User user)
+        public Pet(Guid guid, User user)
         {
             Id = guid;
             User = user;
         }
 
-        public Pet(string v, User user)
+        public Pet(string name, User user)
         {
-            Name = Name;
+            Name = name;
             User = user;
         }
-    }
+	}
 }

@@ -94,8 +94,12 @@ namespace DataLayer.ModelsDbContext
 		}
 		public Country RetrieveCountry(string name)
 		{
-			var Countries = ReadAll();
+			var Countries = ReadAll(); // Matching country names could exist
 
+			if (Countries.Count > 1)
+			{
+				throw new Exception("More than one matching countries with the same name exists!");
+			}
 			return Countries.Where(x => x.Name == name).FirstOrDefault();
 		}
 	}
