@@ -15,6 +15,7 @@ namespace PetExchangeTests.DataLayer
         public static PublicOfferDbContext publicOfferContext;
         public static TownDbContext townContext;
         public static UserDbContext userContext;
+        public static UserRequestsDbContext userRequestsContext;
 
         private static PetExchangeDbContext GetMemoryContext()
         {
@@ -73,6 +74,7 @@ namespace PetExchangeTests.DataLayer
             publicOfferContext = new PublicOfferDbContext(db);
             townContext = new TownDbContext(db);
             userContext = new UserDbContext(db);
+            userRequestsContext = new UserRequestsDbContext(db);
             DeleteAllEntriesInDb(); // To ensure controlled environment in every unit test
         }
 

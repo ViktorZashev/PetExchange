@@ -24,11 +24,20 @@ namespace DataLayer
 		{
 			try
 			{
-				var _existingOffer = _dbcontext.PublicOffers.FirstOrDefault(c => c.Id == entity.PublicOffer.Id);
-				if (_existingOffer != null)
+				if(entity == null)
 				{
+					throw new ArgumentNullException("User Request is null");
+				}
+				var existingRequest = _dbcontext.Requests.Where(x => x.Id == entity.Id).FirstOrDefault();
 
-					entity.PublicOffer = _existingOffer;
+				if(existingRequest != null)
+				{
+					throw new ArgumentException("User Request already exist in database!");
+				}
+				var _existingOffer = _dbcontext.PublicOffers.FirstOrDefault(c => c.Id == entity.PublicOffer.Id);
+				if (_existingOffer == null)
+				{
+					throw new ArgumentException("Public Offer included in user Request doesn't exist in database!");
 				}
 				_dbcontext.Requests.Add(entity);
 				_dbcontext.SaveChanges();
@@ -42,10 +51,12 @@ namespace DataLayer
 		public UserRequests Read(Guid id, bool useNavigationalProperties = true)
 		{
 			UserRequests foundRequests = _dbcontext.Requests.Where(x => x.Id == id).FirstOrDefault();
-			Guid publicOfferId = foundRequests.PublicOfferId;
+
+			if (foundRequests == null) return null;
 			if (useNavigationalProperties)
 			{
-				foundRequests.PublicOffer = _dbcontext.PublicOffers.Where(x => x.Id == publicOfferId).FirstOrDefault();
+                Guid publicOfferId = foundRequests.PublicOfferId;
+                foundRequests.PublicOffer = _dbcontext.PublicOffers.Where(x => x.Id == publicOfferId).FirstOrDefault();
 			}
 			return foundRequests;
 		}

@@ -26,7 +26,7 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("is_accepted")]
 		public bool IsAccepted { get; set; } = false;
 
-		private UserRequests() { }
+		public UserRequests() { }
 
 		public UserRequests(PublicOffer publicOffer, User user, bool isAccepted)
 		{
