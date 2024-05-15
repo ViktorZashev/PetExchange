@@ -19,7 +19,7 @@ namespace BusinessLayer.Models
 		[Required]
 		public string Name { get; set; } = string.Empty;
 
-		private Country() { }
+		public Country() { }
 
 		public Country(string name)
 		{

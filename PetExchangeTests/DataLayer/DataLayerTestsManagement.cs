@@ -9,9 +9,11 @@ namespace PetExchangeTests.DataLayer
     public partial class DataLayerTestsManagement
     {
         public static PetExchangeDbContext db;
+
         public static CountryDbContext countryContext;
         public static PetDbContext petContext;
         public static PublicOfferDbContext publicOfferContext;
+        public static TownDbContext townContext;
 
         private static PetExchangeDbContext GetMemoryContext()
         {
@@ -21,7 +23,7 @@ namespace PetExchangeTests.DataLayer
             return new PetExchangeDbContext(options);
 		}
 
-        private static void DeleteAllEntriesInDb()
+        protected static void DeleteAllEntriesInDb()
         {
             foreach (var entity in db.Countries)
             {
@@ -38,9 +40,9 @@ namespace PetExchangeTests.DataLayer
 				db.Users.Remove(entity);
 			}
 
-			foreach (var entity in db.Countries)
+			foreach (var entity in db.Towns)
 			{
-				db.Countries.Remove(entity);
+				db.Towns.Remove(entity);
 			}
 
 			foreach (var entity in db.PublicOffers)
@@ -68,6 +70,7 @@ namespace PetExchangeTests.DataLayer
             countryContext = new CountryDbContext(db);
             petContext = new PetDbContext(db);
             publicOfferContext = new PublicOfferDbContext(db);
+            townContext = new TownDbContext(db);
             DeleteAllEntriesInDb(); // To ensure controlled environment in every unit test
         }
 

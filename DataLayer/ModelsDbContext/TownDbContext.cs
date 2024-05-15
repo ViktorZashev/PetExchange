@@ -26,8 +26,7 @@ namespace DataLayer
 			{
 				if (_dbcontext.Towns.Any(c => c.Name == entity.Name))
 				{
-
-					return; // A town with this name already exists
+					throw new ArgumentException("A town with this name already exists!");
 				}
 				var _existingCountry = _dbcontext.Countries.FirstOrDefault(c => c.Id == entity.Country.Id);
 				if (_existingCountry != null)
@@ -53,11 +52,13 @@ namespace DataLayer
 		public Town Read(Guid id, bool useNavigationalProperties = true)
 		{
 			Town foundTown = _dbcontext.Towns.Where(x => x.Id == id).FirstOrDefault();
-			Guid countryId = foundTown.CountryId;
+
+			if (foundTown == null) return null;
 
 			if (useNavigationalProperties)
 			{
-				foundTown.Country = _dbcontext.Countries.Where(x => x.Id == countryId).FirstOrDefault();
+                Guid countryId = foundTown.CountryId;
+                foundTown.Country = _dbcontext.Countries.Where(x => x.Id == countryId).FirstOrDefault();
 			}
 
 			return foundTown;
