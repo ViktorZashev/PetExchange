@@ -94,7 +94,7 @@ namespace DataLayer.ModelsDbContext
 		{
 			var Countries = ReadAll(); // Matching country names could exist
 
-			if (Countries.Count > 1)
+			if (Countries.Where(x => x.Name == name).Count() > 1)
 			{
 				throw new Exception("More than one matching countries with the same name exists!");
 			}
