@@ -12,8 +12,8 @@ namespace BusinessLayer.Functions
 {
     public static class CountryService
     {
-        private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        private static readonly CountryDbContext  _CountryContext = new CountryDbContext(_ProjectContext);
+        private static PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
+        public static CountryDbContext  _CountryContext = new CountryDbContext(_ProjectContext);
 
         public static void Create(Country country)
         {

@@ -14,7 +14,7 @@ namespace BusinessLayer.Functions
     public static class PublicOfferService
     {
         private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        private static readonly PublicOfferDbContext  _PublicOfferContext = new PublicOfferDbContext(_ProjectContext);
+        public static PublicOfferDbContext  _PublicOfferContext = new PublicOfferDbContext(_ProjectContext);
 
         public static void Create(PublicOffer offer)
         {

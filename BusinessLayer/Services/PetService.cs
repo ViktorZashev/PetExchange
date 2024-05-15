@@ -12,7 +12,7 @@ namespace BusinessLayer.Functions
 	public static class PetService
 	{
 		private static readonly PetExchangeDbContext _ProjectContext = _ProjectContext = new PetExchangeDbContext();
-		private static readonly PetDbContext _PetContext = new PetDbContext(_ProjectContext);
+		public static PetDbContext _PetContext = new PetDbContext(_ProjectContext);
 
 		public static void Create(Pet pet)
 		{

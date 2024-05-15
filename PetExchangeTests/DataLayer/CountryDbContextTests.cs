@@ -11,6 +11,8 @@ namespace PetExchangeTests.DataLayer
 {
     public class CountryDbContextTests : DataLayerTestsManagement
     {
+
+		
         [Test]
         public void CreateMethod_AddsCountryModelToDatabase()
         {
@@ -76,8 +78,9 @@ namespace PetExchangeTests.DataLayer
 		[Test]
 		public void ReadAllMethod_RetrievesAllCountryModelsFromDatabase()
 		{
-			// Arrange
-			var enteredCountry1 = new Country("New Country1");
+            // Arrange
+            DeleteAllEntriesInDb();
+            var enteredCountry1 = new Country("New Country1");
 			var enteredCountry2 = new Country("New Country2");
 			var countriesList = new List<Country> { enteredCountry1, enteredCountry2 };
 
@@ -88,7 +91,7 @@ namespace PetExchangeTests.DataLayer
 			var outputedCountries = countryContext.ReadAll();
 
 			// Assert
-			Assert.That(countriesList, Is.EqualTo(outputedCountries), "ReadAll method doesn't return all entries found database!");
+			Assert.IsTrue(AreTwoListsEqual(countriesList,outputedCountries), "ReadAll method doesn't return all entries found database!");
 		}
 
 		[Test]

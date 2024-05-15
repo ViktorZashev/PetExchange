@@ -60,7 +60,20 @@ namespace PetExchangeTests.DataLayer
 			db.SaveChanges();
 		}
 
-		protected static bool AreCountriesEqual(Country expected, Country actual)
+        protected bool AreTwoListsEqual(List<Country> list1, List<Country> list2)
+        {
+            if (list1.Count != list2.Count) return false;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                if (!AreCountriesEqual(list1[i], list2[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        protected static bool AreCountriesEqual(Country expected, Country actual)
 		{
 			return expected.Id == actual.Id && expected.Name == actual.Name;
 		}

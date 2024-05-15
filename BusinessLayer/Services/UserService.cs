@@ -13,7 +13,7 @@ namespace BusinessLayer.Functions
     public static class UserService
     {
         private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        private static readonly UserDbContext _UserContext = new UserDbContext(_ProjectContext);
+        public static UserDbContext _UserContext = new UserDbContext(_ProjectContext);
 
         public static void Create(User user)
         {

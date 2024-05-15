@@ -13,7 +13,7 @@ namespace BusinessLayer.Functions
     public static class TownService
     {
         private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        private static readonly TownDbContext  _TownContext = new TownDbContext(_ProjectContext);
+        public static TownDbContext  _TownContext = new TownDbContext(_ProjectContext);
 
         public static void Create(Town town)
         {
