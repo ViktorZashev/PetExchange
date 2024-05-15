@@ -28,7 +28,7 @@ namespace BusinessLayer.Models
 		[JsonPropertyName("user_id")]
 		public Guid UserId { get; set; }
 
-		private PublicOffer() { }
+		public PublicOffer() { }
 
 		public PublicOffer(Pet pet)
 		{

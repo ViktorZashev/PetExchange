@@ -45,11 +45,13 @@ namespace DataLayer
 		public PublicOffer Read(Guid id, bool useNavigationalProperties = true)
 		{
 			PublicOffer foundOffer = _dbcontext.PublicOffers.Where(x => x.Id == id).FirstOrDefault();
-			Guid petId = foundOffer.PetId;
+
+			if (foundOffer == null) return null;
 
 			if (useNavigationalProperties)
 			{
-				foundOffer.Pet = _dbcontext.Pets.Where(x => x.Id == petId).FirstOrDefault();
+                Guid petId = foundOffer.PetId;
+                foundOffer.Pet = _dbcontext.Pets.Where(x => x.Id == petId).FirstOrDefault();
 			}
 
 			return foundOffer;
