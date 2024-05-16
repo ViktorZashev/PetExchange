@@ -62,14 +62,9 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var uniqueId = Guid.NewGuid();
-			var enteredCountry1 = new Country("New Country1");
-			var enteredCountry2 = new Country("New Country2");
 
 			// Act
-			db.Countries.Add(enteredCountry1);
-			db.Countries.Add(enteredCountry2);
 			var outputedCountry = countryContext.Read(uniqueId);
-			db.SaveChanges();
 
 			// Assert
 			Assert.That(outputedCountry,Is.EqualTo(null),"Read method doesn't throw exception when no matching entry exists in database!");
@@ -91,7 +86,7 @@ namespace PetExchangeTests.DataLayer
 			var outputedCountries = countryContext.ReadAll();
 
 			// Assert
-			Assert.IsTrue(AreTwoListsEqual(countriesList,outputedCountries), "ReadAll method doesn't return all entries found database!");
+			Assert.That(countriesList, Is.EquivalentTo(outputedCountries), "ReadAll method doesn't return all entries found database!");
 		}
 
 		[Test]
