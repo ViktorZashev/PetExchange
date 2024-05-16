@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.Functions;
 using BusinessLayer.Models;
 using DataLayer.ModelsDbContext;
+using NUnit.Framework.Internal;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +47,30 @@ namespace PetExchangeTests.BusinessLayer
             // Assert
             Assert.That(expectedCount, Is.EqualTo(actualCount), "Create method doesn't add many unique countries to database!");
         }
+
+		[Test]
+		public void CreateListMethod_AddsMultiplePetsToDatabase()
+		{
+			// Arrange
+			var user = new User { Id = Guid.NewGuid(), Name = "John" };
+			var pets = new List<Pet>
+			{
+				new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false),
+				new Pet(user, "Max", "", 3, "Dog", "A playful dog", true)
+			};
+			db.Users.Add(user);
+			db.SaveChanges();
+
+			// Act
+			PetService.Create(pets);
+
+			// Assert
+			foreach (var pet in pets)
+			{
+				var createdPet = db.Pets.FirstOrDefault(p => p.Name == pet.Name);
+				Assert.IsNotNull(createdPet, $"Pet '{pet.Name}' was not created.");
+			}
+		}
 
 		[Test]
 		public void Read_ReturnsCorrectCountryById()
@@ -145,6 +171,53 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
+		public void DeleteMethod_DeletesExistingPetForUser()
+		{
+			// Arrange
+			var user = new User { Id = Guid.NewGuid(), Name = "John" };
+			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			db.Users.Add(user);
+			db.Pets.Add(pet);
+			db.SaveChanges();
+
+			// Act
+			PetService.Delete("Fluffy", user);
+
+			// Assert
+			var deletedPet = db.Pets.FirstOrDefault(p => p.Name == "Fluffy");
+			Assert.IsNull(deletedPet, "Pet 'Fluffy' should have been deleted.");
+		}
+
+		[Test]
+		public void ReturnAllPetsMethod_ReturnsEmptyListWhenNoPetsBelongToUser()
+		{
+			// Arrange
+			// Database is already empty because of setup function
+
+			// Act
+			var userPets = PetService.ReturnAllPets(new User { Id = Guid.NewGuid(), Name = "Bob" });
+
+			// Assert
+			Assert.IsNotNull(userPets, "ReturnAllPets method should return a list.");
+			Assert.IsEmpty(userPets, "ReturnAllPets method should return an empty list when no pets belong to the provided user.");
+		}
+
+		[Test]
+		public void DeleteMethod_ThrowsExceptionWhenPetDoesNotExistForUser()
+		{
+			// Arrange
+			var user = new User { Id = Guid.NewGuid(), Name = "John" };
+			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			db.Users.Add(user);
+			db.Pets.Add(pet);
+			db.SaveChanges();
+
+			// Act & Assert
+			Assert.Throws<Exception>(() => PetService.Delete("Max", user), "Delete method should throw an exception when pet 'Max' does not exist for user 'John'.");
+		}
+
+
+		[Test]
 		public void DeleteAllMethod_DeletesAllCountriesFromDatabase()
 		{
 			// Arrange
@@ -179,6 +252,16 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
+		public void CheckPetExistsMethod_ReturnsFalseWhenNoPetsExist()
+		{
+			// Act
+			var result = PetService.CheckPetExists("NonExistentPetName");
+
+			// Assert
+			Assert.IsFalse(result, "CheckPetExists method should return false when no pets exist.");
+		}
+
+		[Test]
 		public void RetrieveCountryMethod_ThrowsExceptionWhenDuplicateCountriesExist()
 		{
 			// Arrange
@@ -190,6 +273,19 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Act & Assert
 			Assert.Throws<Exception>(() => CountryService.RetrieveCountry("Duplicate Country"), "RetrieveCountry method does not throw an exception when duplicate country names exist in the database.");
+		}
+		[Test]
+		public void ReturnAllPetsMethod_ReturnsEmptyListWhenNoPetsExist()
+		{
+			// Arrange
+			// Database is already empty because of setup functions
+
+			// Act
+			var result = PetService.ReturnAllPets();
+
+			// Assert
+			Assert.IsNotNull(result, "ReturnAllPets method should return a list.");
+			Assert.IsEmpty(result, "ReturnAllPets method should return an empty list when no pets exist.");
 		}
 	}
 }

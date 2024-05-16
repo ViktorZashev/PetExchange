@@ -88,7 +88,6 @@ namespace BusinessLayer.Functions
 					}
 				}
 				return usersPets;
-
 			}
 		}
 		public static List<Pet> ReturnAllPets()
