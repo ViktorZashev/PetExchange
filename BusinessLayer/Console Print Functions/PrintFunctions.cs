@@ -62,7 +62,6 @@ namespace BusinessLayer
         {
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine(ASCIIArt.Title);
-            Console.WriteLine("Version 1.0, Console UI!!");
 			Console.ForegroundColor = ConsoleColor.White;
 		}
 	
