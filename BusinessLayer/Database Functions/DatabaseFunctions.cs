@@ -100,13 +100,5 @@ namespace BusinessLayer.Database_Functions
         {
             return UserService.AuthenticateUserReturnsCode(username, password);
         }
-        public static void ReturnTownsAndCountries()
-        {
-            var towns = TownService.ReadAll();
-            foreach (var town in towns)
-            {
-                Console.WriteLine(town.Name + " " + town.Country.Name);
-            }
-        }
     }
 }
