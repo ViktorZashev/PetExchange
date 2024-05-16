@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Functions;
 using BusinessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "New Pet", User = user, UserId = user.Id };
+			db.Users.Add(user);
+			db.Pets.Add(pet);
+			db.SaveChanges();
 			var initialOffersCount = db.PublicOffers.Count();
 
 			// Act
@@ -23,7 +27,7 @@ namespace PetExchangeTests.BusinessLayer
 			var newOffersCount = db.PublicOffers.Count();
 
 			// Assert
-			Assert.AreEqual(initialOffersCount + 1, newOffersCount, "The count of public offers should increment by 1 after creating a new offer.");
+			Assert.That(newOffersCount, Is.EqualTo(initialOffersCount + 1), "The count of public offers should increment by 1 after creating a new offer.");
 		}
 
 		[Test]
@@ -36,6 +40,9 @@ namespace PetExchangeTests.BusinessLayer
 				new Pet { Id = Guid.NewGuid(), Name = "New Pet 1", User = user, UserId = user.Id },
 				new Pet { Id = Guid.NewGuid(), Name = "New Pet 2", User = user, UserId = user.Id }
 			};
+			db.Users.Add(user);
+			db.Pets.AddRange(pets);
+			db.SaveChanges();
 			var initialOffersCount = db.PublicOffers.Count();
 
 			// Act
@@ -44,7 +51,7 @@ namespace PetExchangeTests.BusinessLayer
 			var newOffersCount = db.PublicOffers.Count();
 
 			// Assert
-			Assert.AreEqual(initialOffersCount + pets.Count, newOffersCount, "The count of public offers should increment by the number of offers added.");
+			Assert.That(newOffersCount, Is.EqualTo(initialOffersCount + pets.Count), "The count of public offers should increment by the number of offers added.");
 		}
 
 		[Test]
@@ -53,7 +60,9 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
-			var offer = new PublicOffer(pet);
+			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
+			db.Users.Add(user);
+			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
 			db.SaveChanges();
 
@@ -69,13 +78,23 @@ namespace PetExchangeTests.BusinessLayer
 		public void ReadAll_Returns_All_PublicOffers()
 		{
 			// Arrange
-			var initialCount = db.PublicOffers.Count();
+			var user = new User { Id = Guid.NewGuid() };
+			var pets = new List<Pet>
+			{
+				new Pet { Id = Guid.NewGuid(), Name = "Test Pet 1", User = user, UserId = user.Id },
+				new Pet { Id = Guid.NewGuid(), Name = "Test Pet 2", User = user, UserId = user.Id }
+			};
+			var offers = pets.Select(pet => new PublicOffer(pet) { Id = Guid.NewGuid() }).ToList();
+			db.Users.Add(user);
+			db.Pets.AddRange(pets);
+			db.PublicOffers.AddRange(offers);
+			db.SaveChanges();
 
 			// Act
 			var result = PublicOfferService.ReadAll();
 
 			// Assert
-			Assert.AreEqual(initialCount, result.Count);
+			Assert.AreEqual(offers.Count, result.Count);
 		}
 
 		[Test]
@@ -84,14 +103,16 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Old Name", User = user, UserId = user.Id };
-			var offer = new PublicOffer(pet);
+			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
+			db.Users.Add(user);
+			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
 			db.SaveChanges();
 
 			// Act
 			offer.Pet.Name = "New Name";
 			PublicOfferService.Update(offer);
-			var updatedOffer = PublicOfferService.Read(offer.Id);
+			var updatedOffer = db.PublicOffers.Include(o => o.Pet).FirstOrDefault(o => o.Id == offer.Id);
 
 			// Assert
 			Assert.AreEqual("New Name", updatedOffer.Pet.Name);
@@ -103,7 +124,9 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
-			var offer = new PublicOffer(pet);
+			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
+			db.Users.Add(user);
+			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
 			db.SaveChanges();
 			var initialOffersCount = db.PublicOffers.Count();
@@ -113,7 +136,7 @@ namespace PetExchangeTests.BusinessLayer
 			var newOffersCount = db.PublicOffers.Count();
 
 			// Assert
-			Assert.AreEqual(initialOffersCount - 1, newOffersCount, "The count of public offers should decrement by 1 after deleting the offer.");
+			Assert.That(newOffersCount, Is.EqualTo(initialOffersCount - 1), "The count of public offers should decrement by 1 after deleting the offer.");
 		}
 
 		[Test]
@@ -122,13 +145,15 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Pet To Delete", User = user, UserId = user.Id };
-			var offer = new PublicOffer(pet);
+			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
+			db.Users.Add(user);
+			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
 			db.SaveChanges();
 
 			// Act
 			PublicOfferService.DeleteByPetName(pet.Name, user);
-			var result = PublicOfferService.Read(offer.Id);
+			var result = db.PublicOffers.FirstOrDefault(o => o.Id == offer.Id);
 
 			// Assert
 			Assert.IsNull(result, "The public offer should be null after deletion.");
@@ -141,7 +166,7 @@ namespace PetExchangeTests.BusinessLayer
 			var user = new User { Id = Guid.NewGuid() };
 			var anotherUser = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = anotherUser, UserId = anotherUser.Id };
-			var offer = new PublicOffer(pet);
+			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Users.Add(anotherUser);
 			db.Pets.Add(pet);
@@ -150,7 +175,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Act & Assert
 			var ex = Assert.Throws<Exception>(() => PublicOfferService.DeleteByPetName(pet.Name, user));
-			Assert.AreEqual("Name doesn't match any of users pets!", ex.Message);
+			Assert.That(ex.Message, Is.EqualTo("Name doesn't match any of users pets!"));
 		}
 
 		[Test]
@@ -163,7 +188,9 @@ namespace PetExchangeTests.BusinessLayer
 				new Pet { Id = Guid.NewGuid(), Name = "Pet 1", User = user, UserId = user.Id },
 				new Pet { Id = Guid.NewGuid(), Name = "Pet 2", User = user, UserId = user.Id }
 			};
-			var offers = pets.Select(pet => new PublicOffer(pet)).ToList();
+			var offers = pets.Select(pet => new PublicOffer(pet) { Id = Guid.NewGuid() }).ToList();
+			db.Users.Add(user);
+			db.Pets.AddRange(pets);
 			db.PublicOffers.AddRange(offers);
 			db.SaveChanges();
 			var initialOffersCount = db.PublicOffers.Count();
@@ -173,7 +200,7 @@ namespace PetExchangeTests.BusinessLayer
 			var newOffersCount = db.PublicOffers.Count();
 
 			// Assert
-			Assert.AreEqual(0, newOffersCount, "All public offers should be removed from the database.");
+			Assert.That(newOffersCount, Is.EqualTo(0), "All public offers should be removed from the database.");
 		}
 
 		[Test]
@@ -192,8 +219,9 @@ namespace PetExchangeTests.BusinessLayer
 			var newOffersCount = db.PublicOffers.Count();
 
 			// Assert
-			Assert.AreEqual(initialOffersCount + 1, newOffersCount, "A new public offer should be added for the registered pet.");
+			Assert.That(newOffersCount, Is.EqualTo(initialOffersCount + 1), "A new public offer should be added for the registered pet.");
 		}
+
 		[Test]
 		public void RegisterPet_Creates_New_Offer_When_Pet_Exists_In_User_Database()
 		{
@@ -206,20 +234,20 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Act
 			PublicOfferService.RegisterPet(pet.Name, user);
-			var offers = PublicOfferService.ReadAll();
-			var foundOffer = offers.FirstOrDefault(x => x.PetId == pet.Id);
+			var offers = db.PublicOffers.Where(o => o.PetId == pet.Id).ToList();
 
 			// Assert
-			Assert.IsNotNull(foundOffer, "A new public offer should be created for the pet.");
-			Assert.AreEqual(pet.Id, foundOffer.PetId, "The pet ID should match the new offer's pet ID.");
+			Assert.That(offers.Count, Is.EqualTo(1), "A new public offer should be created for the pet.");
+			Assert.That(offers.First().PetId, Is.EqualTo(pet.Id), "The pet ID should match the new offer's pet ID.");
 		}
+
 		[Test]
 		public void RegisterPet_Throws_Exception_If_Pet_Already_Registered()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Already Registered Pet", User = user, UserId = user.Id };
-			var offer = new PublicOffer(pet);
+			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
@@ -227,7 +255,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Act & Assert
 			var ex = Assert.Throws<Exception>(() => PublicOfferService.RegisterPet(pet.Name, user));
-			Assert.AreEqual("This pet is already registered!", ex.Message);
+			Assert.That(ex.Message, Is.EqualTo("This pet is already registered!"));
 		}
 
 		[Test]
@@ -239,8 +267,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Act & Assert
 			var ex = Assert.Throws<Exception>(() => PublicOfferService.RegisterPet(nonExistentPetName, user));
-			Assert.AreEqual("This pet doesn't exist in user's database!", ex.Message);
+			Assert.That(ex.Message, Is.EqualTo("This pet doesn't exist in user's database!"));
 		}
-
 	}
 }

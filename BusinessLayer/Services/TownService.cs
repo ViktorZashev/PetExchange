@@ -70,12 +70,5 @@ namespace BusinessLayer.Functions
             }
             return foundTown;
         }
-        /*
-        public static Country RetrieveCountry(Town town)
-        {
-            var countries = CountryService.ReadAll();
-            if(countries.Where(x => x.Id == town.Country.)
-        }
-        */
     }
 }

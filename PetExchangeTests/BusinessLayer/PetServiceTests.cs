@@ -44,7 +44,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			Assert.IsNotNull(result, "Read method does not return the pet from the database.");
-			Assert.AreEqual(pet.Name, result.Name, "Read method returns incorrect pet name.");
+			Assert.That(result.Name, Is.EqualTo(pet.Name), "Read method returns incorrect pet name.");
 		}
 
 		[Test]
@@ -73,7 +73,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = PetService.ReadAll();
 
 			// Assert
-			Assert.AreEqual(2, result.Count, "ReadAll method does not return all pets from the database.");
+			Assert.That(result.Count, Is.EqualTo(2), "ReadAll method does not return all pets from the database.");
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			Assert.IsNotNull(result, "Pet not found in database after update.");
-			Assert.AreEqual("Updated Fluffy", result.Name, "Pet name was not updated in the database.");
+			Assert.That(result.Name, Is.EqualTo("Updated Fluffy"), "Pet name was not updated in the database.");
 		}
 		
 
@@ -158,7 +158,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			var count = db.Pets.Count();
-			Assert.AreEqual(0, count, "All pets should have been deleted from the database.");
+			Assert.That(count, Is.EqualTo(0), "All pets should have been deleted from the database.");
 		}
 
 		[Test]
@@ -187,8 +187,8 @@ namespace PetExchangeTests.BusinessLayer
 			var pet1 = new Pet(user1, "Fluffy", "", 2, "Cat", "A cute cat", false);
 			var pet2 = new Pet(user1, "Max", "", 3, "Dog", "A playful dog", true);
 			var pet3 = new Pet(user2, "Buddy", "", 4, "Dog", "A loyal dog", false);
-			db.Users.AddRange(new[] { user1, user2 });
-			db.Pets.AddRange(new[] { pet1, pet2, pet3 });
+			db.Users.AddRange([user1, user2]);
+			db.Pets.AddRange([pet1, pet2, pet3]);
 			db.SaveChanges();
 
 			// Act
@@ -196,8 +196,8 @@ namespace PetExchangeTests.BusinessLayer
 			var user2Pets = PetService.ReturnAllPets(user2);
 
 			// Assert
-			Assert.AreEqual(2, user1Pets.Count, "There should be 2 pets belonging to user 'John'.");
-			Assert.AreEqual(1, user2Pets.Count, "There should be 1 pet belonging to user 'Alice'.");
+			Assert.That(user1Pets.Count, Is.EqualTo(2), "There should be 2 pets belonging to user 'John'.");
+			Assert.That(user2Pets.Count, Is.EqualTo(1), "There should be 1 pet belonging to user 'Alice'.");
 		}
 
 		[Test]
@@ -209,15 +209,15 @@ namespace PetExchangeTests.BusinessLayer
 			var pet1 = new Pet(user1, "Fluffy", "", 2, "Cat", "A cute cat", false);
 			var pet2 = new Pet(user1, "Max", "", 3, "Dog", "A playful dog", true);
 			var pet3 = new Pet(user2, "Buddy", "", 4, "Dog", "A loyal dog", false);
-			db.Users.AddRange(new[] { user1, user2 });
-			db.Pets.AddRange(new[] { pet1, pet2, pet3 });
+			db.Users.AddRange([user1, user2]);
+			db.Pets.AddRange([pet1, pet2, pet3]);
 			db.SaveChanges();
 
 			// Act
 			var pets = PetService.ReturnAllPets();
 
 			// Assert
-			Assert.AreEqual(3, pets.Count, "There should be 3 pets in total.");
+			Assert.That(pets.Count, Is.EqualTo(3), "There should be 3 pets in total.");
 		}
 
 		[Test]
@@ -235,7 +235,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			Assert.IsNotNull(result, "Pet 'Fluffy' should exist in the database.");
-			Assert.AreEqual("Fluffy", result.Name, "Returned pet should have name 'Fluffy'.");
+			Assert.That(result.Name, Is.EqualTo("Fluffy"), "Returned pet should have name 'Fluffy'.");
 		}
 
 
