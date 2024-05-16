@@ -109,8 +109,10 @@ namespace PetExchangeTests.BusinessLayer
             db.Countries.Add(country1);
             db.Countries.Add(country2);
             db.SaveChanges();
+
             // Act
             var actualCountries = CountryService.ReadAll(false);
+
             // Assert
             Assert.That(expectedList, Is.EquivalentTo(actualCountries),"Read All method doesn't return all entries in database!");
         }
@@ -130,7 +132,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			Assert.IsNotNull(result, "Country not found in database after update.");
-			Assert.AreEqual("Updated Country", result.Name, "Country name was not updated in the database.");
+			Assert.That(result.Name, Is.EqualTo("Updated Country"), "Country name was not updated in the database.");
 		}
 
 		[Test]
@@ -248,7 +250,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			Assert.IsNotNull(result, "RetrieveCountry method does not return the country from the database.");
-			Assert.AreEqual(country.Name, result.Name, "RetrieveCountry method returns incorrect country name.");
+			Assert.That(result.Name, Is.EqualTo(country.Name), "RetrieveCountry method returns incorrect country name.");
 		}
 
 		[Test]

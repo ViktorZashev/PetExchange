@@ -53,13 +53,12 @@ namespace BusinessLayer.Functions
         public static void DeleteByPetName(string name, User LoggedUser)
         {
             var offers = ReadAll(true);
-            if (!offers.Exists(x => x.Pet.Name == name && x.Pet.UserId == LoggedUser.Id))
-            {
-                throw new Exception("Name doesn't match any of users pets!");
-            }
             var foundOffer = offers.Where(x => x.Pet.Name == name && x.Pet.UserId == LoggedUser.Id).FirstOrDefault();
+            if (foundOffer == null)
+            {
+				throw new Exception("Name doesn't match any of users pets!");
+			}
             Delete(foundOffer.Id);
-
 		}
         public static void DeleteAll()
         {
