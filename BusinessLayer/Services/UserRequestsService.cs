@@ -59,14 +59,7 @@ namespace BusinessLayer.Functions
         }
         public static List<UserRequests> ReadAll(User user)
         {
-            try
-            {
-                return ReadAll().Where(x => x.UserId == user.Id).ToList();
-            }
-            catch
-            {
-                throw new Exception();
-            }
+          return ReadAll().Where(x => x.UserId == user.Id).ToList();
         }
         public static void DeleteRequest(User user, string petName)
         {
