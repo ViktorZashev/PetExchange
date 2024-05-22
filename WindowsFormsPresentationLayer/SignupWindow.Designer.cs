@@ -65,6 +65,7 @@
 			LogInLinkLabel = new LinkLabel();
 			label3 = new Label();
 			SuccessMessageLabel = new Label();
+			label4 = new Label();
 			((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -171,7 +172,6 @@
 			// 
 			PasswordTextBox.Location = new Point(185, 279);
 			PasswordTextBox.Name = "PasswordTextBox";
-			PasswordTextBox.PasswordChar = '*';
 			PasswordTextBox.Size = new Size(125, 27);
 			PasswordTextBox.TabIndex = 14;
 			// 
@@ -201,7 +201,6 @@
 			// 
 			ConfirmPasswordTextBox.Location = new Point(185, 325);
 			ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
-			ConfirmPasswordTextBox.PasswordChar = '*';
 			ConfirmPasswordTextBox.Size = new Size(125, 27);
 			ConfirmPasswordTextBox.TabIndex = 21;
 			// 
@@ -412,11 +411,22 @@
 			SuccessMessageLabel.Text = "Account Successfully Created!";
 			SuccessMessageLabel.Visible = false;
 			// 
+			// label4
+			// 
+			label4.AutoSize = true;
+			label4.Font = new Font("Segoe UI", 10.8F, FontStyle.Italic | FontStyle.Underline, GraphicsUnit.Point, 0);
+			label4.Location = new Point(298, 196);
+			label4.Name = "label4";
+			label4.Size = new Size(179, 25);
+			label4.TabIndex = 40;
+			label4.Text = "All fields are required";
+			// 
 			// SignupWindow
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(813, 584);
+			Controls.Add(label4);
 			Controls.Add(SuccessMessageLabel);
 			Controls.Add(LogInLinkLabel);
 			Controls.Add(label3);
@@ -501,5 +511,6 @@
 		private LinkLabel LogInLinkLabel;
 		private Label label3;
 		private Label SuccessMessageLabel;
+		private Label label4;
 	}
 }
