@@ -31,7 +31,7 @@ namespace WindowsFormsPresentationLayer
 
 		private void LoginButton_Click(object sender, EventArgs e) // Login button has been clicked
 		{
-			LoadingImage.Visible = true;
+			Cursor.Current = Cursors.WaitCursor;
 			// Setting the Error Boxes Hiden
 			UsernameErrorBox.Visible = false;
 			PasswordErrorBox.Visible = false;
@@ -55,7 +55,7 @@ namespace WindowsFormsPresentationLayer
 			}
 			if (isNotValid)
 			{
-				LoadingImage.Visible = false;
+				Cursor.Current = Cursors.Arrow;
 				return;
 			}
 			
@@ -63,11 +63,10 @@ namespace WindowsFormsPresentationLayer
 
 			// Authentication
 			int authenticationCode = UserService.AuthenticateUserReturnsCode(username, password);
-			//LoadingImage.Visible = false;
 			if (authenticationCode == 2)
 			{
 				var authenticatedUser = UserService.ReturnUser(username, password);
-				LoadingImage.Visible = false;
+				Cursor.Current = Cursors.Arrow;
 				GoToLoggedUserPage(authenticatedUser);
 			}
 			// Displaying error message
@@ -82,7 +81,7 @@ namespace WindowsFormsPresentationLayer
 					PasswordErrorBox.Visible = true;
 					break;
 			}
-			LoadingImage.Visible = false;
+			Cursor.Current = Cursors.Arrow;
 		}
 		private void GoToLoggedUserPage(User loggedUser)
 		{

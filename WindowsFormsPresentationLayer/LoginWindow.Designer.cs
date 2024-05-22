@@ -43,11 +43,9 @@
 			panel3 = new Panel();
 			UsernameErrorBox = new Label();
 			PasswordErrorBox = new Label();
-			LoadingImage = new PictureBox();
 			((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-			((System.ComponentModel.ISupportInitialize)LoadingImage).BeginInit();
 			SuspendLayout();
 			// 
 			// pictureBox1
@@ -180,23 +178,11 @@
 			PasswordErrorBox.TabIndex = 12;
 			PasswordErrorBox.Text = "Error";
 			// 
-			// LoadingImage
-			// 
-			LoadingImage.Image = (Image)resources.GetObject("LoadingImage.Image");
-			LoadingImage.Location = new Point(554, 358);
-			LoadingImage.Name = "LoadingImage";
-			LoadingImage.Size = new Size(40, 37);
-			LoadingImage.SizeMode = PictureBoxSizeMode.Zoom;
-			LoadingImage.TabIndex = 13;
-			LoadingImage.TabStop = false;
-			LoadingImage.UseWaitCursor = true;
-			// 
 			// LoginWindow
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
-			Controls.Add(LoadingImage);
 			Controls.Add(PasswordErrorBox);
 			Controls.Add(UsernameErrorBox);
 			Controls.Add(panel2);
@@ -217,7 +203,6 @@
 			((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-			((System.ComponentModel.ISupportInitialize)LoadingImage).EndInit();
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -238,6 +223,5 @@
 		private Panel panel3;
 		private Label UsernameErrorBox;
 		private Label PasswordErrorBox;
-		private PictureBox LoadingImage;
 	}
 }
