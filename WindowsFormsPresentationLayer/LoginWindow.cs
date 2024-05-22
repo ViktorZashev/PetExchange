@@ -1,3 +1,6 @@
+using BusinessLayer.Functions;
+using BusinessLayer.Models;
+
 namespace WindowsFormsPresentationLayer
 {
 	public partial class LoginWindow : Form
@@ -7,46 +10,91 @@ namespace WindowsFormsPresentationLayer
 			InitializeComponent();
 		}
 
-		private void LoginWindow_Load(object sender, EventArgs e)
+		private void LoginWindow_Load(object sender, EventArgs e) // To correctly load the loginWindow
 		{
-
+			UsernameErrorBox.Visible = false;
+			PasswordErrorBox.Visible = false;
 		}
 
-		private void pictureBox1_Click(object sender, EventArgs e)
+		void LoginWindow_KeyPress(object sender, KeyPressEventArgs e)
 		{
-
+			if (e.KeyChar == 13) // The Enter key is Pressend
+			{
+				LoginButton_Click(sender, new EventArgs());
+			}
 		}
 
-		private void label1_Click(object sender, EventArgs e)
+		private void SignUpLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) // When the link is clicked
 		{
-
+			GoToSignUpPage();
 		}
 
-		private void pictureBox2_Click(object sender, EventArgs e)
+		private void LoginButton_Click(object sender, EventArgs e) // Login button has been clicked
 		{
+			LoadingImage.Visible = true;
+			// Setting the Error Boxes Hiden
+			UsernameErrorBox.Visible = false;
+			PasswordErrorBox.Visible = false;
+			//
 
+			string username = UsernameTestBox.Text;
+			string password = PasswordTextBox.Text;
+			#region FrontEnd Validation
+			bool isNotValid = false;
+			if (username == string.Empty)
+			{
+				UsernameErrorBox.Text = "Required";
+				UsernameErrorBox.Visible = true;
+				isNotValid = true;
+			}
+			if (password == string.Empty)
+			{
+				PasswordErrorBox.Text = "Required";
+				PasswordErrorBox.Visible = true;
+				isNotValid = true;
+			}
+			if (isNotValid)
+			{
+				LoadingImage.Visible = false;
+				return;
+			}
+			
+			#endregion
+
+			// Authentication
+			int authenticationCode = UserService.AuthenticateUserReturnsCode(username, password);
+			//LoadingImage.Visible = false;
+			if (authenticationCode == 2)
+			{
+				var authenticatedUser = UserService.ReturnUser(username, password);
+				LoadingImage.Visible = false;
+				GoToLoggedUserPage(authenticatedUser);
+			}
+			// Displaying error message
+			switch (authenticationCode)
+			{
+				case 0: // No found Username
+					UsernameErrorBox.Text = "No such username exists";
+					UsernameErrorBox.Visible = true;
+					break;
+				case 1: // Username found, but incorrect Password
+					PasswordErrorBox.Text = "Incorrect password";
+					PasswordErrorBox.Visible = true;
+					break;
+			}
+			LoadingImage.Visible = false;
 		}
-
-		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) // When the link is clicked
+		private void GoToLoggedUserPage(User loggedUser)
 		{
-			SignupWindow obj1 = new SignupWindow();
-			obj1.Show();
+			LoggedUserWindow obj = new LoggedUserWindow(loggedUser);
+			obj.Show();
 			this.Hide();
 		}
-
-		private void textBox2_TextChanged(object sender, EventArgs e)
+		private void GoToSignUpPage()
 		{
-
-		}
-
-		private void label2_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-
+			SignupWindow obj = new SignupWindow();
+			obj.Show();
+			this.Hide();
 		}
 	}
 }
