@@ -37,15 +37,15 @@
 			ContactInfoLabel = new Label();
 			AdminPasswordLabel = new Label();
 			label1 = new Label();
-			textBox1 = new TextBox();
-			textBox3 = new TextBox();
-			textBox2 = new TextBox();
-			textBox4 = new TextBox();
-			textBox5 = new TextBox();
-			textBox7 = new TextBox();
-			textBox8 = new TextBox();
+			UsernameTextBox = new TextBox();
+			NameTextBox = new TextBox();
+			PasswordTextBox = new TextBox();
+			TownTextBox = new TextBox();
+			ContactInfoTextBox = new TextBox();
+			AdminPasswordTextBox = new TextBox();
+			ConfirmPasswordTextBox = new TextBox();
 			label2 = new Label();
-			comboBox1 = new ComboBox();
+			CountryDropDownMenu = new ComboBox();
 			AdminBox = new CheckBox();
 			panel3 = new Panel();
 			panel1 = new Panel();
@@ -55,14 +55,14 @@
 			CountryUnderscore = new Panel();
 			panel7 = new Panel();
 			panel8 = new Panel();
-			LoginButton = new Button();
+			RegisterButton = new Button();
 			pictureBox1 = new PictureBox();
 			pictureBox2 = new PictureBox();
 			AdminPasswordError = new Label();
 			UsernameErrorMessage = new Label();
 			CountryInstructionsLabel = new Label();
 			pictureBox4 = new PictureBox();
-			SignUpLinkLabel = new LinkLabel();
+			LogInLinkLabel = new LinkLabel();
 			label3 = new Label();
 			SuccessMessageLabel = new Label();
 			((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -89,7 +89,6 @@
 			SignUpTitle.Size = new Size(193, 57);
 			SignUpTitle.TabIndex = 1;
 			SignUpTitle.Text = "SIGN UP";
-			SignUpTitle.Click += SignUpTitle_Click;
 			// 
 			// PasswordLabel
 			// 
@@ -121,7 +120,6 @@
 			CountryLabel.TabIndex = 4;
 			CountryLabel.Text = "Country:";
 			CountryLabel.Visible = false;
-			CountryLabel.Click += CountryLabel_Click;
 			// 
 			// ContactInfoLabel
 			// 
@@ -154,55 +152,58 @@
 			label1.TabIndex = 8;
 			label1.Text = "Name:";
 			// 
-			// textBox1
+			// UsernameTextBox
 			// 
-			textBox1.Location = new Point(185, 227);
-			textBox1.Name = "textBox1";
-			textBox1.Size = new Size(125, 27);
-			textBox1.TabIndex = 9;
+			UsernameTextBox.Location = new Point(185, 227);
+			UsernameTextBox.Name = "UsernameTextBox";
+			UsernameTextBox.Size = new Size(125, 27);
+			UsernameTextBox.TabIndex = 9;
+			UsernameTextBox.Leave += UsernameTextBox_Leave;
 			// 
-			// textBox3
+			// NameTextBox
 			// 
-			textBox3.Location = new Point(431, 227);
-			textBox3.Name = "textBox3";
-			textBox3.Size = new Size(156, 27);
-			textBox3.TabIndex = 9;
+			NameTextBox.Location = new Point(431, 227);
+			NameTextBox.Name = "NameTextBox";
+			NameTextBox.Size = new Size(156, 27);
+			NameTextBox.TabIndex = 9;
 			// 
-			// textBox2
+			// PasswordTextBox
 			// 
-			textBox2.Location = new Point(185, 279);
-			textBox2.Name = "textBox2";
-			textBox2.Size = new Size(125, 27);
-			textBox2.TabIndex = 14;
+			PasswordTextBox.Location = new Point(185, 279);
+			PasswordTextBox.Name = "PasswordTextBox";
+			PasswordTextBox.PasswordChar = '*';
+			PasswordTextBox.Size = new Size(125, 27);
+			PasswordTextBox.TabIndex = 14;
 			// 
-			// textBox4
+			// TownTextBox
 			// 
-			textBox4.Location = new Point(426, 283);
-			textBox4.Name = "textBox4";
-			textBox4.Size = new Size(125, 27);
-			textBox4.TabIndex = 15;
+			TownTextBox.Location = new Point(426, 283);
+			TownTextBox.Name = "TownTextBox";
+			TownTextBox.Size = new Size(125, 27);
+			TownTextBox.TabIndex = 15;
 			// 
-			// textBox5
+			// ContactInfoTextBox
 			// 
-			textBox5.Location = new Point(483, 322);
-			textBox5.Name = "textBox5";
-			textBox5.Size = new Size(313, 27);
-			textBox5.TabIndex = 16;
+			ContactInfoTextBox.Location = new Point(483, 322);
+			ContactInfoTextBox.Name = "ContactInfoTextBox";
+			ContactInfoTextBox.Size = new Size(313, 27);
+			ContactInfoTextBox.TabIndex = 16;
 			// 
-			// textBox7
+			// AdminPasswordTextBox
 			// 
-			textBox7.Location = new Point(408, 407);
-			textBox7.Name = "textBox7";
-			textBox7.Size = new Size(125, 27);
-			textBox7.TabIndex = 18;
-			textBox7.Visible = false;
+			AdminPasswordTextBox.Location = new Point(408, 407);
+			AdminPasswordTextBox.Name = "AdminPasswordTextBox";
+			AdminPasswordTextBox.Size = new Size(125, 27);
+			AdminPasswordTextBox.TabIndex = 18;
+			AdminPasswordTextBox.Visible = false;
 			// 
-			// textBox8
+			// ConfirmPasswordTextBox
 			// 
-			textBox8.Location = new Point(185, 325);
-			textBox8.Name = "textBox8";
-			textBox8.Size = new Size(125, 27);
-			textBox8.TabIndex = 21;
+			ConfirmPasswordTextBox.Location = new Point(185, 325);
+			ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
+			ConfirmPasswordTextBox.PasswordChar = '*';
+			ConfirmPasswordTextBox.Size = new Size(125, 27);
+			ConfirmPasswordTextBox.TabIndex = 21;
 			// 
 			// label2
 			// 
@@ -213,16 +214,15 @@
 			label2.Size = new Size(161, 23);
 			label2.TabIndex = 19;
 			label2.Text = "Confirm Password:";
-			label2.Click += label2_Click;
 			// 
-			// comboBox1
+			// CountryDropDownMenu
 			// 
-			comboBox1.FormattingEnabled = true;
-			comboBox1.Location = new Point(643, 281);
-			comboBox1.Name = "comboBox1";
-			comboBox1.Size = new Size(151, 28);
-			comboBox1.TabIndex = 22;
-			comboBox1.Visible = false;
+			CountryDropDownMenu.FormattingEnabled = true;
+			CountryDropDownMenu.Location = new Point(643, 281);
+			CountryDropDownMenu.Name = "CountryDropDownMenu";
+			CountryDropDownMenu.Size = new Size(151, 28);
+			CountryDropDownMenu.TabIndex = 22;
+			CountryDropDownMenu.Visible = false;
 			// 
 			// AdminBox
 			// 
@@ -233,7 +233,6 @@
 			AdminBox.TabIndex = 23;
 			AdminBox.Text = "Register As Admin";
 			AdminBox.UseVisualStyleBackColor = true;
-			AdminBox.CheckedChanged += AdminBox_CheckedChanged;
 			// 
 			// panel3
 			// 
@@ -301,18 +300,18 @@
 			panel8.TabIndex = 27;
 			panel8.Visible = false;
 			// 
-			// LoginButton
+			// RegisterButton
 			// 
-			LoginButton.BackColor = Color.FromArgb(0, 117, 214);
-			LoginButton.FlatAppearance.BorderColor = Color.Black;
-			LoginButton.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			LoginButton.ForeColor = Color.White;
-			LoginButton.Location = new Point(232, 461);
-			LoginButton.Name = "LoginButton";
-			LoginButton.Size = new Size(355, 55);
-			LoginButton.TabIndex = 29;
-			LoginButton.Text = "REGISTER";
-			LoginButton.UseVisualStyleBackColor = false;
+			RegisterButton.BackColor = Color.FromArgb(0, 117, 214);
+			RegisterButton.FlatAppearance.BorderColor = Color.Black;
+			RegisterButton.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+			RegisterButton.ForeColor = Color.White;
+			RegisterButton.Location = new Point(232, 461);
+			RegisterButton.Name = "RegisterButton";
+			RegisterButton.Size = new Size(355, 55);
+			RegisterButton.TabIndex = 29;
+			RegisterButton.Text = "REGISTER";
+			RegisterButton.UseVisualStyleBackColor = false;
 			// 
 			// pictureBox1
 			// 
@@ -323,7 +322,6 @@
 			pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 			pictureBox1.TabIndex = 30;
 			pictureBox1.TabStop = false;
-			pictureBox1.Click += pictureBox1_Click;
 			// 
 			// pictureBox2
 			// 
@@ -381,16 +379,16 @@
 			pictureBox4.TabIndex = 36;
 			pictureBox4.TabStop = false;
 			// 
-			// SignUpLinkLabel
+			// LogInLinkLabel
 			// 
-			SignUpLinkLabel.AutoSize = true;
-			SignUpLinkLabel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-			SignUpLinkLabel.Location = new Point(478, 550);
-			SignUpLinkLabel.Name = "SignUpLinkLabel";
-			SignUpLinkLabel.Size = new Size(62, 25);
-			SignUpLinkLabel.TabIndex = 38;
-			SignUpLinkLabel.TabStop = true;
-			SignUpLinkLabel.Text = "Log In";
+			LogInLinkLabel.AutoSize = true;
+			LogInLinkLabel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+			LogInLinkLabel.Location = new Point(478, 550);
+			LogInLinkLabel.Name = "LogInLinkLabel";
+			LogInLinkLabel.Size = new Size(62, 25);
+			LogInLinkLabel.TabIndex = 38;
+			LogInLinkLabel.TabStop = true;
+			LogInLinkLabel.Text = "Log In";
 			// 
 			// label3
 			// 
@@ -420,7 +418,7 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(813, 584);
 			Controls.Add(SuccessMessageLabel);
-			Controls.Add(SignUpLinkLabel);
+			Controls.Add(LogInLinkLabel);
 			Controls.Add(label3);
 			Controls.Add(pictureBox4);
 			Controls.Add(CountryInstructionsLabel);
@@ -428,7 +426,7 @@
 			Controls.Add(AdminPasswordError);
 			Controls.Add(pictureBox2);
 			Controls.Add(pictureBox1);
-			Controls.Add(LoginButton);
+			Controls.Add(RegisterButton);
 			Controls.Add(panel8);
 			Controls.Add(panel7);
 			Controls.Add(CountryUnderscore);
@@ -438,15 +436,15 @@
 			Controls.Add(panel1);
 			Controls.Add(panel3);
 			Controls.Add(AdminBox);
-			Controls.Add(comboBox1);
-			Controls.Add(textBox8);
+			Controls.Add(CountryDropDownMenu);
+			Controls.Add(ConfirmPasswordTextBox);
 			Controls.Add(label2);
-			Controls.Add(textBox7);
-			Controls.Add(textBox5);
-			Controls.Add(textBox4);
-			Controls.Add(textBox2);
-			Controls.Add(textBox3);
-			Controls.Add(textBox1);
+			Controls.Add(AdminPasswordTextBox);
+			Controls.Add(ContactInfoTextBox);
+			Controls.Add(TownTextBox);
+			Controls.Add(PasswordTextBox);
+			Controls.Add(NameTextBox);
+			Controls.Add(UsernameTextBox);
 			Controls.Add(label1);
 			Controls.Add(AdminPasswordLabel);
 			Controls.Add(ContactInfoLabel);
@@ -475,15 +473,15 @@
 		private Label ContactInfoLabel;
 		private Label AdminPasswordLabel;
 		private Label label1;
-		private TextBox textBox1;
-		private TextBox textBox3;
-		private TextBox textBox2;
-		private TextBox textBox4;
-		private TextBox textBox5;
-		private TextBox textBox7;
-		private TextBox textBox8;
+		private TextBox UsernameTextBox;
+		private TextBox NameTextBox;
+		private TextBox PasswordTextBox;
+		private TextBox TownTextBox;
+		private TextBox ContactInfoTextBox;
+		private TextBox AdminPasswordTextBox;
+		private TextBox ConfirmPasswordTextBox;
 		private Label label2;
-		private ComboBox comboBox1;
+		private ComboBox CountryDropDownMenu;
 		private CheckBox AdminBox;
 		private Panel panel3;
 		private Panel panel1;
@@ -493,14 +491,14 @@
 		private Panel CountryUnderscore;
 		private Panel panel7;
 		private Panel panel8;
-		private Button LoginButton;
+		private Button RegisterButton;
 		private PictureBox pictureBox1;
 		private PictureBox pictureBox2;
 		private Label AdminPasswordError;
 		private Label UsernameErrorMessage;
 		private Label CountryInstructionsLabel;
 		private PictureBox pictureBox4;
-		private LinkLabel SignUpLinkLabel;
+		private LinkLabel LogInLinkLabel;
 		private Label label3;
 		private Label SuccessMessageLabel;
 	}
