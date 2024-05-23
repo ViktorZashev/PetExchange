@@ -165,7 +165,8 @@ namespace WindowsFormsPresentationLayer
 
 		private void RegisterButton_Click(object sender, EventArgs e)
 		{
-			SuccessMessageLabel.Visible = true;
+			SuccessMessageLabel.Visible = false;
+			/*
 			MessageBox.Show("Name " + Name +
 			"Username " + Username +
 			"Password " + Password +
@@ -173,22 +174,60 @@ namespace WindowsFormsPresentationLayer
 			"Country Name" + CountryName +
 			"Contact Info " + ContactInfo +
 			"Admin" + isAdmin);
-			if (CountryService.RetrieveCountry(CountryName) == null)
+			*/
+			// Checking all the validation criteria are met
+			if ((UsernameErrorMessage.ForeColor == Color.Green)
+			&& PasswordsDifferentErrorMessage.Visible == false
+			&& AdminPasswordError.Visible == false
+			&& Name != ""
+			&& Username != ""
+			&& Password != ""
+			&& TownName != ""
+			&& CountryName != ""
+			&& ContactInfo != ""
+			)
 			{
-				CountryService.Create(new Country(CountryName));
+				try
+				{
+					if (CountryService.RetrieveCountry(CountryName) == null)
+					{
+						CountryService.Create(new Country(CountryName));
+					}
+					Town inputedTown = new Town();
+					if (!TownService.CheckIfExists(TownName))
+					{
+						inputedTown.Country = CountryService.RetrieveCountry(CountryName);
+						inputedTown.CountryId = inputedTown.Country.Id;
+						inputedTown.Name = TownName;
+						TownService.Create(inputedTown);
+					}
+					inputedTown = TownService.RetrieveTown(TownName);
+					var newUser = new User(inputedTown, new List<Pet>(), Name, "photo_path", isAdmin, ContactInfo, Username, Password);
+					UserService.Create(newUser);
+					SuccessMessageLabel.Visible = true;
+				}
+				catch
+				{
+					MessageBox.Show("A system error occured when trying to register user data!");
+				}
 			}
-			Town inputedTown = new Town();
-			if (!TownService.CheckIfExists(TownName))
+			else
 			{
-				inputedTown.Country = CountryService.RetrieveCountry(CountryName);
-				inputedTown.CountryId = inputedTown.Country.Id;
-				inputedTown.Name = TownName;
-				TownService.Create(inputedTown);
+				MessageBox.Show("Please fill in all fields!" + "\n" +
+				"Resolve all errors!");
+
 			}
-			inputedTown = TownService.RetrieveTown(TownName);
-			var newUser = new User(inputedTown, new List<Pet>(), Name, "photo_path", isAdmin, ContactInfo, Username, Password);
-			UserService.Create(newUser);
-			SuccessMessageLabel.Visible = true;
+		}
+
+		private void LogInLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			GoToLogInPage();
+		}
+		private void GoToLogInPage()
+		{
+			LoginWindow obj = new LoginWindow();
+			obj.Show();
+			this.Hide();
 		}
 	}
 }
