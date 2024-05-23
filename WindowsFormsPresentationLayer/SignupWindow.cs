@@ -1,4 +1,6 @@
-﻿using BusinessLayer.Functions;
+﻿using BusinessLayer.Database_Functions;
+using BusinessLayer.Functions;
+using BusinessLayer.Models;
 using DataLayer;
 using DataLayer.ProjectDbContext;
 using System;
@@ -15,11 +17,27 @@ namespace WindowsFormsPresentationLayer
 {
 	public partial class SignupWindow : Form
 	{
+		private static string Username;
+		private static string Password;
+		private static string Name;
+		private static string TownName;
+		private static string CountryName;
+		private static string ContactInfo;
+		private static bool isAdmin;
 		public SignupWindow()
 		{
 			InitializeComponent();
 		}
-
+		private static void ResetVariables()
+		{
+			Username = "";
+			Password = "";
+			Name = "";
+			TownName = "";
+			CountryName = "";
+			ContactInfo = "";
+			isAdmin = false;
+		}
 		private void SignupWindow_Load(object sender, EventArgs e)
 		{
 			// Loading the countries in the dropdownList
@@ -28,6 +46,7 @@ namespace WindowsFormsPresentationLayer
 			{
 				CountryDropDownMenu.Items.Add(name);
 			}
+			ResetVariables();
 		}
 
 		private void UsernameTextBox_Leave(object sender, EventArgs e)// Verifies that it is unique
@@ -35,6 +54,13 @@ namespace WindowsFormsPresentationLayer
 			UsernameErrorMessage.Visible = false;
 			Cursor = Cursors.WaitCursor;
 			var userName = UsernameTextBox.Text;
+			if (userName == "")
+			{
+				UsernameErrorMessage.Text = "Username can't be empty";
+				UsernameErrorMessage.ForeColor = Color.Red;
+				UsernameErrorMessage.Visible = true;
+				return;
+			}
 			var code = UserService.AuthenticateUserReturnsCode(userName, "");
 			if (code != 0) // Such username is found
 			{
@@ -47,6 +73,7 @@ namespace WindowsFormsPresentationLayer
 				UsernameErrorMessage.Text = "Valid username";
 				UsernameErrorMessage.ForeColor = Color.Green;
 				UsernameErrorMessage.Visible = true;
+				Username = UsernameTextBox.Text;
 			}
 			Cursor = Cursors.Default;
 		}
@@ -55,6 +82,7 @@ namespace WindowsFormsPresentationLayer
 			if (PasswordTextBox.Text == ConfirmPasswordTextBox.Text)
 			{
 				PasswordsDifferentErrorMessage.Visible = false;
+				Password = PasswordTextBox.Text;
 			}
 			if (PasswordTextBox.Text != ConfirmPasswordTextBox.Text)
 			{
@@ -65,12 +93,17 @@ namespace WindowsFormsPresentationLayer
 		private void TownTextBox_Leave(object sender, EventArgs e) // Completed the input of a country
 		{
 			var inputedTown = TownTextBox.Text;
+			TownName = inputedTown;
 			if (TownService.CheckIfExists(inputedTown)) // The town is already registered in system
 			{
 				CountryLabel.Visible = false;
 				CountryUnderscore.Visible = false;
 				CountryInstructionsLabel.Visible = false;
 				CountryDropDownMenu.Visible = false;
+				TownName = inputedTown;
+				Town foundTown = TownService.RetrieveTown(inputedTown);
+				Guid countryId = foundTown.CountryId;
+				CountryName = CountryService.Read(countryId).Name;
 			}
 			else // The town is unregistered, enter country also
 			{
@@ -79,6 +112,83 @@ namespace WindowsFormsPresentationLayer
 				CountryInstructionsLabel.Visible = true;
 				CountryDropDownMenu.Visible = true;
 			}
+		}
+		private void CountryDropDownMenu_Leave(object sender, EventArgs e) // Triggers when the user enters and leaves the dropdown menu
+		{
+			CountryName = CountryDropDownMenu.Text;
+		}
+
+		private void AdminBox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (AdminBox.Checked == true)
+			{
+				AdminPasswordTextBox.Text = "";
+				AdminPasswordError.Visible = false;
+				AdminPasswordLabel.Visible = true;
+				AdminPasswordTextBox.Visible = true;
+				AdminUnderscore.Visible = true;
+			}
+			else
+			{
+				AdminPasswordError.Visible = false;
+				AdminPasswordLabel.Visible = false;
+				AdminPasswordTextBox.Visible = false;
+				AdminUnderscore.Visible = false;
+				isAdmin = false;
+			}
+		}
+
+		private void AdminPasswordTextBox_TextChanged(object sender, EventArgs e) // Admin password has been entered
+		{
+			var inputedText = AdminPasswordTextBox.Text;
+			if (inputedText == DatabaseFunctions.adminPassword)
+			{
+				AdminPasswordError.Visible = false;
+				isAdmin = true;
+			}
+			else
+			{
+				AdminPasswordError.Visible = true;
+				isAdmin = false;
+			}
+		}
+
+		private void ContactInfoTextBox_TextChanged(object sender, EventArgs e)
+		{
+			ContactInfo = ContactInfoTextBox.Text;
+		}
+
+		private void NameTextBox_TextChanged(object sender, EventArgs e)
+		{
+			Name = NameTextBox.Text;
+		}
+
+		private void RegisterButton_Click(object sender, EventArgs e)
+		{
+			SuccessMessageLabel.Visible = true;
+			MessageBox.Show("Name " + Name +
+			"Username " + Username +
+			"Password " + Password +
+			"Town Name " + TownName +
+			"Country Name" + CountryName +
+			"Contact Info " + ContactInfo +
+			"Admin" + isAdmin);
+			if (CountryService.RetrieveCountry(CountryName) == null)
+			{
+				CountryService.Create(new Country(CountryName));
+			}
+			Town inputedTown = new Town();
+			if (!TownService.CheckIfExists(TownName))
+			{
+				inputedTown.Country = CountryService.RetrieveCountry(CountryName);
+				inputedTown.CountryId = inputedTown.Country.Id;
+				inputedTown.Name = TownName;
+				TownService.Create(inputedTown);
+			}
+			inputedTown = TownService.RetrieveTown(TownName);
+			var newUser = new User(inputedTown, new List<Pet>(), Name, "photo_path", isAdmin, ContactInfo, Username, Password);
+			UserService.Create(newUser);
+			SuccessMessageLabel.Visible = true;
 		}
 	}
 }

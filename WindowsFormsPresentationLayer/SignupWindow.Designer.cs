@@ -54,7 +54,7 @@
 			TownUnderScore = new Panel();
 			CountryUnderscore = new Panel();
 			panel7 = new Panel();
-			panel8 = new Panel();
+			AdminUnderscore = new Panel();
 			RegisterButton = new Button();
 			pictureBox1 = new PictureBox();
 			pictureBox2 = new PictureBox();
@@ -168,6 +168,7 @@
 			NameTextBox.Name = "NameTextBox";
 			NameTextBox.Size = new Size(156, 27);
 			NameTextBox.TabIndex = 9;
+			NameTextBox.TextChanged += NameTextBox_TextChanged;
 			// 
 			// PasswordTextBox
 			// 
@@ -190,6 +191,7 @@
 			ContactInfoTextBox.Name = "ContactInfoTextBox";
 			ContactInfoTextBox.Size = new Size(313, 27);
 			ContactInfoTextBox.TabIndex = 16;
+			ContactInfoTextBox.TextChanged += ContactInfoTextBox_TextChanged;
 			// 
 			// AdminPasswordTextBox
 			// 
@@ -198,6 +200,7 @@
 			AdminPasswordTextBox.Size = new Size(125, 27);
 			AdminPasswordTextBox.TabIndex = 18;
 			AdminPasswordTextBox.Visible = false;
+			AdminPasswordTextBox.TextChanged += AdminPasswordTextBox_TextChanged;
 			// 
 			// ConfirmPasswordTextBox
 			// 
@@ -225,6 +228,7 @@
 			CountryDropDownMenu.Size = new Size(151, 28);
 			CountryDropDownMenu.TabIndex = 22;
 			CountryDropDownMenu.Visible = false;
+			CountryDropDownMenu.Leave += CountryDropDownMenu_Leave;
 			// 
 			// AdminBox
 			// 
@@ -235,6 +239,7 @@
 			AdminBox.TabIndex = 23;
 			AdminBox.Text = "Register As Admin";
 			AdminBox.UseVisualStyleBackColor = true;
+			AdminBox.CheckedChanged += AdminBox_CheckedChanged;
 			// 
 			// panel3
 			// 
@@ -293,14 +298,14 @@
 			panel7.Size = new Size(434, 1);
 			panel7.TabIndex = 28;
 			// 
-			// panel8
+			// AdminUnderscore
 			// 
-			panel8.BackColor = Color.Black;
-			panel8.Location = new Point(253, 440);
-			panel8.Name = "panel8";
-			panel8.Size = new Size(294, 1);
-			panel8.TabIndex = 27;
-			panel8.Visible = false;
+			AdminUnderscore.BackColor = Color.Black;
+			AdminUnderscore.Location = new Point(253, 440);
+			AdminUnderscore.Name = "AdminUnderscore";
+			AdminUnderscore.Size = new Size(294, 1);
+			AdminUnderscore.TabIndex = 27;
+			AdminUnderscore.Visible = false;
 			// 
 			// RegisterButton
 			// 
@@ -314,6 +319,7 @@
 			RegisterButton.TabIndex = 29;
 			RegisterButton.Text = "REGISTER";
 			RegisterButton.UseVisualStyleBackColor = false;
+			RegisterButton.Click += RegisterButton_Click;
 			// 
 			// pictureBox1
 			// 
@@ -453,7 +459,7 @@
 			Controls.Add(pictureBox2);
 			Controls.Add(pictureBox1);
 			Controls.Add(RegisterButton);
-			Controls.Add(panel8);
+			Controls.Add(AdminUnderscore);
 			Controls.Add(panel7);
 			Controls.Add(CountryUnderscore);
 			Controls.Add(TownUnderScore);
@@ -516,7 +522,7 @@
 		private Panel TownUnderScore;
 		private Panel CountryUnderscore;
 		private Panel panel7;
-		private Panel panel8;
+		private Panel AdminUnderscore;
 		private Button RegisterButton;
 		private PictureBox pictureBox1;
 		private PictureBox pictureBox2;
