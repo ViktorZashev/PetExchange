@@ -22,7 +22,12 @@ namespace WindowsFormsPresentationLayer
 
 		private void SignupWindow_Load(object sender, EventArgs e)
 		{
-			//UserService.LoadDb();
+			// Loading the countries in the dropdownList
+			var countryNames = CountryService.ReadAll().Select(x => x.Name);
+			foreach (string name in countryNames)
+			{
+				CountryDropDownMenu.Items.Add(name);
+			}
 		}
 
 		private void UsernameTextBox_Leave(object sender, EventArgs e)// Verifies that it is unique
@@ -45,11 +50,35 @@ namespace WindowsFormsPresentationLayer
 			}
 			Cursor = Cursors.Default;
 		}
-		/*
-		private void SignupWindow_Shown(object sender, EventArgs e)
+		private void ConfirmPasswordTextBox_Leave(object sender, EventArgs e)
 		{
-			UserService.LoadDb();
+			if (PasswordTextBox.Text == ConfirmPasswordTextBox.Text)
+			{
+				PasswordsDifferentErrorMessage.Visible = false;
+			}
+			if (PasswordTextBox.Text != ConfirmPasswordTextBox.Text)
+			{
+				PasswordsDifferentErrorMessage.Visible = true;
+			}
 		}
-		*/
+
+		private void TownTextBox_Leave(object sender, EventArgs e) // Completed the input of a country
+		{
+			var inputedTown = TownTextBox.Text;
+			if (TownService.CheckIfExists(inputedTown)) // The town is already registered in system
+			{
+				CountryLabel.Visible = false;
+				CountryUnderscore.Visible = false;
+				CountryInstructionsLabel.Visible = false;
+				CountryDropDownMenu.Visible = false;
+			}
+			else // The town is unregistered, enter country also
+			{
+				CountryLabel.Visible = true;
+				CountryUnderscore.Visible = true;
+				CountryInstructionsLabel.Visible = true;
+				CountryDropDownMenu.Visible = true;
+			}
+		}
 	}
 }

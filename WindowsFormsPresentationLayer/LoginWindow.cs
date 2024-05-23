@@ -14,6 +14,13 @@ namespace WindowsFormsPresentationLayer
 		{
 			UsernameErrorBox.Visible = false;
 			PasswordErrorBox.Visible = false;
+			// To Load all the dbContexts to prevent the slow loading later
+			UserService.LoadDb();
+			CountryService.LoadDb();
+			PetService.LoadDb();
+			PublicOfferService.LoadDb();
+			UserRequestsService.LoadDb();
+			TownService.LoadDb();
 		}
 
 		void LoginWindow_KeyPress(object sender, KeyPressEventArgs e)
@@ -91,12 +98,9 @@ namespace WindowsFormsPresentationLayer
 		}
 		private void GoToSignUpPage()
 		{
-			Cursor.Current = Cursors.WaitCursor;
-			UserService.LoadDb(); // Loading the UserService to avoid waiting in the form
 			SignupWindow obj = new SignupWindow();
 			obj.Show();
 			this.Hide();
-			Cursor.Current = Cursors.Default;
 		}
 	}
 }

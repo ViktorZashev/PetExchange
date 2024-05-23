@@ -61,5 +61,17 @@ namespace BusinessLayer.Functions
         {
             return _CountryContext.RetrieveCountry(name);
         }
-    }
+		public static void LoadDb()
+		{
+			try
+			{
+				Delete(Guid.NewGuid());
+			}
+			catch
+			{
+
+			}
+		}
+
+	}
 }

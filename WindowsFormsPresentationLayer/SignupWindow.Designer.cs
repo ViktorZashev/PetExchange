@@ -182,6 +182,7 @@
 			TownTextBox.Name = "TownTextBox";
 			TownTextBox.Size = new Size(125, 27);
 			TownTextBox.TabIndex = 15;
+			TownTextBox.Leave += TownTextBox_Leave;
 			// 
 			// ContactInfoTextBox
 			// 
@@ -204,6 +205,7 @@
 			ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
 			ConfirmPasswordTextBox.Size = new Size(125, 27);
 			ConfirmPasswordTextBox.TabIndex = 21;
+			ConfirmPasswordTextBox.Leave += ConfirmPasswordTextBox_Leave;
 			// 
 			// label2
 			// 
@@ -480,7 +482,6 @@
 			Name = "SignupWindow";
 			Text = "Sign Up";
 			Load += SignupWindow_Load;
-			//Shown += SignupWindow_Shown;
 			((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();

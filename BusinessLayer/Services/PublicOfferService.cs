@@ -83,5 +83,16 @@ namespace BusinessLayer.Functions
             var newOffer = new PublicOffer(pet);
             Create(newOffer);
 		}
+		public static void LoadDb()
+		{
+			try
+			{
+				Delete(Guid.NewGuid());
+			}
+			catch
+			{
+
+			}
+		}
 	}
 }

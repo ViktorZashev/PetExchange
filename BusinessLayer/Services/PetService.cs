@@ -122,5 +122,17 @@ namespace BusinessLayer.Functions
 				Console.WriteLine();
 			}
 		}
+		public static void LoadDb()
+		{
+			try
+			{
+				Delete(Guid.NewGuid());
+			}
+			catch
+			{
+
+			}
+		}
 	}
+	
 }

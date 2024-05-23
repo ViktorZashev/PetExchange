@@ -86,5 +86,16 @@ namespace BusinessLayer.Functions
             var request = new UserRequests(offer, user, false);
             Create(request);
         }
-    }
+		public static void LoadDb()
+		{
+			try
+			{
+				Delete(Guid.NewGuid());
+			}
+			catch
+			{
+
+			}
+		}
+	}
 }

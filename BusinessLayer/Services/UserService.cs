@@ -83,7 +83,7 @@ namespace BusinessLayer.Functions
 		{
 			try
 			{
-				ReturnUser("nonExistentUser", "nonExistentPassword");
+				Delete(Guid.NewGuid());
 			}
 			catch
 			{

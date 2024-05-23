@@ -70,5 +70,16 @@ namespace BusinessLayer.Functions
             }
             return foundTown;
         }
-    }
+		public static void LoadDb()
+		{
+			try
+			{
+				Delete(Guid.NewGuid());
+			}
+			catch
+			{
+
+			}
+		}
+	}
 }
