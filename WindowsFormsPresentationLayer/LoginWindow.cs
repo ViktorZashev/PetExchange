@@ -91,9 +91,12 @@ namespace WindowsFormsPresentationLayer
 		}
 		private void GoToSignUpPage()
 		{
+			Cursor.Current = Cursors.WaitCursor;
+			UserService.LoadDb(); // Loading the UserService to avoid waiting in the form
 			SignupWindow obj = new SignupWindow();
 			obj.Show();
 			this.Hide();
+			Cursor.Current = Cursors.Default;
 		}
 	}
 }

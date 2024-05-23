@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.Functions;
+using DataLayer;
+using DataLayer.ProjectDbContext;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,11 +22,12 @@ namespace WindowsFormsPresentationLayer
 
 		private void SignupWindow_Load(object sender, EventArgs e)
 		{
+			//UserService.LoadDb();
 		}
 
 		private void UsernameTextBox_Leave(object sender, EventArgs e)// Verifies that it is unique
 		{
-	        UsernameErrorMessage.Visible = false;
+			UsernameErrorMessage.Visible = false;
 			Cursor = Cursors.WaitCursor;
 			var userName = UsernameTextBox.Text;
 			var code = UserService.AuthenticateUserReturnsCode(userName, "");
@@ -42,5 +45,11 @@ namespace WindowsFormsPresentationLayer
 			}
 			Cursor = Cursors.Default;
 		}
+		/*
+		private void SignupWindow_Shown(object sender, EventArgs e)
+		{
+			UserService.LoadDb();
+		}
+		*/
 	}
 }

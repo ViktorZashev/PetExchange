@@ -66,6 +66,7 @@
 			label3 = new Label();
 			SuccessMessageLabel = new Label();
 			label4 = new Label();
+			PasswordsDifferentErrorMessage = new Label();
 			((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -421,11 +422,24 @@
 			label4.TabIndex = 40;
 			label4.Text = "All fields are required";
 			// 
+			// PasswordsDifferentErrorMessage
+			// 
+			PasswordsDifferentErrorMessage.AutoSize = true;
+			PasswordsDifferentErrorMessage.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+			PasswordsDifferentErrorMessage.ForeColor = Color.Red;
+			PasswordsDifferentErrorMessage.Location = new Point(60, 359);
+			PasswordsDifferentErrorMessage.Name = "PasswordsDifferentErrorMessage";
+			PasswordsDifferentErrorMessage.Size = new Size(157, 20);
+			PasswordsDifferentErrorMessage.TabIndex = 41;
+			PasswordsDifferentErrorMessage.Text = "Passwords don't match";
+			PasswordsDifferentErrorMessage.Visible = false;
+			// 
 			// SignupWindow
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(813, 584);
+			Controls.Add(PasswordsDifferentErrorMessage);
 			Controls.Add(label4);
 			Controls.Add(SuccessMessageLabel);
 			Controls.Add(LogInLinkLabel);
@@ -466,6 +480,7 @@
 			Name = "SignupWindow";
 			Text = "Sign Up";
 			Load += SignupWindow_Load;
+			//Shown += SignupWindow_Shown;
 			((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
 			((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
@@ -512,5 +527,6 @@
 		private Label label3;
 		private Label SuccessMessageLabel;
 		private Label label4;
+		private Label PasswordsDifferentErrorMessage;
 	}
 }
