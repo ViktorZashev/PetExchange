@@ -48,8 +48,7 @@ namespace WindowsFormsPresentationLayer.LoggedUser_Forms
             };
 
             PetService.Create(NewPet);
-            // Close the form and set the DialogResult to OK to indicate successful registration.
-            this.DialogResult = DialogResult.OK;
+            MessageBox.Show("Pet created successfully!");
             this.Close();
         }
     }

@@ -58,6 +58,7 @@ namespace WindowsFormsPresentationLayer.LoggedUser_Forms
             PetService.Update(updatedPet);
             // Show a message indicating success
             MessageBox.Show("Pet data updated successfully!");
+            this.Close();
         }
     }
 }

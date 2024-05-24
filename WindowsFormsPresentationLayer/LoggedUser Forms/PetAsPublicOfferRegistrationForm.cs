@@ -38,6 +38,7 @@ namespace WindowsFormsPresentationLayer.LoggedUser_Forms
             {
                 PublicOfferService.RegisterPet(petName, LoggedUser);
                 MessageBox.Show("Pet registered as a Public Offer successfully!");
+                this.Close();
             }
             catch
             {

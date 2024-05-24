@@ -76,5 +76,11 @@ namespace WindowsFormsPresentationLayer
             PetAsPublicOfferRegistrationForm obj = new PetAsPublicOfferRegistrationForm(LoggedUser);
             obj.Show();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            DeletePublicOfferForm obj = new DeletePublicOfferForm(LoggedUser);
+            obj.Show();
+        }
     }
 }

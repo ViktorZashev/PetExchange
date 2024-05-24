@@ -171,6 +171,7 @@
             button6.TabIndex = 39;
             button6.Text = "Delete public offer";
             button6.UseVisualStyleBackColor = false;
+            button6.Click += button6_Click;
             // 
             // label5
             // 
