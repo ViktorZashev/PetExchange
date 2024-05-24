@@ -70,5 +70,11 @@ namespace WindowsFormsPresentationLayer
             PublicOfferDisplayForm obj = new PublicOfferDisplayForm(availableOffers);
             obj.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            PetAsPublicOfferRegistrationForm obj = new PetAsPublicOfferRegistrationForm(LoggedUser);
+            obj.Show();
+        }
     }
 }

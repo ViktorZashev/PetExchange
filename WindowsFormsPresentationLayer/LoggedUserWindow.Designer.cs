@@ -156,6 +156,7 @@
             button4.TabIndex = 38;
             button4.Text = "Register Pet As Public Offer";
             button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
             // 
             // button6
             // 
