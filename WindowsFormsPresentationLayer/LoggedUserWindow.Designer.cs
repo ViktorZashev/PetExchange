@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            label2 = new Label();
+            UsernameTextBox = new Label();
             ShowAllPetsButton = new Button();
             RegisterNewPetButton = new Button();
             DeletePetButton = new Button();
@@ -58,14 +58,14 @@
             label1.TabIndex = 0;
             label1.Text = "HELLO";
             // 
-            // label2
+            // UsernameTextBox
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(621, 57);
-            label2.Name = "label2";
-            label2.Size = new Size(60, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Username";
+            UsernameTextBox.AutoSize = true;
+            UsernameTextBox.Location = new Point(621, 57);
+            UsernameTextBox.Name = "UsernameTextBox";
+            UsernameTextBox.Size = new Size(60, 15);
+            UsernameTextBox.TabIndex = 1;
+            UsernameTextBox.Text = "Username";
             // 
             // ShowAllPetsButton
             // 
@@ -248,6 +248,7 @@
             LogInLinkLabel.TabIndex = 46;
             LogInLinkLabel.TabStop = true;
             LogInLinkLabel.Text = "Back to Main Menu";
+            LogInLinkLabel.LinkClicked += LogInLinkLabel_LinkClicked;
             // 
             // button1
             // 
@@ -277,6 +278,7 @@
             button2.TabIndex = 48;
             button2.Text = "Create a new Request";
             button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -315,7 +317,7 @@
             Controls.Add(DeletePetButton);
             Controls.Add(RegisterNewPetButton);
             Controls.Add(ShowAllPetsButton);
-            Controls.Add(label2);
+            Controls.Add(UsernameTextBox);
             Controls.Add(label1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "LoggedUserWindow";
@@ -328,7 +330,7 @@
         #endregion
 
         private Label label1;
-        private Label label2;
+        private Label UsernameTextBox;
         private Button ShowAllPetsButton;
         private Button RegisterNewPetButton;
         private Button DeletePetButton;

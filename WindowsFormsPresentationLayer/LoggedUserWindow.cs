@@ -27,6 +27,7 @@ namespace WindowsFormsPresentationLayer
                 throw new NullReferenceException("Logged User");
             }
             LoggedUser = user;
+            UsernameTextBox.Text = user.Name;
         }
 
         private void LoggedUserWindow_Load(object sender, EventArgs e)
@@ -112,6 +113,19 @@ namespace WindowsFormsPresentationLayer
         {
             DeleteUserRequestForm obj = new DeleteUserRequestForm(LoggedUser);
             obj.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CreateUserRequestForm obj = new CreateUserRequestForm(LoggedUser);
+            obj.Show();
+        }
+
+        private void LogInLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoginWindow obj = new LoginWindow();
+            obj.Show();
+            this.Close();
         }
     }
 }
