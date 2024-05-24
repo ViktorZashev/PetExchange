@@ -28,6 +28,7 @@ namespace BusinessLayer.Database_Functions
         public static void SeedDatabase()
         {
             DeleteAllEntries();
+
             var countries = new List<Country>
                 {
                     new Country("United States"),

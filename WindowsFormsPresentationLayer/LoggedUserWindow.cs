@@ -1,4 +1,5 @@
 ﻿using BusinessLayer;
+using BusinessLayer.Database_Functions;
 using BusinessLayer.Functions;
 using BusinessLayer.Models;
 using System;
@@ -81,6 +82,18 @@ namespace WindowsFormsPresentationLayer
         {
             DeletePublicOfferForm obj = new DeletePublicOfferForm(LoggedUser);
             obj.Show();
+        }
+
+        private void button8_Click(object sender, EventArgs e) // Truncate Button
+        {
+            DatabaseFunctions.DeleteAllEntries();
+            MessageBox.Show("Deletion of all database entries successful");
+        }
+
+        private void button7_Click(object sender, EventArgs e) // Seed With Default Values Button
+        {
+            DatabaseFunctions.SeedDatabase();
+            MessageBox.Show("Deletion of all database entries successful");
         }
     }
 }

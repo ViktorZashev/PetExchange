@@ -218,6 +218,7 @@
             button7.TabIndex = 43;
             button7.Text = "SET DEFAULT VALUES";
             button7.UseVisualStyleBackColor = false;
+            button7.Click += button7_Click;
             // 
             // button8
             // 
@@ -232,6 +233,7 @@
             button8.TabIndex = 42;
             button8.Text = "TRUNCATE DATABASE";
             button8.UseVisualStyleBackColor = false;
+            button8.Click += button8_Click;
             // 
             // LogInLinkLabel
             // 

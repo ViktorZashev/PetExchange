@@ -287,7 +287,8 @@ namespace BusinessLayer
                 foreach (var request in requests)
                 {
                     Console.WriteLine();
-                    var pet = PetService.Read(request.PublicOffer.PetId);
+                    var publicOffer = PublicOfferService.Read(request.PublicOfferId);
+                    var pet = PetService.Read(publicOffer.PetId);
                     Console.WriteLine("Pet Name: " + pet.Name);
                     Console.Write("Accepted: ");
                     if (request.IsAccepted == true) Console.WriteLine("Yes");

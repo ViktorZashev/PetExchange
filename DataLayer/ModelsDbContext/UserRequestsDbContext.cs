@@ -24,21 +24,6 @@ namespace DataLayer
 		{
 			try
 			{
-				if(entity == null)
-				{
-					throw new ArgumentNullException("User Request is null");
-				}
-				var existingRequest = _dbcontext.Requests.Where(x => x.Id == entity.Id).FirstOrDefault();
-
-				if(existingRequest != null)
-				{
-					throw new ArgumentException("User Request already exist in database!");
-				}
-				var _existingOffer = _dbcontext.PublicOffers.FirstOrDefault(c => c.Id == entity.PublicOffer.Id);
-				if (_existingOffer == null)
-				{
-					throw new ArgumentException("Public Offer included in user Request doesn't exist in database!");
-				}
 				_dbcontext.Requests.Add(entity);
 				_dbcontext.SaveChanges();
 			}
@@ -56,7 +41,7 @@ namespace DataLayer
 			if (useNavigationalProperties)
 			{
                 Guid publicOfferId = foundRequests.PublicOfferId;
-                foundRequests.PublicOffer = _dbcontext.PublicOffers.Where(x => x.Id == publicOfferId).FirstOrDefault();
+                foundRequests.PublicOfferId = _dbcontext.PublicOffers.Where(x => x.Id == publicOfferId).FirstOrDefault().Id;
 			}
 			return foundRequests;
 		}

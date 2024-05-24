@@ -64,7 +64,8 @@ namespace BusinessLayer.Functions
         public static void DeleteRequest(User user, string petName)
         {
             var requests = ReadAll(user);
-            var deletedRequest = requests.Where(x => PetService.Read(x.PublicOffer.PetId).Name == petName).FirstOrDefault();
+        
+            var deletedRequest = requests.Where(x => PetService.Read(PublicOfferService.Read(x.PublicOfferId).PetId).Name == petName).FirstOrDefault();
             if (deletedRequest == null)
             {
                 throw new Exception("No such request exists for this user!");
