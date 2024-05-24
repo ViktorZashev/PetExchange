@@ -13,16 +13,8 @@ namespace WindowsFormsPresentationLayer.LoggedUser_Forms
 {
     public partial class PetsDisplayForm : Form
     {
-        public PetsDisplayForm()
-        {
-            InitializeComponent();
-        }
-
-        private void PetsDisplayForm_Load(object sender, EventArgs e)
-        {
-
-        }
         private List<Pet> pets;
+        private System.Windows.Forms.DataGridView dataGridView1;
 
         public PetsDisplayForm(List<Pet> pets)
         {
@@ -30,20 +22,20 @@ namespace WindowsFormsPresentationLayer.LoggedUser_Forms
             this.pets = pets;
             LoadPets();
         }
-
         private void LoadPets()
         {
             dataGridView1.DataSource = pets;
 
-            // Hiding Database Columns
+            // Hide unwanted columns
             dataGridView1.Columns["Id"].Visible = false;
             dataGridView1.Columns["UserId"].Visible = false;
             dataGridView1.Columns["User"].Visible = false;
             dataGridView1.Columns["PhotoPath"].Visible = false;
         }
 
-        private System.Windows.Forms.DataGridView dataGridView1;
-
+        private void PetsDisplayForm_Load(object sender, EventArgs e)
+        { 
+        }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 

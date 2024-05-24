@@ -123,6 +123,7 @@
             button5.TabIndex = 35;
             button5.Text = "See all local public offers";
             button5.UseVisualStyleBackColor = false;
+            button5.Click += button5_Click;
             // 
             // PetControlTitle
             // 

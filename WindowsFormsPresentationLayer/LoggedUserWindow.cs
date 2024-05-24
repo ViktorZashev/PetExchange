@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Functions;
+﻿using BusinessLayer;
+using BusinessLayer.Functions;
 using BusinessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace WindowsFormsPresentationLayer
         private void ShowAllPetsButton_Click(object sender, EventArgs e)
         {
             var pets = PetService.ReturnAllPets(LoggedUser);
+            if (pets.Count == 0)
+            {
+                MessageBox.Show("No pets exist!");
+                return; // Exit the method if there are no pets
+            }
             PetsDisplayForm obj = new PetsDisplayForm(pets);
             obj.Show();
             //this.Hide();
@@ -54,6 +60,14 @@ namespace WindowsFormsPresentationLayer
         private void button1_Click(object sender, EventArgs e)
         {
             PetDataUpdateForm obj = new PetDataUpdateForm(LoggedUser);
+            obj.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var town = TownService.Read(LoggedUser.TownId);
+            var availableOffers = PublicOfferService.ReadAll().Where(x => x.TownId == town.Id).ToList();
+            PublicOfferDisplayForm obj = new PublicOfferDisplayForm(availableOffers);
             obj.Show();
         }
     }
