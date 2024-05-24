@@ -95,5 +95,23 @@ namespace WindowsFormsPresentationLayer
             DatabaseFunctions.SeedDatabase();
             MessageBox.Show("Deletion of all database entries successful");
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            var userRequests = UserRequestsService.ReadAll(LoggedUser);
+            if (userRequests.Count == 0)
+            {
+                MessageBox.Show("No user made requests  exist!");
+                return;
+            }
+            UserRequestsDisplayForm obj = new UserRequestsDisplayForm(LoggedUser);
+            obj.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DeleteUserRequestForm obj = new DeleteUserRequestForm(LoggedUser);
+            obj.Show();
+        }
     }
 }

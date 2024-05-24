@@ -45,6 +45,8 @@
             button8 = new Button();
             LogInLinkLabel = new LinkLabel();
             button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
             SuspendLayout();
             // 
             // label1
@@ -195,6 +197,7 @@
             button9.TabIndex = 40;
             button9.Text = "View All Requests";
             button9.UseVisualStyleBackColor = false;
+            button9.Click += button9_Click;
             // 
             // label6
             // 
@@ -261,11 +264,42 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(0, 117, 214);
+            button2.FlatAppearance.BorderColor = Color.Black;
+            button2.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(863, 246);
+            button2.Margin = new Padding(3, 2, 3, 2);
+            button2.Name = "button2";
+            button2.Size = new Size(462, 41);
+            button2.TabIndex = 48;
+            button2.Text = "Create a new Request";
+            button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.FromArgb(0, 117, 214);
+            button3.FlatAppearance.BorderColor = Color.Black;
+            button3.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(863, 318);
+            button3.Margin = new Padding(3, 2, 3, 2);
+            button3.Name = "button3";
+            button3.Size = new Size(462, 41);
+            button3.TabIndex = 49;
+            button3.Text = "Delete a request";
+            button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
+            // 
             // LoggedUserWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1343, 624);
+            Controls.Add(button3);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(LogInLinkLabel);
             Controls.Add(label6);
@@ -310,5 +344,7 @@
         private Button button8;
         private LinkLabel LogInLinkLabel;
         private Button button1;
+        private Button button2;
+        private Button button3;
     }
 }
