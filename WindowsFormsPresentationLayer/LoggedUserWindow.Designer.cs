@@ -41,9 +41,9 @@
             button6 = new Button();
             label5 = new Label();
             button9 = new Button();
-            label6 = new Label();
-            button7 = new Button();
-            button8 = new Button();
+            AdminTitle = new Label();
+            SeedDatabaseButton = new Button();
+            TruncateButton = new Button();
             LogInLinkLabel = new LinkLabel();
             button1 = new Button();
             button2 = new Button();
@@ -212,45 +212,48 @@
             button9.UseVisualStyleBackColor = false;
             button9.Click += button9_Click;
             // 
-            // label6
+            // AdminTitle
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(527, 421);
-            label6.Name = "label6";
-            label6.Size = new Size(255, 37);
-            label6.TabIndex = 44;
-            label6.Text = "ADMIN FUNCTIONS";
+            AdminTitle.AutoSize = true;
+            AdminTitle.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            AdminTitle.Location = new Point(527, 421);
+            AdminTitle.Name = "AdminTitle";
+            AdminTitle.Size = new Size(255, 37);
+            AdminTitle.TabIndex = 44;
+            AdminTitle.Text = "ADMIN FUNCTIONS";
+            AdminTitle.Visible = false;
             // 
-            // button7
+            // SeedDatabaseButton
             // 
-            button7.BackColor = Color.FromArgb(0, 117, 214);
-            button7.FlatAppearance.BorderColor = Color.Black;
-            button7.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button7.ForeColor = Color.White;
-            button7.Location = new Point(498, 522);
-            button7.Margin = new Padding(3, 2, 3, 2);
-            button7.Name = "button7";
-            button7.Size = new Size(311, 41);
-            button7.TabIndex = 43;
-            button7.Text = "SET DEFAULT VALUES";
-            button7.UseVisualStyleBackColor = false;
-            button7.Click += button7_Click;
+            SeedDatabaseButton.BackColor = Color.FromArgb(0, 117, 214);
+            SeedDatabaseButton.FlatAppearance.BorderColor = Color.Black;
+            SeedDatabaseButton.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            SeedDatabaseButton.ForeColor = Color.White;
+            SeedDatabaseButton.Location = new Point(498, 522);
+            SeedDatabaseButton.Margin = new Padding(3, 2, 3, 2);
+            SeedDatabaseButton.Name = "SeedDatabaseButton";
+            SeedDatabaseButton.Size = new Size(311, 41);
+            SeedDatabaseButton.TabIndex = 43;
+            SeedDatabaseButton.Text = "SET DEFAULT VALUES";
+            SeedDatabaseButton.UseVisualStyleBackColor = false;
+            SeedDatabaseButton.Visible = false;
+            SeedDatabaseButton.Click += button7_Click;
             // 
-            // button8
+            // TruncateButton
             // 
-            button8.BackColor = Color.FromArgb(0, 117, 214);
-            button8.FlatAppearance.BorderColor = Color.Black;
-            button8.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button8.ForeColor = Color.White;
-            button8.Location = new Point(498, 460);
-            button8.Margin = new Padding(3, 2, 3, 2);
-            button8.Name = "button8";
-            button8.Size = new Size(311, 41);
-            button8.TabIndex = 42;
-            button8.Text = "TRUNCATE DATABASE";
-            button8.UseVisualStyleBackColor = false;
-            button8.Click += button8_Click;
+            TruncateButton.BackColor = Color.FromArgb(0, 117, 214);
+            TruncateButton.FlatAppearance.BorderColor = Color.Black;
+            TruncateButton.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            TruncateButton.ForeColor = Color.White;
+            TruncateButton.Location = new Point(498, 460);
+            TruncateButton.Margin = new Padding(3, 2, 3, 2);
+            TruncateButton.Name = "TruncateButton";
+            TruncateButton.Size = new Size(311, 41);
+            TruncateButton.TabIndex = 42;
+            TruncateButton.Text = "TRUNCATE DATABASE";
+            TruncateButton.UseVisualStyleBackColor = false;
+            TruncateButton.Visible = false;
+            TruncateButton.Click += button8_Click;
             // 
             // LogInLinkLabel
             // 
@@ -353,9 +356,9 @@
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(LogInLinkLabel);
-            Controls.Add(label6);
-            Controls.Add(button7);
-            Controls.Add(button8);
+            Controls.Add(AdminTitle);
+            Controls.Add(SeedDatabaseButton);
+            Controls.Add(TruncateButton);
             Controls.Add(label5);
             Controls.Add(button9);
             Controls.Add(button6);
@@ -393,9 +396,9 @@
         private Button button6;
         private Label label5;
         private Button button9;
-        private Label label6;
-        private Button button7;
-        private Button button8;
+        private Label AdminTitle;
+        private Button SeedDatabaseButton;
+        private Button TruncateButton;
         private LinkLabel LogInLinkLabel;
         private Button button1;
         private Button button2;

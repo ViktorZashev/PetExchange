@@ -32,7 +32,12 @@ namespace WindowsFormsPresentationLayer
 
         private void LoggedUserWindow_Load(object sender, EventArgs e)
         {
-
+            if(LoggedUser.IsAdmin == true)
+            {
+                AdminTitle.Visible = true;
+                TruncateButton.Visible = true;
+                SeedDatabaseButton.Visible = true;
+            }
         }
         private void ShowAllPetsButton_Click(object sender, EventArgs e)
         {
