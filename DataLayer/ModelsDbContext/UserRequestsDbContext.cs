@@ -22,8 +22,14 @@ namespace DataLayer
 
 		public void Create(UserRequests entity)
 		{
+			if (entity == null) throw new System.ArgumentNullException();
 			try
 			{
+				var allPublicOffers = _dbcontext.PublicOffers.ToList();
+				if (!allPublicOffers.Any(x => x.Id == entity.PublicOfferId))
+				{
+					throw new System.ArgumentException();
+				}
 				_dbcontext.Requests.Add(entity);
 				_dbcontext.SaveChanges();
 			}
@@ -38,11 +44,6 @@ namespace DataLayer
 			UserRequests foundRequests = _dbcontext.Requests.Where(x => x.Id == id).FirstOrDefault();
 
 			if (foundRequests == null) return null;
-			if (useNavigationalProperties)
-			{
-                Guid publicOfferId = foundRequests.PublicOfferId;
-                foundRequests.PublicOfferId = _dbcontext.PublicOffers.Where(x => x.Id == publicOfferId).FirstOrDefault().Id;
-			}
 			return foundRequests;
 		}
 

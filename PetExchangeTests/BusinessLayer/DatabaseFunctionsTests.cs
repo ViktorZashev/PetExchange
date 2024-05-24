@@ -14,9 +14,6 @@ namespace PetExchangeTests.BusinessLayer
         [Test]
         public void DeleteAllEntries_RemovesCountries()
         {
-            // Arrange
-            DatabaseFunctions.SeedDatabase();
-
             // Act
             DatabaseFunctions.DeleteAllEntries();
 
@@ -27,9 +24,6 @@ namespace PetExchangeTests.BusinessLayer
         [Test]
         public void DeleteAllEntries_RemovesTowns()
         {
-            // Arrange
-            DatabaseFunctions.SeedDatabase();
-
             // Act
             DatabaseFunctions.DeleteAllEntries();
 
@@ -40,9 +34,6 @@ namespace PetExchangeTests.BusinessLayer
         [Test]
         public void DeleteAllEntries_RemovesUsers()
         {
-            // Arrange
-            DatabaseFunctions.SeedDatabase();
-
             // Act
             DatabaseFunctions.DeleteAllEntries();
 
@@ -53,9 +44,6 @@ namespace PetExchangeTests.BusinessLayer
         [Test]
         public void DeleteAllEntries_RemovesPets()
         {
-            // Arrange
-            DatabaseFunctions.SeedDatabase();
-
             // Act
             DatabaseFunctions.DeleteAllEntries();
 
@@ -66,9 +54,6 @@ namespace PetExchangeTests.BusinessLayer
         [Test]
         public void DeleteAllEntries_RemovesPublicOffers()
         {
-            // Arrange
-            DatabaseFunctions.SeedDatabase();
-
             // Act
             DatabaseFunctions.DeleteAllEntries();
 
@@ -79,9 +64,6 @@ namespace PetExchangeTests.BusinessLayer
         [Test]
         public void DeleteAllEntries_RemovesUserRequests()
         {
-            // Arrange
-            DatabaseFunctions.SeedDatabase();
-
             // Act
             DatabaseFunctions.DeleteAllEntries();
 

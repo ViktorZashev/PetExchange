@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoggedUserWindow));
             label1 = new Label();
             UsernameTextBox = new Label();
             ShowAllPetsButton = new Button();
@@ -47,23 +48,32 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
+            pictureBox1 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            pictureBox4 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(516, 57);
+            label1.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ImageAlign = ContentAlignment.BottomRight;
+            label1.Location = new Point(516, 37);
             label1.Name = "label1";
-            label1.Size = new Size(43, 15);
+            label1.Size = new Size(146, 45);
             label1.TabIndex = 0;
-            label1.Text = "HELLO";
+            label1.Text = "HELLO,  ";
             // 
             // UsernameTextBox
             // 
             UsernameTextBox.AutoSize = true;
-            UsernameTextBox.Location = new Point(621, 57);
+            UsernameTextBox.Font = new Font("Segoe UI Black", 24.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            UsernameTextBox.Location = new Point(643, 37);
             UsernameTextBox.Name = "UsernameTextBox";
-            UsernameTextBox.Size = new Size(60, 15);
+            UsernameTextBox.Size = new Size(183, 45);
             UsernameTextBox.TabIndex = 1;
             UsernameTextBox.Text = "Username";
             // 
@@ -118,30 +128,32 @@
             button5.FlatAppearance.BorderColor = Color.Black;
             button5.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button5.ForeColor = Color.White;
-            button5.Location = new Point(395, 180);
+            button5.Location = new Point(375, 180);
             button5.Margin = new Padding(3, 2, 3, 2);
             button5.Name = "button5";
             button5.Size = new Size(462, 41);
             button5.TabIndex = 35;
-            button5.Text = "See all local public offers";
+            button5.Text = "SEE ALL LOCAL PUBLIC OFFERS";
             button5.UseVisualStyleBackColor = false;
             button5.Click += button5_Click;
             // 
             // PetControlTitle
             // 
             PetControlTitle.AutoSize = true;
-            PetControlTitle.Location = new Point(150, 133);
+            PetControlTitle.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            PetControlTitle.Location = new Point(97, 130);
             PetControlTitle.Name = "PetControlTitle";
-            PetControlTitle.Size = new Size(79, 15);
+            PetControlTitle.Size = new Size(186, 37);
             PetControlTitle.TabIndex = 36;
-            PetControlTitle.Text = "PETCONTROL";
+            PetControlTitle.Text = "PET CONTROL";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(486, 133);
+            label4.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(456, 130);
             label4.Name = "label4";
-            label4.Size = new Size(146, 15);
+            label4.Size = new Size(326, 37);
             label4.TabIndex = 37;
             label4.Text = "PUBLIC OFFER CONTROLS";
             // 
@@ -151,12 +163,12 @@
             button4.FlatAppearance.BorderColor = Color.Black;
             button4.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button4.ForeColor = Color.White;
-            button4.Location = new Point(395, 246);
+            button4.Location = new Point(375, 246);
             button4.Margin = new Padding(3, 2, 3, 2);
             button4.Name = "button4";
             button4.Size = new Size(462, 41);
             button4.TabIndex = 38;
-            button4.Text = "Register Pet As Public Offer";
+            button4.Text = "REGISTER PET AS PUBLIC OFFER";
             button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
             // 
@@ -166,21 +178,22 @@
             button6.FlatAppearance.BorderColor = Color.Black;
             button6.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button6.ForeColor = Color.White;
-            button6.Location = new Point(395, 318);
+            button6.Location = new Point(375, 318);
             button6.Margin = new Padding(3, 2, 3, 2);
             button6.Name = "button6";
             button6.Size = new Size(462, 41);
             button6.TabIndex = 39;
-            button6.Text = "Delete public offer";
+            button6.Text = "DELETE PUBLIC OFFER";
             button6.UseVisualStyleBackColor = false;
             button6.Click += button6_Click;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(954, 133);
+            label5.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(963, 130);
             label5.Name = "label5";
-            label5.Size = new Size(133, 15);
+            label5.Size = new Size(301, 37);
             label5.TabIndex = 41;
             label5.Text = "User Request Controlers";
             // 
@@ -195,16 +208,17 @@
             button9.Name = "button9";
             button9.Size = new Size(462, 41);
             button9.TabIndex = 40;
-            button9.Text = "View All Requests";
+            button9.Text = "VIEW ALL REQUESTS";
             button9.UseVisualStyleBackColor = false;
             button9.Click += button9_Click;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(580, 404);
+            label6.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(527, 421);
             label6.Name = "label6";
-            label6.Size = new Size(113, 15);
+            label6.Size = new Size(255, 37);
             label6.TabIndex = 44;
             label6.Text = "ADMIN FUNCTIONS";
             // 
@@ -214,7 +228,7 @@
             button7.FlatAppearance.BorderColor = Color.Black;
             button7.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button7.ForeColor = Color.White;
-            button7.Location = new Point(498, 499);
+            button7.Location = new Point(498, 522);
             button7.Margin = new Padding(3, 2, 3, 2);
             button7.Name = "button7";
             button7.Size = new Size(311, 41);
@@ -229,7 +243,7 @@
             button8.FlatAppearance.BorderColor = Color.Black;
             button8.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button8.ForeColor = Color.White;
-            button8.Location = new Point(498, 437);
+            button8.Location = new Point(498, 460);
             button8.Margin = new Padding(3, 2, 3, 2);
             button8.Name = "button8";
             button8.Size = new Size(311, 41);
@@ -276,7 +290,7 @@
             button2.Name = "button2";
             button2.Size = new Size(462, 41);
             button2.TabIndex = 48;
-            button2.Text = "Create a new Request";
+            button2.Text = "CREATE A NEW REQUEST";
             button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
@@ -291,15 +305,50 @@
             button3.Name = "button3";
             button3.Size = new Size(462, 41);
             button3.TabIndex = 49;
-            button3.Text = "Delete a request";
+            button3.Text = "DELETE A REQUEST";
             button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(363, 11);
+            pictureBox1.Margin = new Padding(3, 2, 3, 2);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(147, 100);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 50;
+            pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(1073, 421);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(273, 203);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 51;
+            pictureBox2.TabStop = false;
+            pictureBox2.Click += pictureBox2_Click;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
+            pictureBox4.Location = new Point(-1, 449);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(331, 175);
+            pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox4.TabIndex = 52;
+            pictureBox4.TabStop = false;
             // 
             // LoggedUserWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1343, 624);
+            Controls.Add(pictureBox4);
+            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox1);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -323,6 +372,9 @@
             Name = "LoggedUserWindow";
             Text = "LoggedUserWindow";
             Load += LoggedUserWindow_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -348,5 +400,9 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox2;
+        private PictureBox pictureBox3;
+        private PictureBox pictureBox4;
     }
 }
