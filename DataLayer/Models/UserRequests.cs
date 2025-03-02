@@ -10,16 +10,13 @@ namespace BusinessLayer.Models
 {
     public class UserRequests
 	{
-		[JsonPropertyName("id")]
+
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		[JsonPropertyName("public_offer_id")]
 		public Guid PublicOfferId { get; set; }
 
-		[JsonPropertyName("user_id")]
 		public Guid UserId { get; set; }
 
-		[JsonPropertyName("is_accepted")]
 		public bool IsAccepted { get; set; } = false;
 
 		public UserRequests() { }

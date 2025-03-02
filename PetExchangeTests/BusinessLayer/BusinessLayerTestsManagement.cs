@@ -25,7 +25,6 @@ namespace PetExchangeTests.BusinessLayer
         public void Setup()
         {
             db = GetMemoryContext();
-            CountryService._CountryContext = new CountryDbContext(db);
             PetService._PetContext = new PetDbContext(db);
             PublicOfferService._PublicOfferContext = new PublicOfferDbContext(db);
             TownService._TownContext = new TownDbContext(db);
@@ -36,11 +35,6 @@ namespace PetExchangeTests.BusinessLayer
 
         protected static void DeleteAllEntriesInDb()
         {
-            foreach (var entity in db.Countries)
-            {
-                db.Countries.Remove(entity);
-            }
-
             foreach (var entity in db.Pets)
             {
                 db.Pets.Remove(entity);

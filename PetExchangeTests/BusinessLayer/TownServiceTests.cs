@@ -14,10 +14,8 @@ namespace PetExchangeTests.BusinessLayer
 		public void Create_Adds_New_Town()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
-			db.SaveChanges();
+
+			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town"};
 
 			// Act
 			TownService.Create(town);
@@ -32,11 +30,8 @@ namespace PetExchangeTests.BusinessLayer
 		public void Create_Adds_List_Of_Towns()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town1 = new Town { Id = Guid.NewGuid(), Name = "Test Town 1", Country = country, CountryId = country.Id };
-			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
-			db.SaveChanges();
+			var town1 = new Town { Id = Guid.NewGuid(), Name = "Test Town 1"};
+			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2"};
 			var newTowns = new List<Town> { town1, town2 };
 
 			// Act
@@ -51,9 +46,7 @@ namespace PetExchangeTests.BusinessLayer
 		public void Read_Returns_Town_By_Id()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town"};
 			db.Towns.Add(town);
 			db.SaveChanges();
 
@@ -61,7 +54,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = TownService.Read(town.Id);
 
 			// Assert
-			Assert.IsNotNull(result, "The town should be found.");
+			Assert.That(result, Is.Not.Null, "The town should be found.");
 			Assert.That(result.Id, Is.EqualTo(town.Id), "The IDs should match.");
 		}
 
@@ -69,27 +62,25 @@ namespace PetExchangeTests.BusinessLayer
 		public void ReadAll_Returns_All_Towns()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town1 = new Town { Id = Guid.NewGuid(), Name = "Test Town 1", Country = country, CountryId = country.Id };
-			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			
+			var town1 = new Town { Id = Guid.NewGuid(), Name = "Test Town 1"};
+			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2"};
 			db.Towns.AddRange(town1, town2);
 			db.SaveChanges();
 
 			// Act
 			var results = TownService.ReadAll();
 
-			// Assert
-			Assert.That(results.Count, Is.EqualTo(2), "Both towns should be returned.");
+            // Assert
+            Assert.That(results, Has.Count.EqualTo(2), "Both towns should be returned.");
 		}
 
 		[Test]
 		public void Update_Modifies_Existing_Town()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			
+			var town = new Town {Id = Guid.NewGuid(), Name = "Test Town"};
 			db.Towns.Add(town);
 			db.SaveChanges();
 
@@ -101,7 +92,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			var result = db.Towns.FirstOrDefault(t => t.Id == town.Id);
-			Assert.IsNotNull(result, "The town should be found.");
+			Assert.That(result, Is.Not.Null, "The town should be found.");
 			Assert.That(result.Name, Is.EqualTo(updatedName), "The name should be updated.");
 		}
 
@@ -109,9 +100,7 @@ namespace PetExchangeTests.BusinessLayer
 		public void Delete_Removes_Town()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			var town = new Town {Id = Guid.NewGuid(), Name = "Test Town"};
 			db.Towns.Add(town);
 			db.SaveChanges();
 
@@ -127,10 +116,8 @@ namespace PetExchangeTests.BusinessLayer
 		public void DeleteAll_Removes_All_Towns()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town1 = new Town { Id = Guid.NewGuid(), Name = "Test Town 1", Country = country, CountryId = country.Id };
-			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			var town1 = new Town {Id = Guid.NewGuid(), Name = "Test Town 1" };
+			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2"};
 			db.Towns.AddRange(town1, town2);
 			db.SaveChanges();
 
@@ -146,9 +133,7 @@ namespace PetExchangeTests.BusinessLayer
 		public void CheckIfExists_Returns_True_If_Town_Exists()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			var town = new Town {Id = Guid.NewGuid(), Name = "Test Town" };
 			db.Towns.Add(town);
 			db.SaveChanges();
 
@@ -169,16 +154,15 @@ namespace PetExchangeTests.BusinessLayer
 			var result = TownService.CheckIfExists("Non-Existent Town");
 
 			// Assert
-			Assert.IsFalse(result, "The town should not exist.");
+			Assert.That(result, Is.False, "The town should not exist.");
 		}
 
 		[Test]
 		public void RetrieveTown_Returns_Town_By_Name()
 		{
 			// Arrange
-			var country = new Country { Id = Guid.NewGuid(), Name = "Test Country" };
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town", Country = country, CountryId = country.Id };
-			db.Countries.Add(country);
+			
+			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town"};
 			db.Towns.Add(town);
 			db.SaveChanges();
 
@@ -186,7 +170,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = TownService.RetrieveTown("Test Town");
 
 			// Assert
-			Assert.IsNotNull(result, "The town should be found.");
+			Assert.That(result, Is.Not.Null, "The town should be found.");
 			Assert.That(result.Name, Is.EqualTo(town.Name), "The names should match.");
 		}
 

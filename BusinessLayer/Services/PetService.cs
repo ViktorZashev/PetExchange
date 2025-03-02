@@ -12,7 +12,7 @@ namespace BusinessLayer.Functions
 	public static class PetService
 	{
 		private static readonly PetExchangeDbContext _ProjectContext = _ProjectContext = new PetExchangeDbContext();
-		public static PetDbContext _PetContext = new PetDbContext(_ProjectContext);
+		public static PetDbContext _PetContext = new(_ProjectContext);
 
 		public static void Create(Pet pet)
 		{
@@ -45,12 +45,8 @@ namespace BusinessLayer.Functions
 		public static void Delete(string name, User user)
 		{
 			// validation
-			var foundPet = ReturnAllPets().Where(x => x.Name == name && x.User.Id == user.Id).FirstOrDefault();
-			if (foundPet == null)
-			{
-				throw new Exception("No such pet exists!");
-			}
-			_PetContext.Delete(foundPet.Id);
+			var foundPet = ReturnAllPets().Where(x => x.Name == name && x.User.Id == user.Id).FirstOrDefault() ?? throw new Exception("No such pet exists!");
+            _PetContext.Delete(foundPet.Id);
 		}
 		public static void Delete(Guid id)
 		{
@@ -75,7 +71,7 @@ namespace BusinessLayer.Functions
 		public static List<Pet> ReturnAllPets(User user)
 		{
 			var allPets = _PetContext.ReadAll(true);
-			if (allPets.Count == 0) return new List<Pet>();
+			if (allPets.Count == 0) return new();
 			else
 			{
 				var usersPets = new List<Pet>();
@@ -94,7 +90,7 @@ namespace BusinessLayer.Functions
 		{
 			if (!_PetContext.ReadAll(true).Exists(x => true))
 			{
-				return new List<Pet>();
+				return new();
 			}
 			else
 			{
@@ -102,7 +98,7 @@ namespace BusinessLayer.Functions
 
 			}
 		}
-		public static Pet ReturnPetByname(string name)
+		public static Pet? ReturnPetByname(string name)
 		{
 			var pets = _PetContext.ReadAll().ToList();
 			return pets.Where(x => x.Name == name).FirstOrDefault();

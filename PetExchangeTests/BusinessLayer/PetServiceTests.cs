@@ -43,7 +43,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = PetService.Read(pet.Id);
 
 			// Assert
-			Assert.IsNotNull(result, "Read method does not return the pet from the database.");
+			Assert.That(result, Is.Not.Null, "Read method does not return the pet from the database.");
 			Assert.That(result.Name, Is.EqualTo(pet.Name), "Read method returns incorrect pet name.");
 		}
 
@@ -54,7 +54,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = PetService.Read(Guid.NewGuid());
 
 			// Assert
-			Assert.IsNull(result, "Read method does not return null when the pet does not exist in the database.");
+			Assert.That(result, Is.Null, "Read method does not return null when the pet does not exist in the database.");
 		}
 
 		[Test]
@@ -73,7 +73,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = PetService.ReadAll();
 
 			// Assert
-			Assert.That(result.Count, Is.EqualTo(2), "ReadAll method does not return all pets from the database.");
+			Assert.That(result, Has.Count.EqualTo(2), "ReadAll method does not return all pets from the database.");
 		}
 
 		[Test]
@@ -126,7 +126,8 @@ namespace PetExchangeTests.BusinessLayer
 			Assert.IsNull(result, "Pet was not deleted from database!");
 		}
 
-		public void DeleteMethod_RemovesPetForGivenNameAndUser()
+        [Test]
+        public void DeleteMethod_RemovesPetForGivenNameAndUser()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
@@ -175,7 +176,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = PetService.CheckPetExists("Fluffy");
 
 			// Assert
-			Assert.IsTrue(result, "Pet 'Fluffy' should exist in the database.");
+			Assert.That(result, Is.True, "Pet 'Fluffy' should exist in the database.");
 		}
 
 		[Test]
@@ -195,10 +196,13 @@ namespace PetExchangeTests.BusinessLayer
 			var user1Pets = PetService.ReturnAllPets(user1);
 			var user2Pets = PetService.ReturnAllPets(user2);
 
-			// Assert
-			Assert.That(user1Pets.Count, Is.EqualTo(2), "There should be 2 pets belonging to user 'John'.");
-			Assert.That(user2Pets.Count, Is.EqualTo(1), "There should be 1 pet belonging to user 'Alice'.");
-		}
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(user1Pets, Has.Count.EqualTo(2), "There should be 2 pets belonging to user 'John'.");
+                Assert.That(user2Pets, Has.Count.EqualTo(1), "There should be 1 pet belonging to user 'Alice'.");
+            });
+        }
 
 		[Test]
 		public void ReturnAllPetsMethod_ReturnsAllPets()
@@ -217,7 +221,7 @@ namespace PetExchangeTests.BusinessLayer
 			var pets = PetService.ReturnAllPets();
 
 			// Assert
-			Assert.That(pets.Count, Is.EqualTo(3), "There should be 3 pets in total.");
+			Assert.That(pets, Has.Count.EqualTo(3), "There should be 3 pets in total.");
 		}
 
 		[Test]

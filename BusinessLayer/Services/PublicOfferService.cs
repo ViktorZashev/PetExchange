@@ -13,8 +13,8 @@ namespace BusinessLayer.Functions
 {
     public static class PublicOfferService
     {
-        private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        public static PublicOfferDbContext  _PublicOfferContext = new PublicOfferDbContext(_ProjectContext);
+        private static readonly PetExchangeDbContext _ProjectContext = new();
+        public static PublicOfferDbContext _PublicOfferContext = new(_ProjectContext);
 
         public static void Create(PublicOffer offer)
         {

@@ -15,9 +15,14 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var initialCount = db.Users.Count();
-            var newUser = new User { Name = "NewUser", Username = "newuser", Password = "password" };
-            newUser.Town = new Town(new Country("Bulgaria"),"Plovdiv");
-            newUser.Pets = new List<Pet>();
+            var newUser = new User
+            {
+                Name = "NewUser",
+                Username = "newuser",
+                Password = "password",
+                Town = new ("Plovdiv"),
+                Pets = []
+            };
 
             // Act
             userContext.Create(newUser);
@@ -69,12 +74,15 @@ namespace PetExchangeTests.DataLayer
 
             // Act
             var actualUser = userContext.Read(id);
-
             // Assert
-            Assert.That(actualUser.Id, Is.EqualTo(enteredUser.Id), "Read method doesn't return the user entered in the database!");
-            Assert.That(actualUser.Name, Is.EqualTo(enteredUser.Name), "Read method doesn't return the correct user name!");
-            Assert.That(actualUser.Username, Is.EqualTo(enteredUser.Username), "Read method doesn't return the correct username!");
-            Assert.That(actualUser.Password, Is.EqualTo(enteredUser.Password), "Read method doesn't return the correct password!");
+            Assert.Multiple(() =>
+            {
+              
+                Assert.That(actualUser.Id, Is.EqualTo(enteredUser.Id), "Read method doesn't return the user entered in the database!");
+                Assert.That(actualUser.Name, Is.EqualTo(enteredUser.Name), "Read method doesn't return the correct user name!");
+                Assert.That(actualUser.Username, Is.EqualTo(enteredUser.Username), "Read method doesn't return the correct username!");
+                Assert.That(actualUser.Password, Is.EqualTo(enteredUser.Password), "Read method doesn't return the correct password!");
+            });
         }
 
         [Test]
@@ -93,9 +101,12 @@ namespace PetExchangeTests.DataLayer
             var actualUser = db.Users.FirstOrDefault(u => u.Id == id);
 
             // Assert
-            Assert.That(actualUser.Name, Is.EqualTo(updatedUser.Name), "Update method doesn't update the user name in the database!");
-            Assert.That(actualUser.Username, Is.EqualTo(updatedUser.Username), "Update method doesn't update the username in the database!");
-            Assert.That(actualUser.Password, Is.EqualTo(updatedUser.Password), "Update method doesn't update the password in the database!");
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualUser.Name, Is.EqualTo(updatedUser.Name), "Update method doesn't update the user name in the database!");
+                Assert.That(actualUser.Username, Is.EqualTo(updatedUser.Username), "Update method doesn't update the username in the database!");
+                Assert.That(actualUser.Password, Is.EqualTo(updatedUser.Password), "Update method doesn't update the password in the database!");
+            });
         }
 
         [Test]
@@ -140,9 +151,9 @@ namespace PetExchangeTests.DataLayer
             var outputedUsers = userContext.ReadAll();
 
             // Assert
-            Assert.That(outputedUsers.Count, Is.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
-            Assert.IsTrue(outputedUsers.Any(u => u.Name == "UserName1"), "ReadAll method doesn't return the correct user models from the database!");
-            Assert.IsTrue(outputedUsers.Any(u => u.Name == "UserName2"), "ReadAll method doesn't return the correct user models from the database!");
+            Assert.That(outputedUsers, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
+            Assert.That(outputedUsers.Any(u => u.Name == "UserName1"), Is.True, "ReadAll method doesn't return the correct user models from the database!");
+            Assert.That(outputedUsers.Any(u => u.Name == "UserName2"), Is.True, "ReadAll method doesn't return the correct user models from the database!");
         }
 
         [Test]
@@ -191,7 +202,7 @@ namespace PetExchangeTests.DataLayer
             var usernameExists = userContext.CheckUsernameExists(username);
 
             // Assert
-            Assert.IsTrue(usernameExists, "CheckUsernameExists method doesn't return true for an existing username in the database!");
+            Assert.That(usernameExists, Is.True, "CheckUsernameExists method doesn't return true for an existing username in the database!");
         }
 
         [Test]
@@ -204,7 +215,7 @@ namespace PetExchangeTests.DataLayer
             var usernameExists = userContext.CheckUsernameExists(nonExistentUsername);
 
             // Assert
-            Assert.IsFalse(usernameExists, "CheckUsernameExists method doesn't return false for a non-existent username in the database!");
+            Assert.That(usernameExists, Is.False, "CheckUsernameExists method doesn't return false for a non-existent username in the database!");
         }
 
         [Test]
@@ -221,7 +232,7 @@ namespace PetExchangeTests.DataLayer
             var passwordCorrect = userContext.CheckPasswordCorrect(username, password);
 
             // Assert
-            Assert.IsTrue(passwordCorrect, "CheckPasswordCorrect method doesn't return true for correct username and password combination!");
+            Assert.That(passwordCorrect, Is.True, "CheckPasswordCorrect method doesn't return true for correct username and password combination!");
         }
 
         [Test]
@@ -239,7 +250,7 @@ namespace PetExchangeTests.DataLayer
             var passwordCorrect = userContext.CheckPasswordCorrect(username, incorrectPassword);
 
             // Assert
-            Assert.IsFalse(passwordCorrect, "CheckPasswordCorrect method doesn't return false for incorrect username and password combination!");
+            Assert.That(passwordCorrect, Is.False, "CheckPasswordCorrect method doesn't return false for incorrect username and password combination!");
         }
     }
 }

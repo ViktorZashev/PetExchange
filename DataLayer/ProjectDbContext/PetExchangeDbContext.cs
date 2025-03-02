@@ -12,10 +12,6 @@ namespace DataLayer.ProjectDbContext
 {
     public class PetExchangeDbContext : DbContext
     {
-		// Laptop string : VIKTORS-AWESOME\SQLEXPRESS
-		// PC string : VIKTOR\\SQLEXPRESS
-		public static string connectionString = "Server=VIKTORS-AWESOME\\SQLEXPRESS;Database=PetExchange;Trusted_Connection=True;TrustServerCertificate=True;";
-
         public PetExchangeDbContext()
         {
 
@@ -33,7 +29,7 @@ namespace DataLayer.ProjectDbContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer(ConnectionString.Value);
             }
         }
 
@@ -41,7 +37,6 @@ namespace DataLayer.ProjectDbContext
         {
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<Country> Countries { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<PublicOffer> PublicOffers { get; set; }
         public DbSet<Town> Towns { get; set; }

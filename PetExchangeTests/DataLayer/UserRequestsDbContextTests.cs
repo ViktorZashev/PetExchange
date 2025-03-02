@@ -36,10 +36,12 @@ namespace PetExchangeTests.DataLayer
         public void CreateMethod_ThrowsExceptionIfPublicOfferDoesNotExist()
         {
             // Arrange
-            var newTown = new Town(new Country("Bulgaria"), "Plovdiv");
-            var newUser = new User("New User");
-            newUser.Town = newTown;
-            newUser.TownId = newTown.Id;
+            var newTown = new Town("Plovdiv");
+            var newUser = new User("New User")
+            {
+                Town = newTown,
+                TownId = newTown.Id
+            };
             var newPet = new Pet(Guid.NewGuid(),newUser);
             var nonExistingPublicOffer = new PublicOffer(newPet);
             var newUserRequest = new UserRequests(nonExistingPublicOffer, newUser, false);
@@ -51,10 +53,13 @@ namespace PetExchangeTests.DataLayer
         public void CreateMethod_ThrowsArgumentNullExceptionWhenUserRequestIsNull()
         {
             // Arrange
-            UserRequests nullUserRequest = null;
+            UserRequests? nullUserRequest = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => userRequestsContext.Create(nullUserRequest), "Create method doesn't throw ArgumentNullException when user request is null!");
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                userRequestsContext.Create(nullUserRequest);
+            }, "Create method doesn't throw ArgumentNullException when user request is null!");
         }
 
         [Test]
@@ -86,7 +91,7 @@ namespace PetExchangeTests.DataLayer
             var actualUserRequest = userRequestsContext.Read(id);
 
             // Assert
-            Assert.AreEqual(newUserRequest, actualUserRequest, "Read method doesn't return the user request entered in the database!");
+            Assert.That(actualUserRequest, Is.EqualTo(newUserRequest), "Read method doesn't return the user request entered in the database!");
         }
 
         [Test]
@@ -118,7 +123,7 @@ namespace PetExchangeTests.DataLayer
             var actualUserRequest = db.Requests.FirstOrDefault(ur => ur.Id == id);
 
             // Assert
-            Assert.AreEqual(updatedUserRequest.IsAccepted, actualUserRequest.IsAccepted, "Update method doesn't update the user request in the database!");
+            Assert.That(actualUserRequest.IsAccepted, Is.EqualTo(updatedUserRequest.IsAccepted), "Update method doesn't update the user request in the database!");
         }
 
         [Test]
@@ -149,9 +154,9 @@ namespace PetExchangeTests.DataLayer
             var outputUserRequests = userRequestsContext.ReadAll();
 
             // Assert
-            Assert.That(outputUserRequests.Count, Is.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
-            Assert.IsTrue(outputUserRequests.Any(ur => ur.IsAccepted == false), "ReadAll method doesn't return the correct user requests from the database!");
-            Assert.IsTrue(outputUserRequests.Any(ur => ur.IsAccepted == true), "ReadAll method doesn't return the correct user requests from the database!");
+            Assert.That(outputUserRequests, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
+            Assert.That(outputUserRequests.Any(ur => ur.IsAccepted == false), Is.True, "ReadAll method doesn't return the correct user requests from the database!");
+            Assert.That(outputUserRequests.Any(ur => ur.IsAccepted == true), Is.True, "ReadAll method doesn't return the correct user requests from the database!");
         }
 
         [Test]

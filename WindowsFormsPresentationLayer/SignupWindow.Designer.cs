@@ -33,7 +33,6 @@
 			SignUpTitle = new Label();
 			PasswordLabel = new Label();
 			TownLabel = new Label();
-			CountryLabel = new Label();
 			ContactInfoLabel = new Label();
 			AdminPasswordLabel = new Label();
 			label1 = new Label();
@@ -45,14 +44,12 @@
 			AdminPasswordTextBox = new TextBox();
 			ConfirmPasswordTextBox = new TextBox();
 			label2 = new Label();
-			CountryDropDownMenu = new ComboBox();
 			AdminBox = new CheckBox();
 			panel3 = new Panel();
 			panel1 = new Panel();
 			panel2 = new Panel();
 			panel4 = new Panel();
 			TownUnderScore = new Panel();
-			CountryUnderscore = new Panel();
 			panel7 = new Panel();
 			AdminUnderscore = new Panel();
 			RegisterButton = new Button();
@@ -60,7 +57,6 @@
 			pictureBox2 = new PictureBox();
 			AdminPasswordError = new Label();
 			UsernameErrorMessage = new Label();
-			CountryInstructionsLabel = new Label();
 			pictureBox4 = new PictureBox();
 			LogInLinkLabel = new LinkLabel();
 			label3 = new Label();
@@ -111,27 +107,6 @@
 			TownLabel.Size = new Size(57, 23);
 			TownLabel.TabIndex = 3;
 			TownLabel.Text = "Town:";
-			// 
-			// CountryLabel
-			// 
-			CountryLabel.AutoSize = true;
-			CountryLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			CountryLabel.Location = new Point(557, 286);
-			CountryLabel.Name = "CountryLabel";
-			CountryLabel.Size = new Size(80, 23);
-			CountryLabel.TabIndex = 4;
-			CountryLabel.Text = "Country:";
-			CountryLabel.Visible = false;
-			// 
-			// ContactInfoLabel
-			// 
-			ContactInfoLabel.AutoSize = true;
-			ContactInfoLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			ContactInfoLabel.Location = new Point(363, 326);
-			ContactInfoLabel.Name = "ContactInfoLabel";
-			ContactInfoLabel.Size = new Size(114, 23);
-			ContactInfoLabel.TabIndex = 5;
-			ContactInfoLabel.Text = "Contact Info:";
 			// 
 			// AdminPasswordLabel
 			// 
@@ -220,16 +195,6 @@
 			label2.TabIndex = 19;
 			label2.Text = "Confirm Password:";
 			// 
-			// CountryDropDownMenu
-			// 
-			CountryDropDownMenu.FormattingEnabled = true;
-			CountryDropDownMenu.Location = new Point(643, 281);
-			CountryDropDownMenu.Name = "CountryDropDownMenu";
-			CountryDropDownMenu.Size = new Size(151, 28);
-			CountryDropDownMenu.TabIndex = 22;
-			CountryDropDownMenu.Visible = false;
-			CountryDropDownMenu.Leave += CountryDropDownMenu_Leave;
-			// 
 			// AdminBox
 			// 
 			AdminBox.AutoSize = true;
@@ -280,15 +245,6 @@
 			TownUnderScore.Name = "TownUnderScore";
 			TownUnderScore.Size = new Size(193, 1);
 			TownUnderScore.TabIndex = 26;
-			// 
-			// CountryUnderscore
-			// 
-			CountryUnderscore.BackColor = Color.Black;
-			CountryUnderscore.Location = new Point(540, 315);
-			CountryUnderscore.Name = "CountryUnderscore";
-			CountryUnderscore.Size = new Size(256, 1);
-			CountryUnderscore.TabIndex = 27;
-			CountryUnderscore.Visible = false;
 			// 
 			// panel7
 			// 
@@ -364,18 +320,6 @@
 			UsernameErrorMessage.TabIndex = 33;
 			UsernameErrorMessage.Text = "Username already exists";
 			UsernameErrorMessage.Visible = false;
-			// 
-			// CountryInstructionsLabel
-			// 
-			CountryInstructionsLabel.AutoSize = true;
-			CountryInstructionsLabel.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-			CountryInstructionsLabel.ForeColor = SystemColors.MenuHighlight;
-			CountryInstructionsLabel.Location = new Point(608, 226);
-			CountryInstructionsLabel.Name = "CountryInstructionsLabel";
-			CountryInstructionsLabel.Size = new Size(196, 34);
-			CountryInstructionsLabel.TabIndex = 34;
-			CountryInstructionsLabel.Text = "Choose Country From Options/\r\n Register new Country";
-			CountryInstructionsLabel.Visible = false;
 			// 
 			// pictureBox4
 			// 
@@ -454,7 +398,6 @@
 			Controls.Add(LogInLinkLabel);
 			Controls.Add(label3);
 			Controls.Add(pictureBox4);
-			Controls.Add(CountryInstructionsLabel);
 			Controls.Add(UsernameErrorMessage);
 			Controls.Add(AdminPasswordError);
 			Controls.Add(pictureBox2);
@@ -462,14 +405,12 @@
 			Controls.Add(RegisterButton);
 			Controls.Add(AdminUnderscore);
 			Controls.Add(panel7);
-			Controls.Add(CountryUnderscore);
 			Controls.Add(TownUnderScore);
 			Controls.Add(panel4);
 			Controls.Add(panel2);
 			Controls.Add(panel1);
 			Controls.Add(panel3);
 			Controls.Add(AdminBox);
-			Controls.Add(CountryDropDownMenu);
 			Controls.Add(ConfirmPasswordTextBox);
 			Controls.Add(label2);
 			Controls.Add(AdminPasswordTextBox);
@@ -481,7 +422,6 @@
 			Controls.Add(label1);
 			Controls.Add(AdminPasswordLabel);
 			Controls.Add(ContactInfoLabel);
-			Controls.Add(CountryLabel);
 			Controls.Add(TownLabel);
 			Controls.Add(PasswordLabel);
 			Controls.Add(SignUpTitle);
@@ -502,7 +442,6 @@
 		private Label SignUpTitle;
 		private Label PasswordLabel;
 		private Label TownLabel;
-		private Label CountryLabel;
 		private Label ContactInfoLabel;
 		private Label AdminPasswordLabel;
 		private Label label1;
@@ -514,14 +453,12 @@
 		private TextBox AdminPasswordTextBox;
 		private TextBox ConfirmPasswordTextBox;
 		private Label label2;
-		private ComboBox CountryDropDownMenu;
 		private CheckBox AdminBox;
 		private Panel panel3;
 		private Panel panel1;
 		private Panel panel2;
 		private Panel panel4;
 		private Panel TownUnderScore;
-		private Panel CountryUnderscore;
 		private Panel panel7;
 		private Panel AdminUnderscore;
 		private Button RegisterButton;
@@ -529,7 +466,6 @@
 		private PictureBox pictureBox2;
 		private Label AdminPasswordError;
 		private Label UsernameErrorMessage;
-		private Label CountryInstructionsLabel;
 		private PictureBox pictureBox4;
 		private LinkLabel LogInLinkLabel;
 		private Label label3;

@@ -10,9 +10,9 @@ namespace DataLayer.ModelsDbContext
     {
         // CRUD Operations
         void Create(T entity);
-        T Read(K id, bool useNavigationalProperties = true);
+        T? Read(K id, bool useNavigationalProperties = true);
 
-        List<T> ReadAll(bool useNavigationalProperties = true);
+        List<T>? ReadAll(bool useNavigationalProperties = true);
 
         void Update(T entity, bool useNavigationalProperties = true);
 

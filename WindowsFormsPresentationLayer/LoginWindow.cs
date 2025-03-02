@@ -16,7 +16,6 @@ namespace WindowsFormsPresentationLayer
 			PasswordErrorBox.Visible = false;
 			// To Load all the dbContexts to prevent the slow loading later
 			UserService.LoadDb();
-			CountryService.LoadDb();
 			PetService.LoadDb();
 			PublicOfferService.LoadDb();
 			UserRequestsService.LoadDb();

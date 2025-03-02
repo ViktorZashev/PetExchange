@@ -21,7 +21,6 @@ namespace WindowsFormsPresentationLayer
 		private static string Password;
 		private static string Name;
 		private static string TownName;
-		private static string CountryName;
 		private static string ContactInfo;
 		private static bool isAdmin;
 		public SignupWindow()
@@ -34,18 +33,11 @@ namespace WindowsFormsPresentationLayer
 			Password = "";
 			Name = "";
 			TownName = "";
-			CountryName = "";
 			ContactInfo = "";
 			isAdmin = false;
 		}
 		private void SignupWindow_Load(object sender, EventArgs e)
 		{
-			// Loading the countries in the dropdownList
-			var countryNames = CountryService.ReadAll().Select(x => x.Name);
-			foreach (string name in countryNames)
-			{
-				CountryDropDownMenu.Items.Add(name);
-			}
 			ResetVariables();
 		}
 
@@ -90,32 +82,15 @@ namespace WindowsFormsPresentationLayer
 			}
 		}
 
-		private void TownTextBox_Leave(object sender, EventArgs e) // Completed the input of a country
+		private void TownTextBox_Leave(object sender, EventArgs e) 
 		{
 			var inputedTown = TownTextBox.Text;
 			TownName = inputedTown;
-			if (TownService.CheckIfExists(inputedTown)) // The town is already registered in system
+			if (TownService.CheckIfExists(inputedTown))
 			{
-				CountryLabel.Visible = false;
-				CountryUnderscore.Visible = false;
-				CountryInstructionsLabel.Visible = false;
-				CountryDropDownMenu.Visible = false;
 				TownName = inputedTown;
 				Town foundTown = TownService.RetrieveTown(inputedTown);
-				Guid countryId = foundTown.CountryId;
-				CountryName = CountryService.Read(countryId).Name;
 			}
-			else // The town is unregistered, enter country also
-			{
-				CountryLabel.Visible = true;
-				CountryUnderscore.Visible = true;
-				CountryInstructionsLabel.Visible = true;
-				CountryDropDownMenu.Visible = true;
-			}
-		}
-		private void CountryDropDownMenu_Leave(object sender, EventArgs e) // Triggers when the user enters and leaves the dropdown menu
-		{
-			CountryName = CountryDropDownMenu.Text;
 		}
 
 		private void AdminBox_CheckedChanged(object sender, EventArgs e)
@@ -171,7 +146,6 @@ namespace WindowsFormsPresentationLayer
 			"Username " + Username +
 			"Password " + Password +
 			"Town Name " + TownName +
-			"Country Name" + CountryName +
 			"Contact Info " + ContactInfo +
 			"Admin" + isAdmin);
 			*/
@@ -183,21 +157,16 @@ namespace WindowsFormsPresentationLayer
 			&& Username != ""
 			&& Password != ""
 			&& TownName != ""
-			&& CountryName != ""
 			&& ContactInfo != ""
 			)
 			{
 				try
 				{
-					if (CountryService.RetrieveCountry(CountryName) == null)
-					{
-						CountryService.Create(new Country(CountryName));
-					}
+
 					Town inputedTown = new Town();
 					if (!TownService.CheckIfExists(TownName))
 					{
-						inputedTown.Country = CountryService.RetrieveCountry(CountryName);
-						inputedTown.CountryId = inputedTown.Country.Id;
+					
 						inputedTown.Name = TownName;
 						TownService.Create(inputedTown);
 					}

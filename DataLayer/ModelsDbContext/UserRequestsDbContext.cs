@@ -11,19 +11,14 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-	public class UserRequestsDbContext : IDb<UserRequests, Guid>
+	public class UserRequestsDbContext(PetExchangeDbContext dbcontext) : IDb<UserRequests, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext;
+		private readonly PetExchangeDbContext _dbcontext = dbcontext;
 
-		public UserRequestsDbContext(PetExchangeDbContext dbcontext)
+        public void Create(UserRequests? entity)
 		{
-			_dbcontext = dbcontext;
-		}
-
-		public void Create(UserRequests entity)
-		{
-			if (entity == null) throw new System.ArgumentNullException();
-			try
+            ArgumentNullException.ThrowIfNull(entity);
+            try
 			{
 				var allPublicOffers = _dbcontext.PublicOffers.ToList();
 				if (!allPublicOffers.Any(x => x.Id == entity.PublicOfferId))
@@ -33,13 +28,13 @@ namespace DataLayer
 				_dbcontext.Requests.Add(entity);
 				_dbcontext.SaveChanges();
 			}
-			catch (Exception ex)
+			catch
 			{
-				throw ex;
+
 			}
 		}
 
-		public UserRequests Read(Guid id, bool useNavigationalProperties = true)
+		public UserRequests? Read(Guid id, bool useNavigationalProperties = true)
 		{
 			UserRequests foundRequests = _dbcontext.Requests.Where(x => x.Id == id).FirstOrDefault();
 
@@ -66,19 +61,12 @@ namespace DataLayer
 		{
 			try
 			{
-				var foundEntity = Read(entity.Id);
-
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-				}
-
-				_dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
+				var foundEntity = Read(entity.Id) ?? throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
+                _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
 				_dbcontext.SaveChanges();
 			}
-			catch (Exception ex)
+			catch
 			{
-				throw ex;
 			}
 		}
 
@@ -86,18 +74,13 @@ namespace DataLayer
 		{
 			try
 			{
-				var foundEntity = Read(id);
-
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-				}
-				_dbcontext.Requests.Remove(foundEntity);
+				var foundEntity = Read(id) ?? throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
+                _dbcontext.Requests.Remove(foundEntity);
 				_dbcontext.SaveChanges();
 			}
-			catch (Exception ex)
+			catch 
 			{
-				throw ex;
+
 			}
 		}
 	}

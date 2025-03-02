@@ -12,8 +12,8 @@ namespace BusinessLayer.Functions
 {
     public static class UserRequestsService
     {
-        private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        public static UserRequestsDbContext  _UserRequestsContext = new UserRequestsDbContext(_ProjectContext);
+        private static readonly PetExchangeDbContext _ProjectContext = new();
+        public static UserRequestsDbContext  _UserRequestsContext = new (_ProjectContext);
 
         public static void Create(UserRequests request)
         {
@@ -65,11 +65,7 @@ namespace BusinessLayer.Functions
         {
             var requests = ReadAll(user);
         
-            var deletedRequest = requests.Where(x => PetService.Read(PublicOfferService.Read(x.PublicOfferId).PetId).Name == petName).FirstOrDefault();
-            if (deletedRequest == null)
-            {
-                throw new Exception("No such request exists for this user!");
-            }
+            var deletedRequest = requests.Where(x => PetService.Read(PublicOfferService.Read(x.PublicOfferId).PetId).Name == petName).FirstOrDefault() ?? throw new Exception("No such request exists for this user!");
             Delete(deletedRequest.Id);
         }
         public static void CreateRequest(User user, string petName)
@@ -77,7 +73,6 @@ namespace BusinessLayer.Functions
             var offer = PublicOfferService.ReadAll().Where(x => x.TownId == user.TownId).Where(x => x.Pet.Name == petName).FirstOrDefault();
             if(PetService.ReturnAllPets(user).Any(x => x.Name == petName) == true)
             {
-                PrintFunctions.PrintCantRequestOwnPetMessage();
                 throw new Exception("You can't create a request for a pet you own!");
             }
             if (offer == null)

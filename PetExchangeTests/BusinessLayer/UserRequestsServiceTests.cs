@@ -36,9 +36,11 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var townId = Guid.NewGuid();
-			var town = new Town(new Country("Bulgaria"), "Plovdiv");
-			town.Id = townId;
-			var user = new User(town, new List<Pet>(), "Bobo", "", false, "", "bobcho", "123");
+            var town = new Town("Plovdiv")
+            {
+                Id = townId
+            };
+            var user = new User(town, [], "Bobo", "", false, "", "bobcho", "123");
 			var pet = new Pet { User = user, UserId = user.Id, Id = Guid.NewGuid(), Name = "Register Pet" };
 			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id, TownId = town.Id };
 			db.Users.Add(user);
@@ -78,8 +80,8 @@ namespace PetExchangeTests.BusinessLayer
 			var user = new User { Id = Guid.NewGuid() };
 			var offers = new List<PublicOffer>
 			{
-				new PublicOffer { Id = Guid.NewGuid() },
-				new PublicOffer { Id = Guid.NewGuid() }
+				new() { Id = Guid.NewGuid() },
+				new() { Id = Guid.NewGuid() }
 			};
 			db.Users.Add(user);
 			db.PublicOffers.AddRange(offers);
@@ -125,7 +127,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = UserRequestsService.ReadAll();
 
 			// Assert
-			Assert.That(result.Count, Is.EqualTo(initialCount));
+			Assert.That(result, Has.Count.EqualTo(initialCount));
 		}
 
 		[Test]
@@ -135,7 +137,7 @@ namespace PetExchangeTests.BusinessLayer
 			
 
 			// Act & Assert
-			Assert.IsEmpty(UserRequestsService.ReadAll(user: null),"ReadAll method doesn't throw an exception when the user is null!");
+			Assert.That(UserRequestsService.ReadAll(user: null), Is.Empty, "ReadAll method doesn't throw an exception when the user is null!");
 		}
 
 		[Test]
@@ -187,8 +189,8 @@ namespace PetExchangeTests.BusinessLayer
 			var user = new User { Id = Guid.NewGuid() };
 			var offers = new List<PublicOffer>
 			{
-				new PublicOffer { Id = Guid.NewGuid() },
-				new PublicOffer { Id = Guid.NewGuid() }
+				new() { Id = Guid.NewGuid() },
+				new() { Id = Guid.NewGuid() }
 			};
 			var requests = offers.Select(offer => new UserRequests(offer, user, false)).ToList();
 			db.Users.Add(user);
@@ -227,7 +229,7 @@ namespace PetExchangeTests.BusinessLayer
 			var result = UserRequestsService.ReadAll(user);
 
 			// Assert
-			Assert.That(result.Count, Is.EqualTo(1));
+			Assert.That(result, Has.Count.EqualTo(1));
 			Assert.That(result[0].UserId, Is.EqualTo(user.Id));
 		}
 
@@ -276,11 +278,15 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var townId = Guid.NewGuid();
-			var town = new Town(new Country("Bulgaria"), "Plovdiv");
-			town.Id = townId;
-			var user = new User(town,new List<Pet>(), "Bobo","",false,"","bobcho","123");
-			user.TownId = townId;
-			var pet = new Pet { User = user,UserId = user.Id, Id = Guid.NewGuid(), Name = "Register Pet" };
+            var town = new Town("Plovdiv")
+            {
+                Id = townId
+            };
+            var user = new User(town, new List<Pet>(), "Bobo", "", false, "", "bobcho", "123")
+            {
+                TownId = townId
+            };
+            var pet = new Pet { User = user,UserId = user.Id, Id = Guid.NewGuid(), Name = "Register Pet" };
 			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id, TownId = town.Id };
 			db.Towns.Add(town);
 			db.Users.Add(user);
@@ -288,12 +294,14 @@ namespace PetExchangeTests.BusinessLayer
 			db.PublicOffers.Add(offer);
 			db.SaveChanges();
 			var initialRequestsCount = db.Requests.Count();
-			var differentUser = new User();
-			differentUser.Town = town;
-			differentUser.TownId = townId;
-			// Act
+            var differentUser = new User
+            {
+                Town = town,
+                TownId = townId
+            };
+            // Act
 
-			UserRequestsService.CreateRequest(differentUser, pet.Name);
+            UserRequestsService.CreateRequest(differentUser, pet.Name);
 			var newRequestsCount = db.Requests.Count();
 
 			// Assert

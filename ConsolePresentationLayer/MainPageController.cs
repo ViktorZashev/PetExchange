@@ -92,24 +92,7 @@ namespace ConsolePresentationLayer
             var usernameAndPassword = Console.ReadLine().Split();
             var name = Console.ReadLine();
             var townName = Console.ReadLine();
-            Town town;
-            try
-            {
-
-                town = TownService.RetrieveTown(townName);
-            }
-            catch
-            {
-                PrintFunctions.PrintNeededCountryDataMessage();
-                var CountryName = Console.ReadLine();
-                Country newCountry;
-                newCountry = CountryService.RetrieveCountry(CountryName);
-                if(newCountry == null)
-                {
-                    newCountry = new Country(CountryName);
-                }
-                town = new Town(newCountry, townName);
-            }
+            Town town = TownService.RetrieveTown(townName);
             var contactInfo = Console.ReadLine();
             var EnteredaAdminPassword = Console.ReadLine();
             bool adminStatus = false;

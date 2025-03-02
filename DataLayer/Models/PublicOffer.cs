@@ -11,21 +11,21 @@ namespace BusinessLayer.Models
 {
     public class PublicOffer
 	{
-		[JsonPropertyName("id")]
+
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		[JsonPropertyName("pet_id")]
+
 		public Guid PetId { get; set; }
 
 		[ForeignKey("PetId")]
-		[JsonPropertyName("pet")]
+
 		public Pet Pet { get; set; }
 
-		[JsonPropertyName("town_id")]
+
 		public Guid TownId { get; set; }
 
-		[JsonPropertyName("user_id")]
+
 		public Guid UserId { get; set; }
 
 		public PublicOffer() { }

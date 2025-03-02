@@ -11,15 +11,6 @@ namespace PetExchangeTests.BusinessLayer
 {
     public class DatabaseFunctionsTests : BusinessLayerTestsManagement
     {
-        [Test]
-        public void DeleteAllEntries_RemovesCountries()
-        {
-            // Act
-            DatabaseFunctions.DeleteAllEntries();
-
-            // Assert
-            Assert.IsEmpty(db.Countries.ToList(), "Countries should be empty.");
-        }
 
         [Test]
         public void DeleteAllEntries_RemovesTowns()
@@ -28,7 +19,7 @@ namespace PetExchangeTests.BusinessLayer
             DatabaseFunctions.DeleteAllEntries();
 
             // Assert
-            Assert.IsEmpty(db.Towns.ToList(), "Towns should be empty.");
+            Assert.That(db.Towns.ToList(), Is.Empty, "Towns should be empty.");
         }
 
         [Test]
@@ -38,7 +29,7 @@ namespace PetExchangeTests.BusinessLayer
             DatabaseFunctions.DeleteAllEntries();
 
             // Assert
-            Assert.IsEmpty(db.Users.ToList(), "Users should be empty.");
+            Assert.That(db.Users.ToList(), Is.Empty, "Users should be empty.");
         }
 
         [Test]
@@ -48,7 +39,7 @@ namespace PetExchangeTests.BusinessLayer
             DatabaseFunctions.DeleteAllEntries();
 
             // Assert
-            Assert.IsEmpty(db.Pets.ToList(), "Pets should be empty.");
+            Assert.That(db.Pets.ToList(), Is.Empty, "Pets should be empty.");
         }
 
         [Test]
@@ -58,7 +49,7 @@ namespace PetExchangeTests.BusinessLayer
             DatabaseFunctions.DeleteAllEntries();
 
             // Assert
-            Assert.IsEmpty(db.PublicOffers.ToList(), "PublicOffers should be empty.");
+            Assert.That(db.PublicOffers.ToList(), Is.Empty, "PublicOffers should be empty.");
         }
 
         [Test]
@@ -68,18 +59,9 @@ namespace PetExchangeTests.BusinessLayer
             DatabaseFunctions.DeleteAllEntries();
 
             // Assert
-            Assert.IsEmpty(db.Requests.ToList(), "UserRequests should be empty.");
+            Assert.That(db.Requests.ToList(), Is.Empty, "UserRequests should be empty.");
         }
 
-        [Test]
-        public void SeedDatabase_CreatesCountries()
-        {
-            // Act
-            DatabaseFunctions.SeedDatabase();
-
-            // Assert
-            Assert.That(db.Countries.Count(), Is.EqualTo(6), "There should be 6 countries.");
-        }
 
         [Test]
         public void SeedDatabase_CreatesTowns()

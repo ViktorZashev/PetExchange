@@ -11,27 +11,19 @@ namespace BusinessLayer.Models
 {
     public class Town
 	{
-		[JsonPropertyName("id")]
+
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		[JsonPropertyName("country_id")]
-		public Guid CountryId { get; set; }
 
-		[ForeignKey("CountryId")]
-		public Country Country { get; set; }
-
-		[JsonPropertyName("name")]
 		[Required]
 		public string Name { get; set; } = string.Empty;
 
 		public Town() { }
 
-		public Town(Country country, string name)
+		public Town(string name)
 		{
 			Id = Guid.NewGuid();
-			Country = country;
-			CountryId = country.Id;
 			Name = name;
 		}
 	}
