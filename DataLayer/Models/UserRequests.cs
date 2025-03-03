@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,22 +12,26 @@ namespace BusinessLayer.Models
 {
     public class UserRequests
 	{
-
+		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		public Guid PublicOfferId { get; set; }
-
-		public Guid UserId { get; set; }
-
+		[Required]
+		[DisplayName("Потвърден")]
 		public bool IsAccepted { get; set; } = false;
 
-		public UserRequests() { }
+        [Required]
+        public Guid PublicOfferId { get; set; }
 
-		public UserRequests(PublicOffer publicOffer, User user, bool isAccepted)
+        [ForeignKey("PublicOfferId")]
+        public PublicOffer PublicOffer { get; set; }
+
+        public UserRequests() { }
+
+		public UserRequests(PublicOffer publicOffer,bool isAccepted)
 		{
 			Id = Guid.NewGuid();
-			PublicOfferId = publicOffer.Id;
-			UserId = user.Id;
+			PublicOffer = publicOffer;
+			PublicOfferId = PublicOffer.Id;
 			IsAccepted = isAccepted;
 		}
 	}

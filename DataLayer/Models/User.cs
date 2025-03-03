@@ -1,5 +1,9 @@
-﻿using System;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -8,63 +12,53 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Models
 {
-    public class User
+    public class User : IdentityUser<Guid>
 	{
+        /* Fields from Identity User
+		Guid Id,
 
-		public Guid Id { get; set; } = Guid.NewGuid();
+		public virtual string? UserName { get; set; }
 
+		public virtual string? Email { get; set; }
 
-		public Guid TownId { get; set; }
+		public virtual string? PhoneNumber { get; set; }
+		*/
+        [Required]
+		[DisplayName("Име")]
+        public string Name { get; set; } = string.Empty;
 
-		[ForeignKey("TownId")]
-		public Town Town { get; set; }
+        public string PhotoPath { get; set; } = string.Empty;
 
+		[DisplayName("Роля")]
+        [Required]
+		public RoleEnum Role { get; set; } = RoleEnum.User;
 
-		public List<Pet> Pets { get; set; }
+        [Required]
+        public Guid TownId { get; set; }
 
+        [ForeignKey("TownId")]
+        public Town Town { get; set; }
 
-		public string Name { get; set; } = string.Empty;
+        public List<Pet> Pets { get; set; }
 
+        public List<UserRequests> Requests { get; set; }
 
-		public string PhotoPath { get; set; } = string.Empty;
+        public List<PublicOffer> PublicOffers { get; set; }
 
+        public User() { }
 
-		public bool IsAdmin { get; set; } = false;
-
-
-		public string ContactInfo { get; set; } = string.Empty;
-
-
-		public string Username { get; set; } = string.Empty;
-
-
-		public string Password { get; set; } = string.Empty;
-
-        public User() => Pets = new();
-
-        public User(Town town, List<Pet> pets, string name, string photo_path, bool isAdmin, string contactInfo, string username, string password)
+        public User(string username, string name, string photoPath, RoleEnum role, string phoneNumber,string email, Town town, List<Pet> pets)
 		{
 			Id = Guid.NewGuid();
-			Town = town;
-			TownId = town.Id;
-			Pets = pets;
-			Name = name;
-			PhotoPath = photo_path;
-			IsAdmin = isAdmin;
-			ContactInfo = contactInfo;
-			Username = username;
-			Password = password;
-		}
-
-        public User(Guid guid, string name)
-        {
-			Id = guid;
-			Name = name;
-        }
-
-        public User(string name)
-        {
-			Name = name;
+            UserName = username;
+            Name = name;
+			PhotoPath = photoPath;
+			Role = role;
+            Email = email;
+			PhoneNumber = phoneNumber;
+            Town = town;
+            TownId = Town.Id;
+            Pets = pets;
         }
     }
 }

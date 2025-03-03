@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Functions;
 using BusinessLayer.Models;
+using DataLayer.Models;
 using DataLayer.ModelsDbContext;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.SaveChanges();
 
@@ -34,7 +35,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -62,8 +63,8 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet1 = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
-			var pet2 = new Pet(user, "Buddy", "", 3, "Dog", "A friendly dog", false);
+			var pet1 = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet2 = new Pet(user, "Buddy", "", 3, PetTypeEnum.Dog, "A friendly dog", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet1);
 			db.Pets.Add(pet2);
@@ -81,7 +82,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -102,7 +103,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(Guid.NewGuid(), user, "Nonexistent Pet", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(Guid.NewGuid(), user, "Nonexistent Pet", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 
 			// Act & Assert
 			Assert.Throws<ArgumentException>(() => PetService.Update(pet), "Update method does not throw an exception when the pet does not exist in the database.");
@@ -113,7 +114,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -131,7 +132,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -148,8 +149,8 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet1 = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
-			var pet2 = new Pet(user, "Max", "", 3, "Dog", "A playful dog", true);
+			var pet1 = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet2 = new Pet(user, "Max", "", 3, PetTypeEnum.Dog, "A playful dog", true);
 			db.Users.Add(user);
 			db.Pets.AddRange(new[] { pet1, pet2 });
 			db.SaveChanges();
@@ -167,7 +168,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -185,9 +186,9 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user1 = new User { Id = Guid.NewGuid(), Name = "John" };
 			var user2 = new User { Id = Guid.NewGuid(), Name = "Alice" };
-			var pet1 = new Pet(user1, "Fluffy", "", 2, "Cat", "A cute cat", false);
-			var pet2 = new Pet(user1, "Max", "", 3, "Dog", "A playful dog", true);
-			var pet3 = new Pet(user2, "Buddy", "", 4, "Dog", "A loyal dog", false);
+			var pet1 = new Pet(user1, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet2 = new Pet(user1, "Max", "", 3, PetTypeEnum.Dog, "A playful dog", true);
+			var pet3 = new Pet(user2, "Buddy", "", 4, PetTypeEnum.Dog, "A loyal dog", false);
 			db.Users.AddRange([user1, user2]);
 			db.Pets.AddRange([pet1, pet2, pet3]);
 			db.SaveChanges();
@@ -210,9 +211,9 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user1 = new User { Id = Guid.NewGuid(), Name = "John" };
 			var user2 = new User { Id = Guid.NewGuid(), Name = "Alice" };
-			var pet1 = new Pet(user1, "Fluffy", "", 2, "Cat", "A cute cat", false);
-			var pet2 = new Pet(user1, "Max", "", 3, "Dog", "A playful dog", true);
-			var pet3 = new Pet(user2, "Buddy", "", 4, "Dog", "A loyal dog", false);
+			var pet1 = new Pet(user1, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet2 = new Pet(user1, "Max", "", 3, PetTypeEnum.Dog, "A playful dog", true);
+			var pet3 = new Pet(user2, "Buddy", "", 4, PetTypeEnum.Dog, "A loyal dog", false);
 			db.Users.AddRange([user1, user2]);
 			db.Pets.AddRange([pet1, pet2, pet3]);
 			db.SaveChanges();
@@ -229,7 +230,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -240,31 +241,6 @@ namespace PetExchangeTests.BusinessLayer
 			// Assert
 			Assert.IsNotNull(result, "Pet 'Fluffy' should exist in the database.");
 			Assert.That(result.Name, Is.EqualTo("Fluffy"), "Returned pet should have name 'Fluffy'.");
-		}
-
-
-		[Test]
-		public void OutputPetsMethod_OutputsPetInformation()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new Pet(user, "Fluffy", "", 2, "Cat", "A cute cat", false);
-			db.Users.Add(user);
-			db.Pets.Add(pet);
-			db.SaveChanges();
-
-			// Redirect console output
-			using (var sw = new System.IO.StringWriter())
-			{
-				Console.SetOut(sw);
-
-				// Act
-				PetService.OutputPets();
-				var result = sw.ToString().Trim();
-
-				// Assert
-				StringAssert.Contains("Name: Fluffy", result, "OutputPets method does not output the pet's information.");
-			}
 		}
 
 	}

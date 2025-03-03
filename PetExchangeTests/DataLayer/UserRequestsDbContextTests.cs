@@ -20,7 +20,7 @@ namespace PetExchangeTests.DataLayer
             db.PublicOffers.Add(publicOffer);
             db.SaveChanges();
             var user = new User();
-            var newUserRequest = new UserRequests(publicOffer, user, false);
+            var newUserRequest = new UserRequests(publicOffer, false);
             var initialCount = db.Requests.Count();
 
             // Act
@@ -37,14 +37,14 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newTown = new Town("Plovdiv");
-            var newUser = new User("New User")
+            var newUser = new User()
             {
                 Town = newTown,
                 TownId = newTown.Id
             };
             var newPet = new Pet(Guid.NewGuid(),newUser);
             var nonExistingPublicOffer = new PublicOffer(newPet);
-            var newUserRequest = new UserRequests(nonExistingPublicOffer, newUser, false);
+            var newUserRequest = new UserRequests(nonExistingPublicOffer, false);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => userRequestsContext.Create(newUserRequest), "Create method doesn't throw exception when user request doesn't include a register public offer!");
@@ -68,7 +68,7 @@ namespace PetExchangeTests.DataLayer
             // Arrange
             var publicOffer = new PublicOffer();
             var user = new User();
-            var newUserRequest = new UserRequests(publicOffer, user, false);
+            var newUserRequest = new UserRequests(publicOffer, false);
             db.Requests.Add(newUserRequest);
             db.SaveChanges();
 
@@ -83,7 +83,7 @@ namespace PetExchangeTests.DataLayer
             var id = Guid.NewGuid();
             var publicOffer = new PublicOffer();
             var user = new User();
-            var newUserRequest = new UserRequests(publicOffer, user, false) { Id = id };
+            var newUserRequest = new UserRequests(publicOffer, false) { Id = id };
 
             // Act
             db.Requests.Add(newUserRequest);
@@ -112,8 +112,8 @@ namespace PetExchangeTests.DataLayer
             var id = Guid.NewGuid();
             var publicOffer = new PublicOffer();
             var user = new User();
-            var initialUserRequest = new UserRequests(publicOffer, user, false) { Id = id };
-            var updatedUserRequest = new UserRequests(publicOffer, user, true) { Id = id };
+            var initialUserRequest = new UserRequests(publicOffer, false) { Id = id };
+            var updatedUserRequest = new UserRequests(publicOffer, true) { Id = id };
 
             db.Requests.Add(initialUserRequest);
             db.SaveChanges();
@@ -143,8 +143,8 @@ namespace PetExchangeTests.DataLayer
             // Arrange
             var publicOffer = new PublicOffer();
             var user = new User();
-            var userRequest1 = new UserRequests(publicOffer, user, false);
-            var userRequest2 = new UserRequests(publicOffer, user, true);
+            var userRequest1 = new UserRequests(publicOffer, false);
+            var userRequest2 = new UserRequests(publicOffer, true);
 
             db.Requests.Add(userRequest1);
             db.Requests.Add(userRequest2);
@@ -179,7 +179,7 @@ namespace PetExchangeTests.DataLayer
             var id = Guid.NewGuid();
             var publicOffer = new PublicOffer();
             var user = new User();
-            var userRequestToDelete = new UserRequests(publicOffer, user, false) { Id = id };
+            var userRequestToDelete = new UserRequests(publicOffer, false) { Id = id };
 
             db.Requests.Add(userRequestToDelete);
             db.SaveChanges();

@@ -103,21 +103,6 @@ namespace BusinessLayer.Functions
 			var pets = _PetContext.ReadAll().ToList();
 			return pets.Where(x => x.Name == name).FirstOrDefault();
 		}
-		public static void OutputPets()
-		{
-			var pets = ReadAll();
-			foreach (Pet pet in pets)
-			{
-				Console.WriteLine();
-				Console.WriteLine("Name: " + pet.Name);
-				Console.WriteLine("User Id: " + pet.User.Id);
-				Console.WriteLine("Age: " + pet.Age);
-				Console.WriteLine("Animal Type: " + pet.AnimalType);
-				Console.WriteLine("Includes Cage: " + pet.IncludesCage);
-				Console.WriteLine("Description: " + pet.Description);
-				Console.WriteLine();
-			}
-		}
 		public static void LoadDb()
 		{
 			try

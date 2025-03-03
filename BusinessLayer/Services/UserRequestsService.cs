@@ -59,7 +59,7 @@ namespace BusinessLayer.Functions
         }
         public static List<UserRequests> ReadAll(User user)
         {
-          return ReadAll().Where(x => x.UserId == user.Id).ToList();
+          return user.Requests.ToList();
         }
         public static void DeleteRequest(User user, string petName)
         {
@@ -79,7 +79,7 @@ namespace BusinessLayer.Functions
             {
                 throw new Exception("No such public offer exists for petName");
             }
-            var request = new UserRequests(offer, user, false);
+            var request = new UserRequests(offer, false);
             Create(request);
         }
 		public static void LoadDb()

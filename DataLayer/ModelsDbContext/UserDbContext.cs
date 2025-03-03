@@ -116,18 +116,7 @@ namespace DataLayer
 
 		public bool CheckUsernameExists(string username)
 		{
-			var foundEntity = ReadAll().Where(x => x.Username == username).FirstOrDefault();
-
-			if (foundEntity == null)
-			{
-				return false;
-			}
-			return true;
-		}
-
-		public bool CheckPasswordCorrect(string username, string password)
-		{
-			var foundEntity = ReadAll().Where(x => x.Username == username && x.Password == password).FirstOrDefault();
+			var foundEntity = ReadAll().Where(x => x.UserName == username).FirstOrDefault();
 
 			if (foundEntity == null)
 			{

@@ -166,40 +166,5 @@ namespace PetExchangeTests.BusinessLayer
 				"All users should be removed from the database.");
 		}
 
-		[Test]
-		public void AuthenticateUserReturnsCode_Returns_Correct_Code()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Username = "testuser", Password = "password" };
-			db.Users.Add(user);
-			db.SaveChanges();
-            // Act & Assert
-            Assert.Multiple(() =>
-            {
-                
-                Assert.That(UserService.AuthenticateUserReturnsCode("testuser", "password"), Is.EqualTo(2),
-                    "Authentication should be successful with correct username and password.");
-                Assert.That(UserService.AuthenticateUserReturnsCode("testuser", "wrongpassword"), Is.EqualTo(1),
-                    "Authentication should fail with incorrect password.");
-                Assert.That(UserService.AuthenticateUserReturnsCode("nonexistentuser", "password"), Is.EqualTo(0),
-                    "Authentication should fail with non-existent username.");
-            });
-        }
-
-		[Test]
-		public void ReturnUser_Returns_Correct_User()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Username = "testuser", Password = "password" };
-			db.Users.Add(user);
-			db.SaveChanges();
-
-			// Act
-			var result = UserService.ReturnUser("testuser", "password");
-
-			// Assert
-			Assert.That(result, Is.Not.Null);
-			Assert.That(result.Id, Is.EqualTo(user.Id));
-		}
 	}
 }

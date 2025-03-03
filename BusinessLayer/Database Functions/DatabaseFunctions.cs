@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Functions;
 using BusinessLayer.Models;
 using DataLayer;
+using DataLayer.Models;
 using DataLayer.ProjectDbContext;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,7 +24,7 @@ namespace BusinessLayer.Database_Functions
             UserRequestsService.DeleteAll();
             PublicOfferService.DeleteAll();
         }
-
+        /*
         public static void SeedDatabase()
         {
             DeleteAllEntries();
@@ -41,7 +42,7 @@ namespace BusinessLayer.Database_Functions
 
             var users = new List<User>
                 {
-                    new (towns[0],[],"John Doe","photoPath", false, "john@example.com", "john", "password"),
+                    new (towns[0],[],"John Doe",RoleEnum.User, false, "john@example.com", "john", "password"),
                     new (towns[1],[], "Alice Smith", "photoPath", false, "alice@example.com", "alice", "password"),
                     new (towns[2],[], "Bob Johnson", "photoPath", false, "bob@example.com", "bob", "password"),
                     new (towns[3],[], "Emily Brown", "photoPath", false, "emily@example.com", "emily", "password"),
@@ -53,12 +54,12 @@ namespace BusinessLayer.Database_Functions
 
             var pets = new List<Pet>
                 {
-                    new (users[0], "Max", string.Empty, 3, "Dog", "Friendly dog", true),
-                    new (users[1], "Whiskers", string.Empty, 2, "Cat", "Playful cat", false),
-                    new (users[2], "Buddy", string.Empty, 4, "Dog", "Loyal companion", true),
-                    new (users[3], "Mittens", string.Empty, 1, "Cat", "Curious kitten", false),
-                    new (users[4], "Rocky", string.Empty, 5, "Dog", "Energetic pup", true),
-                    new (users[5], "Tropcho", string.Empty, 5, "Gerbil", "Sleeping beauty", true)
+                    new (users[0], "Max", string.Empty, 3, PetTypeEnum.Dog, "Friendly dog", true),
+                    new (users[1], "Whiskers", string.Empty, 2, PetTypeEnum.Cat, "Playful cat", false),
+                    new (users[2], "Buddy", string.Empty, 4, PetTypeEnum.Dog, "Loyal companion", true),
+                    new (users[3], "Mittens", string.Empty, 1, PetTypeEnum.Cat, "Curious kitten", false),
+                    new (users[4], "Rocky", string.Empty, 5, PetTypeEnum.Dog, "Energetic pup", true),
+                    new (users[5], "Tropcho", string.Empty, 5, PetTypeEnum.SmallMammal, "Sleeping beauty", true)
                 };
             PetService.Create(pets);
 
@@ -84,10 +85,6 @@ namespace BusinessLayer.Database_Functions
                 };
             UserRequestsService.Create(userRequests);
         }
-
-        public static int CheckUserReturnsCode(string username, string password)
-        {
-            return UserService.AuthenticateUserReturnsCode(username, password);
-        }
+        */
     }
 }

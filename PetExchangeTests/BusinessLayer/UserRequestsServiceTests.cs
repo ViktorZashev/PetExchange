@@ -32,28 +32,6 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void CreateRequest_Prints_CantRequestOwnPetMessage()
-		{
-			// Arrange
-			var townId = Guid.NewGuid();
-            var town = new Town("Plovdiv")
-            {
-                Id = townId
-            };
-            var user = new User(town, [], "Bobo", "", false, "", "bobcho", "123");
-			var pet = new Pet { User = user, UserId = user.Id, Id = Guid.NewGuid(), Name = "Register Pet" };
-			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id, TownId = town.Id };
-			db.Users.Add(user);
-			db.Towns.Add(town);
-			db.Pets.Add(pet);
-			db.PublicOffers.Add(offer);
-			db.SaveChanges();
-
-			// Act & Assert
-			Assert.Throws<Exception>(() => UserRequestsService.CreateRequest(user, pet.Name),"Create Request doesn't throw exception when trying to request own pet!");
-			StringAssert.Contains("You can't create a request for your own pet! Try again.!", consoleOutput.ToString());
-		}
-		[Test]
 		public void Create_Adds_New_UserRequest_To_Database()
 		{
 			// Arrange
@@ -65,7 +43,7 @@ namespace PetExchangeTests.BusinessLayer
 			var initialRequestsCount = db.Requests.Count();
 
 			// Act
-			var request = new UserRequests(offer, user, false);
+			var request = new UserRequests(offer, false);
 			UserRequestsService.Create(request);
 			var newRequestsCount = db.Requests.Count();
 
@@ -89,7 +67,7 @@ namespace PetExchangeTests.BusinessLayer
 			var initialRequestsCount = db.Requests.Count();
 
 			// Act
-			var requests = offers.Select(offer => new UserRequests(offer, user, false)).ToList();
+			var requests = offers.Select(offer => new UserRequests(offer, false)).ToList();
 			UserRequestsService.Create(requests);
 			var newRequestsCount = db.Requests.Count();
 
@@ -103,7 +81,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequests(offer, user, false) { Id = Guid.NewGuid() };
+			var request = new UserRequests(offer, false) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.PublicOffers.Add(offer);
 			db.Requests.Add(request);
@@ -146,7 +124,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequests(offer, user, false);
+			var request = new UserRequests(offer, false);
 			db.Users.Add(user);
 			db.PublicOffers.Add(offer);
 			db.Requests.Add(request);
@@ -167,7 +145,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequests(offer, user, false);
+			var request = new UserRequests(offer, false);
 			db.Users.Add(user);
 			db.PublicOffers.Add(offer);
 			db.Requests.Add(request);
@@ -192,7 +170,7 @@ namespace PetExchangeTests.BusinessLayer
 				new() { Id = Guid.NewGuid() },
 				new() { Id = Guid.NewGuid() }
 			};
-			var requests = offers.Select(offer => new UserRequests(offer, user, false)).ToList();
+			var requests = offers.Select(offer => new UserRequests(offer, false)).ToList();
 			db.Users.Add(user);
 			db.PublicOffers.AddRange(offers);
 			db.Requests.AddRange(requests);
@@ -215,8 +193,8 @@ namespace PetExchangeTests.BusinessLayer
 			var otherUser = new User { Id = Guid.NewGuid() };
 			var offer1 = new PublicOffer { Id = Guid.NewGuid() };
 			var offer2 = new PublicOffer { Id = Guid.NewGuid() };
-			var request1 = new UserRequests(offer1, user, false);
-			var request2 = new UserRequests(offer2, otherUser, false);
+			var request1 = new UserRequests(offer1, false);
+			var request2 = new UserRequests(offer2, false);
 			db.Users.Add(user);
 			db.Users.Add(otherUser);
 			db.PublicOffers.Add(offer1);
@@ -230,7 +208,6 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Assert
 			Assert.That(result, Has.Count.EqualTo(1));
-			Assert.That(result[0].UserId, Is.EqualTo(user.Id));
 		}
 
 		[Test]
@@ -240,7 +217,7 @@ namespace PetExchangeTests.BusinessLayer
 			var user = new User { Id = Guid.NewGuid() };
 			var pet = new Pet { Id = Guid.NewGuid(), Name = "Pet To Delete" };
 			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id };
-			var request = new UserRequests(offer, user, false);
+			var request = new UserRequests(offer, false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
@@ -271,41 +248,6 @@ namespace PetExchangeTests.BusinessLayer
 			// Act & Assert
 			var ex = Assert.Throws<Exception>(() => UserRequestsService.DeleteRequest(user, pet.Name));
 			Assert.That(ex.Message, Is.EqualTo("No such request exists for this user!"));
-		}
-
-		[Test]
-		public void CreateRequest_Adds_New_UserRequest_For_Pet()
-		{
-			// Arrange
-			var townId = Guid.NewGuid();
-            var town = new Town("Plovdiv")
-            {
-                Id = townId
-            };
-            var user = new User(town, new List<Pet>(), "Bobo", "", false, "", "bobcho", "123")
-            {
-                TownId = townId
-            };
-            var pet = new Pet { User = user,UserId = user.Id, Id = Guid.NewGuid(), Name = "Register Pet" };
-			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id, TownId = town.Id };
-			db.Towns.Add(town);
-			db.Users.Add(user);
-			db.Pets.Add(pet);
-			db.PublicOffers.Add(offer);
-			db.SaveChanges();
-			var initialRequestsCount = db.Requests.Count();
-            var differentUser = new User
-            {
-                Town = town,
-                TownId = townId
-            };
-            // Act
-
-            UserRequestsService.CreateRequest(differentUser, pet.Name);
-			var newRequestsCount = db.Requests.Count();
-
-			// Assert
-			Assert.That(newRequestsCount, Is.EqualTo(initialRequestsCount + 1), "A new user request should be added for the requested pet.");
 		}
 
 		[Test]

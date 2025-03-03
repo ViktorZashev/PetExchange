@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,34 +11,43 @@ using System.Threading.Tasks;
 namespace BusinessLayer.Models
 {
     public class PublicOffer
-	{
+    {
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-		[Key]
-		public Guid Id { get; set; } = Guid.NewGuid();
+        [Required]
+        public Guid PetId { get; set; }
 
+        [ForeignKey("PetId")]
+        public Pet Pet { get; set; }
 
-		public Guid PetId { get; set; }
+        List<UserRequests>? UserRequests { get; set; }
 
-		[ForeignKey("PetId")]
+        [NotMapped]
+        public Town Town
+        {
+            get
+            {
+                return Pet.User.Town;
+            }
+        }
 
-		public Pet Pet { get; set; }
+        [NotMapped]
+        public Guid TownId 
+        { 
+           get 
+           { 
+                return Town.Id; 
+           } 
+        }
 
+        public PublicOffer() { }
 
-		public Guid TownId { get; set; }
-
-
-		public Guid UserId { get; set; }
-
-		public PublicOffer() { }
-
-		public PublicOffer(Pet pet)
-		{
-			Id = Guid.NewGuid();
-			Pet = pet;
-			PetId = pet.Id;
-			TownId = Pet.User.TownId;
-			UserId = pet.UserId;
-		}
-
-	}
+        public PublicOffer(Pet pet)
+        {
+            Id = Guid.NewGuid();
+            Pet = pet;
+            PetId = Pet.Id;
+        }
+    }
 }

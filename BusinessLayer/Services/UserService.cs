@@ -57,38 +57,5 @@ namespace BusinessLayer.Functions
 				Delete(User.Id);
 			}
 		}
-		public static int AuthenticateUserReturnsCode(string username, string password)
-		{
-			// 0 - no such username
-			// 1 - username found but incorrect password
-			// 2 - Authentication successful
-			if (_UserContext.CheckUsernameExists(username))
-			{
-				if (_UserContext.CheckPasswordCorrect(username, password))
-				{
-					return 2;
-				}
-				else { return 1; }
-			}
-			else { return 0; }
-		}
-		public static User ReturnUser(string username, string password)
-		{
-			var users = ReadAll();
-			var foundUser = users.Where(x => x.Username == username && x.Password == password).FirstOrDefault();
-			if (foundUser == null) throw new Exception("No such user found!");
-			return foundUser;
-		}
-		public static void LoadDb()
-		{
-			try
-			{
-				Delete(Guid.NewGuid());
-			}
-			catch
-			{
-
-			}
-		}
 	}
 }

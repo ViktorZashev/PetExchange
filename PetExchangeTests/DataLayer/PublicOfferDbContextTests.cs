@@ -73,7 +73,6 @@ namespace PetExchangeTests.DataLayer
             Assert.That(actualOffer.Id, Is.EqualTo(enteredOffer.Id), "Read method doesn't return the public offer entered in the database!");
             Assert.That(actualOffer.PetId, Is.EqualTo(enteredOffer.PetId), "Read method doesn't return the correct PetId!");
             Assert.That(actualOffer.TownId, Is.EqualTo(enteredOffer.TownId) , "Read method doesn't return the correct TownId!");
-            Assert.That(actualOffer.UserId, Is.EqualTo(enteredOffer.UserId), "Read method doesn't return the correct UserId!");
         }
 
         [Test]
@@ -104,7 +103,6 @@ namespace PetExchangeTests.DataLayer
             // Assert
             Assert.That(actualOffer.PetId, Is.EqualTo(updatedOffer.PetId), "Update method doesn't update the PetId in the public offer in the database!");
             Assert.That(actualOffer.TownId, Is.EqualTo(updatedOffer.TownId), "Update method doesn't update the TownId in the public offer in the database!");
-            Assert.That(actualOffer.UserId, Is.EqualTo(updatedOffer.UserId), "Update method doesn't update the UserId in the public offer in the database!");
         }
 
         [Test]

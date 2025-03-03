@@ -18,8 +18,7 @@ namespace PetExchangeTests.DataLayer
             var newUser = new User
             {
                 Name = "NewUser",
-                Username = "newuser",
-                Password = "password",
+                UserName = "newuser",
                 Town = new ("Plovdiv"),
                 Pets = []
             };
@@ -41,7 +40,7 @@ namespace PetExchangeTests.DataLayer
             db.Towns.Add(existingTown);
             db.SaveChanges();
             var initialTownCount = db.Towns.Count();
-            var newUser = new User { Name = "NewUser", Username = "newuser", Password = "password", Town = existingTown };
+            var newUser = new User { Name = "NewUser", UserName = "newuser", Town = existingTown };
 
             // Act
             userContext.Create(newUser);
@@ -55,7 +54,7 @@ namespace PetExchangeTests.DataLayer
         public void CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateUser()
         {
             // Arrange
-            var existingUser = new User { Name = "ExistingUser", Username = "existinguser", Password = "password" };
+            var existingUser = new User { Name = "ExistingUser", UserName = "existinguser" };
             db.Users.Add(existingUser);
             db.SaveChanges();
 
@@ -68,7 +67,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var id = Guid.NewGuid();
-            var enteredUser = new User { Id = id, Name = "UserName", Username = "username", Password = "password" };
+            var enteredUser = new User { Id = id, Name = "UserName", UserName = "username"};
             db.Users.Add(enteredUser);
             db.SaveChanges();
 
@@ -80,8 +79,7 @@ namespace PetExchangeTests.DataLayer
               
                 Assert.That(actualUser.Id, Is.EqualTo(enteredUser.Id), "Read method doesn't return the user entered in the database!");
                 Assert.That(actualUser.Name, Is.EqualTo(enteredUser.Name), "Read method doesn't return the correct user name!");
-                Assert.That(actualUser.Username, Is.EqualTo(enteredUser.Username), "Read method doesn't return the correct username!");
-                Assert.That(actualUser.Password, Is.EqualTo(enteredUser.Password), "Read method doesn't return the correct password!");
+                Assert.That(actualUser.UserName, Is.EqualTo(enteredUser.UserName), "Read method doesn't return the correct username!");
             });
         }
 
@@ -90,11 +88,11 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var id = Guid.NewGuid();
-            var initialUser = new User { Id = id, Name = "InitialUserName", Username = "initialusername", Password = "password" };
+            var initialUser = new User { Id = id, Name = "InitialUserName", UserName = "initialusername" };
             db.Users.Add(initialUser);
             db.SaveChanges();
 
-            var updatedUser = new User { Id = id, Name = "UpdatedUserName", Username = "updatedusername", Password = "updatedpassword" };
+            var updatedUser = new User { Id = id, Name = "UpdatedUserName", UserName = "updatedusername"};
 
             // Act
             userContext.Update(updatedUser);
@@ -104,8 +102,7 @@ namespace PetExchangeTests.DataLayer
             Assert.Multiple(() =>
             {
                 Assert.That(actualUser.Name, Is.EqualTo(updatedUser.Name), "Update method doesn't update the user name in the database!");
-                Assert.That(actualUser.Username, Is.EqualTo(updatedUser.Username), "Update method doesn't update the username in the database!");
-                Assert.That(actualUser.Password, Is.EqualTo(updatedUser.Password), "Update method doesn't update the password in the database!");
+                Assert.That(actualUser.UserName, Is.EqualTo(updatedUser.UserName), "Update method doesn't update the username in the database!");
             });
         }
 
@@ -114,7 +111,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
-            var userToUpdate = new User { Id = nonExistentId, Name = "UserName", Username = "username", Password = "password" };
+            var userToUpdate = new User { Id = nonExistentId, Name = "UserName", UserName = "username"};
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => userContext.Update(userToUpdate), "Update method doesn't throw an exception when the user does not exist in the database!");
@@ -125,7 +122,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var id = Guid.NewGuid();
-            var userToDelete = new User { Id = id, Name = "UserName", Username = "username", Password = "password" };
+            var userToDelete = new User { Id = id, Name = "UserName", UserName = "username"};
             db.Users.Add(userToDelete);
             db.SaveChanges();
 
@@ -141,8 +138,8 @@ namespace PetExchangeTests.DataLayer
         public void ReadAllMethod_RetrievesAllUsersFromDatabase()
         {
             // Arrange
-            var enteredUser1 = new User { Name = "UserName1", Username = "username1", Password = "password1" };
-            var enteredUser2 = new User { Name = "UserName2", Username = "username2", Password = "password2" };
+            var enteredUser1 = new User { Name = "UserName1", UserName = "username1"};
+            var enteredUser2 = new User { Name = "UserName2", UserName = "username2"};
             db.Users.Add(enteredUser1);
             db.Users.Add(enteredUser2);
             db.SaveChanges();
@@ -194,7 +191,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var username = "ExistingUsername";
-            var existingUser = new User { Id = Guid.NewGuid(), Username = username };
+            var existingUser = new User { Id = Guid.NewGuid(), UserName = username };
             db.Users.Add(existingUser);
             db.SaveChanges();
 
@@ -218,39 +215,5 @@ namespace PetExchangeTests.DataLayer
             Assert.That(usernameExists, Is.False, "CheckUsernameExists method doesn't return false for a non-existent username in the database!");
         }
 
-        [Test]
-        public void CheckPasswordCorrectMethod_ReturnsTrueIfUsernameAndPasswordMatch()
-        {
-            // Arrange
-            var username = "ExistingUsername";
-            var password = "Password123";
-            var existingUser = new User { Id = Guid.NewGuid(), Username = username, Password = password };
-            db.Users.Add(existingUser);
-            db.SaveChanges();
-
-            // Act
-            var passwordCorrect = userContext.CheckPasswordCorrect(username, password);
-
-            // Assert
-            Assert.That(passwordCorrect, Is.True, "CheckPasswordCorrect method doesn't return true for correct username and password combination!");
-        }
-
-        [Test]
-        public void CheckPasswordCorrectMethod_ReturnsFalseIfUsernameAndPasswordDoNotMatch()
-        {
-            // Arrange
-            var username = "ExistingUsername";
-            var correctPassword = "Password123";
-            var incorrectPassword = "WrongPassword";
-            var existingUser = new User { Id = Guid.NewGuid(), Username = username, Password = correctPassword };
-            db.Users.Add(existingUser);
-            db.SaveChanges();
-
-            // Act
-            var passwordCorrect = userContext.CheckPasswordCorrect(username, incorrectPassword);
-
-            // Assert
-            Assert.That(passwordCorrect, Is.False, "CheckPasswordCorrect method doesn't return false for incorrect username and password combination!");
-        }
     }
 }
