@@ -15,31 +15,31 @@ namespace BusinessLayer.Functions
         private static readonly PetExchangeDbContext _ProjectContext = new();
         public static UserRequestsDbContext  _UserRequestsContext = new (_ProjectContext);
 
-        public static void Create(UserRequests request)
+        public static void Create(UserRequest request)
         {
             // Validation
             _UserRequestsContext.Create(request);
         }
 
-        public static void Create(List<UserRequests> requests)
+        public static void Create(List<UserRequest> requests)
         {
             foreach (var request in requests)
             {
                 Create(request);
             }
         }
-        public static UserRequests Read(Guid idt, bool useNav = true)
+        public static UserRequest Read(Guid idt, bool useNav = true)
         {
             
             return _UserRequestsContext.Read(idt, useNav);
         }
 
-        public static List<UserRequests> ReadAll(bool useNav = true)
+        public static List<UserRequest> ReadAll(bool useNav = true)
         {
   
             return _UserRequestsContext.ReadAll(useNav);
         }
-        public static void Update(UserRequests request)
+        public static void Update(UserRequest request)
         {
             // validation
             _UserRequestsContext.Update(request);
@@ -57,7 +57,7 @@ namespace BusinessLayer.Functions
                 Delete(Request.Id);
             }
         }
-        public static List<UserRequests> ReadAll(User user)
+        public static List<UserRequest> ReadAll(User user)
         {
           return user.Requests.ToList();
         }
@@ -79,7 +79,7 @@ namespace BusinessLayer.Functions
             {
                 throw new Exception("No such public offer exists for petName");
             }
-            var request = new UserRequests(offer, false);
+            var request = new UserRequest(offer, false);
             Create(request);
         }
 		public static void LoadDb()

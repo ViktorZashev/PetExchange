@@ -28,6 +28,10 @@ namespace BusinessLayer.Models
         public PetTypeEnum PetType { get; set; } = PetTypeEnum.Other;
 
         [Required]
+        [DisplayName("Пол")]
+        public GenderEnum Gender { get; set; } = GenderEnum.Other;
+
+        [Required]
         [DisplayName("Описание")]
         public string Description { get; set; } = string.Empty;
 
@@ -61,12 +65,6 @@ namespace BusinessLayer.Models
 
         public Pet() { }
 
-        public Pet(User user) 
-        {
-            User = user;
-            UserId = User.Id;
-        }
-
         public Pet(User user, string name, string photoPath, int age, PetTypeEnum petType, string description, bool includesCage)
         {
             Id = Guid.NewGuid();
@@ -80,26 +78,5 @@ namespace BusinessLayer.Models
             IncludesCage = includesCage;
         }
 
-        public Pet(Guid id, User user, string name, string photoPath, int age, PetTypeEnum petType, string description, bool includesCage)
-            : this(user, name, photoPath, age, petType, description, includesCage)
-        {
-            Id = id;
-        }
-
-        public Pet(Guid guid, User user)
-        {
-            Id = guid;
-            User = user;
-            UserId = User.Id;
-        }
-
-        public Pet(string name, User user)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-            User = user;
-            UserId = User.Id;
- 
-        }
 	}
 }

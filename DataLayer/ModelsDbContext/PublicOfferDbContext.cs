@@ -11,104 +11,110 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-	public class PublicOfferDbContext : IDb<PublicOffer, Guid>
+	public class PublicOfferDbContext(PetExchangeDbContext dbcontext) : IDbWithNav<PublicOffer, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext;
+		private readonly PetExchangeDbContext _dbcontext = dbcontext;
 
-		public PublicOfferDbContext(PetExchangeDbContext dbcontext)
-		{
-			_dbcontext = dbcontext;
-		}
-
-		public void Create(PublicOffer entity)
-		{
-			try
-			{
-				var _existingPet = _dbcontext.Pets.FirstOrDefault(c => c.Id == entity.Pet.Id);
-
-				if (_existingPet != null)
-				{
-
-					entity.Pet = _existingPet;
-				}
-
-				_dbcontext.PublicOffers.Add(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+        public async Task CreateAsync(PublicOffer entity)
+        {
+            try
+            {
+                await _dbcontext.PublicOffers.AddAsync(entity);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
-		public PublicOffer Read(Guid id, bool useNavigationalProperties = true)
-		{
-			PublicOffer foundOffer = _dbcontext.PublicOffers.Where(x => x.Id == id).FirstOrDefault();
+        public async Task<PublicOffer>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<PublicOffer> query = _dbcontext.PublicOffers;
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.Pet).Include(e => e.Requests);
+                }
+                return await query.SingleOrDefaultAsync(e => e.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			if (foundOffer == null) return null;
+        public async Task<List<PublicOffer>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<PublicOffer> query = _dbcontext.PublicOffers;
 
-			if (useNavigationalProperties)
-			{
-                Guid petId = foundOffer.PetId;
-                foundOffer.Pet = _dbcontext.Pets.Where(x => x.Id == petId).FirstOrDefault();
-			}
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.Pet).Include(e => e.Requests);
+                }
+                return await query.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			return foundOffer;
-		}
+        public async Task UpdateAsync(PublicOffer publicOffer, bool useNavigationalProperties = true)
+        {
+            try
+            {
+                PublicOffer publicOfferFromDb = await ReadAsync(publicOffer.Id, useNavigationalProperties, false);
 
-		public List<PublicOffer> ReadAll(bool useNavigationalProperties = true)
-		{
+                if (publicOfferFromDb is null)
+                {
+                    throw new ArgumentException("Public offer with id = " + publicOffer.Id + "does not exist!");
+                }
+                if (useNavigationalProperties) _dbcontext.PublicOffers.Update(publicOffer); // updates all linked entities
+                else
+                {
+                    _dbcontext.PublicOffers.Entry(publicOfferFromDb).CurrentValues.SetValues(publicOffer); // updates only the core entity
+                }
 
-			List<PublicOffer> foundOffers = _dbcontext.PublicOffers.ToList();
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-			if (useNavigationalProperties)
-			{
-				for (int i = 0; i < foundOffers.Count; i++)
-				{
-					foundOffers[i] = Read(foundOffers[i].Id);
-				}
-			}
-			return foundOffers;
-		}
+                throw;
+            }
+        }
 
-		public void Update(PublicOffer entity, bool useNavigationalProperties = false)
-		{
-			try
-			{
-				var foundEntity = Read(entity.Id);
+        public async Task DeleteAsync(Guid key)
+        {
+            try
+            {
+                PublicOffer publicOffer = await ReadAsync(key, false, false);
 
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-				}
+                if (publicOffer is null)
+                {
+                    throw new ArgumentException("Public offer with id = " + key + " does not exist!");
+                }
 
-				_dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
-
-		public void Delete(Guid id)
-		{
-			try
-			{
-				var foundEntity = Read(id);
-
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-				}
-				_dbcontext.PublicOffers.Remove(foundEntity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
-	}
+                _dbcontext.PublicOffers.Remove(publicOffer);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 }

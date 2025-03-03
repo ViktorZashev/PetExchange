@@ -20,7 +20,7 @@ namespace PetExchangeTests.DataLayer
             db.PublicOffers.Add(publicOffer);
             db.SaveChanges();
             var user = new User();
-            var newUserRequest = new UserRequests(publicOffer, false);
+            var newUserRequest = new UserRequest(publicOffer, false);
             var initialCount = db.Requests.Count();
 
             // Act
@@ -42,9 +42,9 @@ namespace PetExchangeTests.DataLayer
                 Town = newTown,
                 TownId = newTown.Id
             };
-            var newPet = new Pet(Guid.NewGuid(),newUser);
+            var newPet = new User(Guid.NewGuid(),newUser);
             var nonExistingPublicOffer = new PublicOffer(newPet);
-            var newUserRequest = new UserRequests(nonExistingPublicOffer, false);
+            var newUserRequest = new UserRequest(nonExistingPublicOffer, false);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => userRequestsContext.Create(newUserRequest), "Create method doesn't throw exception when user request doesn't include a register public offer!");
@@ -53,7 +53,7 @@ namespace PetExchangeTests.DataLayer
         public void CreateMethod_ThrowsArgumentNullExceptionWhenUserRequestIsNull()
         {
             // Arrange
-            UserRequests? nullUserRequest = null;
+            UserRequest? nullUserRequest = null;
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -68,7 +68,7 @@ namespace PetExchangeTests.DataLayer
             // Arrange
             var publicOffer = new PublicOffer();
             var user = new User();
-            var newUserRequest = new UserRequests(publicOffer, false);
+            var newUserRequest = new UserRequest(publicOffer, false);
             db.Requests.Add(newUserRequest);
             db.SaveChanges();
 
@@ -83,7 +83,7 @@ namespace PetExchangeTests.DataLayer
             var id = Guid.NewGuid();
             var publicOffer = new PublicOffer();
             var user = new User();
-            var newUserRequest = new UserRequests(publicOffer, false) { Id = id };
+            var newUserRequest = new UserRequest(publicOffer, false) { Id = id };
 
             // Act
             db.Requests.Add(newUserRequest);
@@ -112,8 +112,8 @@ namespace PetExchangeTests.DataLayer
             var id = Guid.NewGuid();
             var publicOffer = new PublicOffer();
             var user = new User();
-            var initialUserRequest = new UserRequests(publicOffer, false) { Id = id };
-            var updatedUserRequest = new UserRequests(publicOffer, true) { Id = id };
+            var initialUserRequest = new UserRequest(publicOffer, false) { Id = id };
+            var updatedUserRequest = new UserRequest(publicOffer, true) { Id = id };
 
             db.Requests.Add(initialUserRequest);
             db.SaveChanges();
@@ -131,7 +131,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
-            var userRequestToUpdate = new UserRequests { Id = nonExistentId };
+            var userRequestToUpdate = new UserRequest { Id = nonExistentId };
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => userRequestsContext.Update(userRequestToUpdate), "Update method doesn't throw an exception when the user request does not exist in the database!");
@@ -143,8 +143,8 @@ namespace PetExchangeTests.DataLayer
             // Arrange
             var publicOffer = new PublicOffer();
             var user = new User();
-            var userRequest1 = new UserRequests(publicOffer, false);
-            var userRequest2 = new UserRequests(publicOffer, true);
+            var userRequest1 = new UserRequest(publicOffer, false);
+            var userRequest2 = new UserRequest(publicOffer, true);
 
             db.Requests.Add(userRequest1);
             db.Requests.Add(userRequest2);
@@ -179,7 +179,7 @@ namespace PetExchangeTests.DataLayer
             var id = Guid.NewGuid();
             var publicOffer = new PublicOffer();
             var user = new User();
-            var userRequestToDelete = new UserRequests(publicOffer, false) { Id = id };
+            var userRequestToDelete = new UserRequest(publicOffer, false) { Id = id };
 
             db.Requests.Add(userRequestToDelete);
             db.SaveChanges();

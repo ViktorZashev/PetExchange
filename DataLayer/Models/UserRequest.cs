@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Models
 {
-    public class UserRequests
+    public class UserRequest
 	{
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
@@ -25,9 +25,9 @@ namespace BusinessLayer.Models
         [ForeignKey("PublicOfferId")]
         public PublicOffer PublicOffer { get; set; }
 
-        public UserRequests() { }
+        public UserRequest() { }
 
-		public UserRequests(PublicOffer publicOffer,bool isAccepted)
+		public UserRequest(PublicOffer publicOffer,bool isAccepted)
 		{
 			Id = Guid.NewGuid();
 			PublicOffer = publicOffer;

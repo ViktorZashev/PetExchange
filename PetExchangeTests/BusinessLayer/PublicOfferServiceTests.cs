@@ -16,7 +16,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "New Pet", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "New Pet", User = user, UserId = user.Id };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -35,10 +35,10 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pets = new List<Pet>
+			var pets = new List<User>
 			{
-				new Pet { Id = Guid.NewGuid(), Name = "New Pet 1", User = user, UserId = user.Id },
-				new Pet { Id = Guid.NewGuid(), Name = "New Pet 2", User = user, UserId = user.Id }
+				new User { Id = Guid.NewGuid(), Name = "New Pet 1", User = user, UserId = user.Id },
+				new User { Id = Guid.NewGuid(), Name = "New Pet 2", User = user, UserId = user.Id }
 			};
 			db.Users.Add(user);
 			db.Pets.AddRange(pets);
@@ -59,7 +59,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
 			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
@@ -79,10 +79,10 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pets = new List<Pet>
+			var pets = new List<User>
 			{
-				new Pet { Id = Guid.NewGuid(), Name = "Test Pet 1", User = user, UserId = user.Id },
-				new Pet { Id = Guid.NewGuid(), Name = "Test Pet 2", User = user, UserId = user.Id }
+				new User { Id = Guid.NewGuid(), Name = "Test Pet 1", User = user, UserId = user.Id },
+				new User { Id = Guid.NewGuid(), Name = "Test Pet 2", User = user, UserId = user.Id }
 			};
 			var offers = pets.Select(pet => new PublicOffer(pet) { Id = Guid.NewGuid() }).ToList();
 			db.Users.Add(user);
@@ -102,7 +102,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Old Name", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Old Name", User = user, UserId = user.Id };
 			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
@@ -114,8 +114,8 @@ namespace PetExchangeTests.BusinessLayer
 			PublicOfferService.Update(offer);
 			var updatedOffer = db.PublicOffers.Include(o => o.Pet).FirstOrDefault(o => o.Id == offer.Id);
 
-			// Assert
-			Assert.AreEqual("New Name", updatedOffer.Pet.Name);
+            // Assert
+            Assert.AreEqual("New Name", (object)updatedOffer.Pet.Name);
 		}
 
 		[Test]
@@ -123,7 +123,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
 			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
@@ -144,7 +144,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Pet To Delete", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Pet To Delete", User = user, UserId = user.Id };
 			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
@@ -165,7 +165,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var anotherUser = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = anotherUser, UserId = anotherUser.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Test Pet", User = anotherUser, UserId = anotherUser.Id };
 			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Users.Add(anotherUser);
@@ -183,10 +183,10 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pets = new List<Pet>
+			var pets = new List<User>
 			{
-				new Pet { Id = Guid.NewGuid(), Name = "Pet 1", User = user, UserId = user.Id },
-				new Pet { Id = Guid.NewGuid(), Name = "Pet 2", User = user, UserId = user.Id }
+				new User { Id = Guid.NewGuid(), Name = "Pet 1", User = user, UserId = user.Id },
+				new User { Id = Guid.NewGuid(), Name = "Pet 2", User = user, UserId = user.Id }
 			};
 			var offers = pets.Select(pet => new PublicOffer(pet) { Id = Guid.NewGuid() }).ToList();
 			db.Users.Add(user);
@@ -208,7 +208,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Register Pet", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Register Pet", User = user, UserId = user.Id };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -227,7 +227,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Test Pet", User = user, UserId = user.Id };
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
@@ -246,7 +246,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Already Registered Pet", User = user, UserId = user.Id };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Already Registered Pet", User = user, UserId = user.Id };
 			var offer = new PublicOffer(pet) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.Pets.Add(pet);

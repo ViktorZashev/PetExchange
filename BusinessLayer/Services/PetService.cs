@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Models;
 using DataLayer;
+using DataLayer.ModelsDbContext;
 using DataLayer.ProjectDbContext;
 using System;
 using System.Collections.Generic;
@@ -9,35 +10,35 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-	public static class PetService
+	public static class PetService : IDbWithNav<Pet,Guid>
 	{
 		private static readonly PetExchangeDbContext _ProjectContext = _ProjectContext = new PetExchangeDbContext();
 		public static PetDbContext _PetContext = new(_ProjectContext);
 
-		public static void Create(Pet pet)
+		public static void Create(User pet)
 		{
 			// Validation
 			_PetContext.Create(pet);
 		}
-		public static void Create(List<Pet> entities)
+		public static void Create(List<User> entities)
 		{
 			foreach (var pet in entities)
 			{
 				Create(pet);
 			}
 		}
-		public static Pet Read(Guid idt, bool useNav = true)
+		public static User Read(Guid idt, bool useNav = true)
 		{
 
 			return _PetContext.Read(idt, useNav);
 		}
 
-		public static List<Pet> ReadAll(bool useNav = true)
+		public static List<User> ReadAll(bool useNav = true)
 		{
 
 			return _PetContext.ReadAll(useNav);
 		}
-		public static void Update(Pet pet)
+		public static void Update(User pet)
 		{
 			// validation
 			_PetContext.Update(pet);
@@ -68,13 +69,13 @@ namespace BusinessLayer.Functions
 			}
 			else return false;
 		}
-		public static List<Pet> ReturnAllPets(User user)
+		public static List<User> ReturnAllPets(User user)
 		{
 			var allPets = _PetContext.ReadAll(true);
 			if (allPets.Count == 0) return new();
 			else
 			{
-				var usersPets = new List<Pet>();
+				var usersPets = new List<User>();
 				foreach (var pet in allPets)
 				{
 					if (pet.User == null) continue;
@@ -86,7 +87,7 @@ namespace BusinessLayer.Functions
 				return usersPets;
 			}
 		}
-		public static List<Pet> ReturnAllPets()
+		public static List<User> ReturnAllPets()
 		{
 			if (!_PetContext.ReadAll(true).Exists(x => true))
 			{
@@ -98,7 +99,7 @@ namespace BusinessLayer.Functions
 
 			}
 		}
-		public static Pet? ReturnPetByname(string name)
+		public static User? ReturnPetByname(string name)
 		{
 			var pets = _PetContext.ReadAll().ToList();
 			return pets.Where(x => x.Name == name).FirstOrDefault();

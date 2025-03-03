@@ -15,7 +15,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -37,7 +37,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -56,7 +56,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -80,7 +80,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -90,7 +90,7 @@ namespace PetExchangeTests.DataLayer
             db.PublicOffers.Add(initialOffer);
             db.SaveChanges();
 
-            var newPetUpdated = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPetUpdated = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPetUpdated);
             db.SaveChanges();
 
@@ -110,7 +110,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             var nonExistentId = Guid.NewGuid();
             var offerToUpdate = new PublicOffer(newPet) { Id = nonExistentId };
 
@@ -123,7 +123,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -146,8 +146,8 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet1 = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
-            var newPet2 = new Pet { Id = Guid.NewGuid(), Name = "Max", UserId = newUser.Id, User = newUser };
+            var newPet1 = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet2 = new User { Id = Guid.NewGuid(), Name = "Max", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet1);
             db.Pets.Add(newPet2);
             db.Users.Add(newUser);
@@ -186,7 +186,7 @@ namespace PetExchangeTests.DataLayer
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();

@@ -17,7 +17,7 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var newUser = new User();
-			var newPet = new Pet(newUser, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var newPet = new User(newUser, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 
 			var initialCount = db.Pets.Count();
 
@@ -36,8 +36,8 @@ namespace PetExchangeTests.DataLayer
 			// Arrange
 			var user = new User();
 			var matchingId = Guid.NewGuid();
-			var newPet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			var duplicatePet = new Pet(matchingId,user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var newPet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var duplicatePet = new User(matchingId,user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			newPet.Id = matchingId;
 
 			// Act & Assert
@@ -50,7 +50,7 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var id = Guid.NewGuid();
-			var enteredPet = new Pet(new User(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
+			var enteredPet = new User(new User(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
 
 			// Act
 			db.Pets.Add(enteredPet);
@@ -66,8 +66,8 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var id = Guid.NewGuid();
-			var initialPet = new Pet(new User(), "Initial Name", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
-			var updatedPet = new Pet(new User(), "Updated Name", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
+			var initialPet = new User(new User(), "Initial Name", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
+			var updatedPet = new User(new User(), "Updated Name", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
 
 			db.Pets.Add(initialPet);
 			db.SaveChanges();
@@ -85,7 +85,7 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var nonExistentId = Guid.NewGuid();
-			var petToUpdate = new Pet(nonExistentId, new User(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) ;
+			var petToUpdate = new User(nonExistentId, new User(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) ;
 
 			// Act & Assert
 			Assert.Throws<ArgumentException>(() => petContext.Update(petToUpdate), "Update method doesn't throw an exception when the pet does not exist in the database!");
@@ -96,7 +96,7 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var id = Guid.NewGuid();
-			var petToDelete = new Pet(new User(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
+			var petToDelete = new User(new User(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
 
 			db.Pets.Add(petToDelete);
 			db.SaveChanges();
@@ -114,8 +114,8 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var user = new User();
-			var enteredPet1 = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			var enteredPet2 = new Pet(user, "Buddy", "", 3, PetTypeEnum.Dog, "A friendly dog", true);
+			var enteredPet1 = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var enteredPet2 = new User(user, "Buddy", "", 3, PetTypeEnum.Dog, "A friendly dog", true);
 			db.Pets.Add(enteredPet1);
 			db.Pets.Add(enteredPet2);
 			db.SaveChanges();
@@ -147,7 +147,7 @@ namespace PetExchangeTests.DataLayer
 		{
 			// Arrange
 			var user = new User();
-			var enteredPet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var enteredPet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Pets.Add(enteredPet);
 			db.SaveChanges();
 

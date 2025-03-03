@@ -11,77 +11,110 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-	public class UserRequestsDbContext(PetExchangeDbContext dbcontext) : IDb<UserRequests, Guid>
+	public class UserRequestsDbContext(PetExchangeDbContext dbcontext) : IDbWithNav<UserRequest, Guid>
 	{
 		private readonly PetExchangeDbContext _dbcontext = dbcontext;
 
-        public void Create(UserRequests? entity)
-		{
-            ArgumentNullException.ThrowIfNull(entity);
+        public async Task CreateAsync(UserRequest entity)
+        {
             try
-			{
-				var allPublicOffers = _dbcontext.PublicOffers.ToList();
-				if (!allPublicOffers.Any(x => x.Id == entity.PublicOfferId))
-				{
-					throw new System.ArgumentException();
-				}
-				_dbcontext.Requests.Add(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch
-			{
+            {
+                await _dbcontext.Requests.AddAsync(entity);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			}
-		}
 
-		public UserRequests? Read(Guid id, bool useNavigationalProperties = true)
-		{
-			UserRequests foundRequests = _dbcontext.Requests.Where(x => x.Id == id).FirstOrDefault();
+        public async Task<UserRequest>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<UserRequest> query = _dbcontext.Requests;
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.PublicOffer);
+                }
+                return await query.SingleOrDefaultAsync(e => e.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			if (foundRequests == null) return null;
-			return foundRequests;
-		}
+        public async Task<List<UserRequest>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<UserRequest> query = _dbcontext.Requests;
 
-		public List<UserRequests> ReadAll(bool useNavigationalProperties = true)
-		{
-			List<UserRequests> foundRequests = _dbcontext.Requests.ToList();
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.PublicOffer);
+                }
+                return await query.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			if (useNavigationalProperties)
-			{
-				for (int i = 0; i < foundRequests.Count; i++)
-				{
-					foundRequests[i] = Read(foundRequests[i].Id);
-				}
-			}
+        public async Task UpdateAsync(UserRequest request, bool useNavigationalProperties = true)
+        {
+            try
+            {
+                UserRequest requestFromDb = await ReadAsync(request.Id, useNavigationalProperties, false);
 
-			return foundRequests;
-		}
+                if (requestFromDb is null)
+                {
+                    throw new ArgumentException("User request with id = " + request.Id + "does not exist!");
+                }
+                if (useNavigationalProperties) _dbcontext.Requests.Update(request); // updates all linked entities
+                else
+                {
+                    _dbcontext.Requests.Entry(requestFromDb).CurrentValues.SetValues(request); // updates only the core entity
+                }
 
-		public void Update(UserRequests entity, bool useNavigationalProperties = false)
-		{
-			try
-			{
-				var foundEntity = Read(entity.Id) ?? throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-                _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch
-			{
-			}
-		}
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-		public void Delete(Guid id)
-		{
-			try
-			{
-				var foundEntity = Read(id) ?? throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-                _dbcontext.Requests.Remove(foundEntity);
-				_dbcontext.SaveChanges();
-			}
-			catch 
-			{
+                throw;
+            }
+        }
 
-			}
-		}
-	}
+        public async Task DeleteAsync(Guid key)
+        {
+            try
+            {
+                UserRequest request = await ReadAsync(key, false, false);
+
+                if (request is null)
+                {
+                    throw new ArgumentException("User request with id = " + key + " does not exist!");
+                }
+
+                _dbcontext.Requests.Remove(request);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 }

@@ -21,7 +21,7 @@ namespace BusinessLayer.Models
         [ForeignKey("PetId")]
         public Pet Pet { get; set; }
 
-        List<UserRequests>? UserRequests { get; set; }
+        public List<UserRequest>? Requests { get; set; }
 
         [NotMapped]
         public Town Town

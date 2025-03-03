@@ -93,6 +93,6 @@ namespace DataLayer.ProjectDbContext
         public DbSet<PublicOffer> PublicOffers { get; set; }
         public DbSet<Town> Towns { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserRequests> Requests { get; set; }
+        public DbSet<UserRequest> Requests { get; set; }
     }
 }

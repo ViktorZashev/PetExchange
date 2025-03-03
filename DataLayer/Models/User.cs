@@ -41,7 +41,7 @@ namespace BusinessLayer.Models
 
         public List<Pet> Pets { get; set; }
 
-        public List<UserRequests> Requests { get; set; }
+        public List<UserRequest> Requests { get; set; }
 
         public List<PublicOffer> PublicOffers { get; set; }
 

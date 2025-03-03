@@ -43,7 +43,7 @@ namespace PetExchangeTests.BusinessLayer
 			var initialRequestsCount = db.Requests.Count();
 
 			// Act
-			var request = new UserRequests(offer, false);
+			var request = new UserRequest(offer, false);
 			UserRequestsService.Create(request);
 			var newRequestsCount = db.Requests.Count();
 
@@ -67,7 +67,7 @@ namespace PetExchangeTests.BusinessLayer
 			var initialRequestsCount = db.Requests.Count();
 
 			// Act
-			var requests = offers.Select(offer => new UserRequests(offer, false)).ToList();
+			var requests = offers.Select(offer => new UserRequest(offer, false)).ToList();
 			UserRequestsService.Create(requests);
 			var newRequestsCount = db.Requests.Count();
 
@@ -81,7 +81,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequests(offer, false) { Id = Guid.NewGuid() };
+			var request = new UserRequest(offer, false) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
 			db.PublicOffers.Add(offer);
 			db.Requests.Add(request);
@@ -124,7 +124,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequests(offer, false);
+			var request = new UserRequest(offer, false);
 			db.Users.Add(user);
 			db.PublicOffers.Add(offer);
 			db.Requests.Add(request);
@@ -145,7 +145,7 @@ namespace PetExchangeTests.BusinessLayer
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
 			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequests(offer, false);
+			var request = new UserRequest(offer, false);
 			db.Users.Add(user);
 			db.PublicOffers.Add(offer);
 			db.Requests.Add(request);
@@ -170,7 +170,7 @@ namespace PetExchangeTests.BusinessLayer
 				new() { Id = Guid.NewGuid() },
 				new() { Id = Guid.NewGuid() }
 			};
-			var requests = offers.Select(offer => new UserRequests(offer, false)).ToList();
+			var requests = offers.Select(offer => new UserRequest(offer, false)).ToList();
 			db.Users.Add(user);
 			db.PublicOffers.AddRange(offers);
 			db.Requests.AddRange(requests);
@@ -193,8 +193,8 @@ namespace PetExchangeTests.BusinessLayer
 			var otherUser = new User { Id = Guid.NewGuid() };
 			var offer1 = new PublicOffer { Id = Guid.NewGuid() };
 			var offer2 = new PublicOffer { Id = Guid.NewGuid() };
-			var request1 = new UserRequests(offer1, false);
-			var request2 = new UserRequests(offer2, false);
+			var request1 = new UserRequest(offer1, false);
+			var request2 = new UserRequest(offer2, false);
 			db.Users.Add(user);
 			db.Users.Add(otherUser);
 			db.PublicOffers.Add(offer1);
@@ -215,9 +215,9 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Pet To Delete" };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Pet To Delete" };
 			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id };
-			var request = new UserRequests(offer, false);
+			var request = new UserRequest(offer, false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.PublicOffers.Add(offer);
@@ -238,7 +238,7 @@ namespace PetExchangeTests.BusinessLayer
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var pet = new Pet { Id = Guid.NewGuid(), Name = "Test Pet" };
+			var pet = new User { Id = Guid.NewGuid(), Name = "Test Pet" };
 			var offer = new PublicOffer { Id = Guid.NewGuid(), Pet = pet, PetId = pet.Id };
 			db.Users.Add(user);
 			db.Pets.Add(pet);

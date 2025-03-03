@@ -11,78 +11,101 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-	public class TownDbContext(PetExchangeDbContext dbcontext) : IDb<Town, Guid>
-	{
+	public class TownDbContext(PetExchangeDbContext dbcontext) : IDbWithoutNav<Town, Guid>
+    {
 		private readonly PetExchangeDbContext _dbcontext = dbcontext;
 
-        public void Create(Town entity)
-		{
-			try
-			{
-				if (_dbcontext.Towns.Any(c => c.Name == entity.Name))
-				{
-					throw new ArgumentException("A town with this name already exists!");
-				}
-				_dbcontext.Towns.Add(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch
-			{
-				
-			}
-		}
+        public async Task CreateAsync(Town entity)
+        {
+            try
+            {
+                await _dbcontext.Towns.AddAsync(entity);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
-        public Town? Read(Guid id, bool useNavigationalProperties = true)
-		{
-			Town? foundTown = _dbcontext.Towns.Where(x => x.Id == id).FirstOrDefault();
+        public async Task<Town>? ReadAsync(Guid id, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<Town> query = _dbcontext.Towns;
 
-			if (foundTown == null) return null;
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
 
-			return foundTown;
-		}
+                return await query.SingleOrDefaultAsync(e => e.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public List<Town> ReadAll(bool useNavigationalProperties = true)
-		{
-            List<Town> foundTowns = _dbcontext.Towns.ToList();
-            return foundTowns;
-		}
+        public async Task<List<Town>> ReadAllAsync(bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<Town> query = _dbcontext.Towns;
 
-		public void Update(Town entity, bool useNavigationalProperties = true)
-		{
-			try
-			{
-				var foundEntity = Read(entity.Id) ?? throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-                _dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch
-			{
-			}
-		}
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
 
-		public void Delete(Guid id)
-		{
-			try
-			{
-				var foundEntity = Read(id) ?? throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-                _dbcontext.Towns.Remove(foundEntity);
-				_dbcontext.SaveChanges();
-			}
-			catch
-			{
+                return await query.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			}
-		}
+        public async Task UpdateAsync(Town town)
+        {
+            try
+            {
+                Town townFromDb = await ReadAsync(town.Id,false);
 
-		public bool CheckExists(string name)
-		{
-			var Towns = ReadAll();
-			if (Towns.Any(x => x.Name == name))
-			{
-				return true;
-			}
-			else return false;
-		}
-	}
+                if (townFromDb is null)
+                {
+                    throw new ArgumentException("Pet with id = " + town.Id + "does not exist!");
+                }
+
+                _dbcontext.Towns.Entry(townFromDb).CurrentValues.SetValues(town); // updates only the core entity
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(Guid key)
+        {
+            try
+            {
+                Town town = await ReadAsync(key, false);
+
+                if (town is null)
+                {
+                    throw new ArgumentException("Town with id = " + key + " does not exist!");
+                }
+
+                _dbcontext.Towns.Remove(town);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 }

@@ -11,118 +11,110 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-	public class UserDbContext : IDb<User, Guid>
+	public class UserDbContext(PetExchangeDbContext dbcontext) : IDbWithNav<User, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext;
+		private readonly PetExchangeDbContext _dbcontext = dbcontext;
 
-		public UserDbContext(PetExchangeDbContext dbcontext)
-		{
-			_dbcontext = dbcontext;
-		}
+        public async Task CreateAsync(User entity)
+        {
+            try
+            {
+                await _dbcontext.Users.AddAsync(entity);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public void Create(User entity)
-		{
-			try
-			{
-				var existingUser = _dbcontext.Users.FirstOrDefault(x => x.Id == entity.Id);
-				if (existingUser != null)
-				{
-					throw new ArgumentException("Entered user already exists in database!");
-				}
-				var _existingTown = _dbcontext.Towns.FirstOrDefault(c => c.Id == entity.Town.Id);
-				if (_existingTown != null)
-				{
-					entity.Town = _existingTown;
-				}
-				else
-				{
-					TownDbContext townContext = new TownDbContext(_dbcontext);
-					townContext.Create(entity.Town);
-				}
-				_dbcontext.Users.Add(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
 
-		public User Read(Guid id, bool useNavigationalProperties = true)
-		{
-			User foundUser = _dbcontext.Users.Where(x => x.Id == id).FirstOrDefault();
-			if (foundUser == null) return null;
-			if (useNavigationalProperties)
-			{
-                Guid townId = foundUser.TownId;
-                foundUser.Town = _dbcontext.Towns.Where(x => x.Id == townId).FirstOrDefault();
-			}
-			return foundUser;
-		}
+        public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<User> query = _dbcontext.Users;
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.Town).Include(e => e.Requests).Include(e => e.PublicOffers).Include(e => e.Pets);
+                }
+                return await query.SingleOrDefaultAsync(e => e.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public List<User> ReadAll(bool useNavigationalProperties = true)
-		{
-			List<User> foundUsers = _dbcontext.Users.ToList();
+        public async Task<List<User>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            try
+            {
+                IQueryable<User> query = _dbcontext.Users;
 
-			if (useNavigationalProperties)
-			{
-				for (int i = 0; i < foundUsers.Count; i++)
-				{
-					foundUsers[i] = Read(foundUsers[i].Id);
-				}
-			}
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.Town).Include(e => e.Requests).Include(e => e.PublicOffers).Include(e => e.Pets);
+                }
+                return await query.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			return foundUsers;
-		}
+        public async Task UpdateAsync(User user, bool useNavigationalProperties = true)
+        {
+            try
+            {
+                User userFromDb = await ReadAsync(user.Id, useNavigationalProperties, false);
 
-		public void Update(User entity, bool useNavigationalProperties = false)
-		{
-			try
-			{
-				var foundEntity = Read(entity.Id);
+                if (userFromDb is null)
+                {
+                    throw new ArgumentException("User with id = " + user.Id + "does not exist!");
+                }
+                if (useNavigationalProperties) _dbcontext.Users.Update(user); // updates all linked entities
+                else
+                {
+                    _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // updates only the core entity
+                }
 
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-				}
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-				_dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+                throw;
+            }
+        }
 
-		public void Delete(Guid id)
-		{
-			try
-			{
-				var foundEntity = Read(id);
+        public async Task DeleteAsync(Guid key)
+        {
+            try
+            {
+                User user = await ReadAsync(key, false, false);
 
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-				}
-				_dbcontext.Users.Remove(foundEntity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+                if (user is null)
+                {
+                    throw new ArgumentException("User with id = " + key + " does not exist!");
+                }
 
-		public bool CheckUsernameExists(string username)
-		{
-			var foundEntity = ReadAll().Where(x => x.UserName == username).FirstOrDefault();
-
-			if (foundEntity == null)
-			{
-				return false;
-			}
-			return true;
-		}
-	}
+                _dbcontext.Users.Remove(user);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 }

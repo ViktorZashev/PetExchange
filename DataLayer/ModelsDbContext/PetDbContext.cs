@@ -8,107 +8,114 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer.ModelsDbContext;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataLayer
 {
-	public class PetDbContext : IDb<Pet, Guid>
+	public class PetDbContext(PetExchangeDbContext dbcontext) : IDbWithNav<Pet, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext;
+		private readonly PetExchangeDbContext _dbcontext = dbcontext;
 
-		public PetDbContext(PetExchangeDbContext dbcontext)
-		{
-			_dbcontext = dbcontext;
-		}
-		public void Create(Pet entity)
+        public async Task CreateAsync(Pet entity)
 		{
 			try
 			{
-
-				var _existingUser = _dbcontext.Users.FirstOrDefault(c => c.Id == entity.User.Id);
-				if (_existingUser != null)
-				{
-
-					entity.User = _existingUser;
-					entity.User.Id = _existingUser.Id;
-				}
-
-				_dbcontext.Pets.Add(entity);
-				_dbcontext.SaveChanges();
+				await _dbcontext.Pets.AddAsync(entity);
+				await _dbcontext.SaveChangesAsync();
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				throw;
 			}
 		}
 
 
-		public Pet Read(Guid id, bool useNavigationalProperties = true)
+		public async Task<Pet>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
 		{
-			Pet foundPet = _dbcontext.Pets.Where(x => x.Id == id).FirstOrDefault();
+            try
+            {
+                IQueryable<Pet> query = _dbcontext.Pets;
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.User);
+                }
+                return await query.SingleOrDefaultAsync(e => e.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			if (foundPet == null) return null;
-
-			if (useNavigationalProperties)
-			{
-                Guid userId = foundPet.UserId;
-                foundPet.User = _dbcontext.Users.Where(x => x.Id == userId).FirstOrDefault();
-			}
-
-			return foundPet;
-		}
-
-		public List<Pet> ReadAll(bool useNavigationalProperties = true)
+		public async Task<List<Pet>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
 		{
-			List<Pet> foundPets = _dbcontext.Pets.ToList();
+            try
+            {
+                IQueryable<Pet> query = _dbcontext.Pets;
 
-			if (useNavigationalProperties)
-			{
-				for (int i = 0; i < foundPets.Count; i++)
-				{
-					foundPets[i] = Read(foundPets[i].Id);
-				}
-			}
+                if (isReadOnly)
+                {
+                    query = query.AsNoTrackingWithIdentityResolution();
+                }
+                if (useNavigationalProperties)
+                {
+                    query = query.Include(e => e.User);
+                }
+                return await query.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-			return foundPets;
-		}
+        public async Task UpdateAsync(Pet pet, bool useNavigationalProperties = true)
+        {
+            try
+            {
+                Pet petFromDb = await ReadAsync(pet.Id, useNavigationalProperties, false);
 
-		public void Update(Pet entity, bool useNavigationalProperties = false)
-		{
-			try
-			{
-				var foundEntity = Read(entity.Id);
+                if (petFromDb is null)
+                {
+                    throw new ArgumentException("Pet with id = " + pet.Id + "does not exist!");
+                }
+                if (useNavigationalProperties) _dbcontext.Pets.Update(pet); // updates all linked entities
+                else
+                {
+                    _dbcontext.Pets.Entry(petFromDb).CurrentValues.SetValues(pet); // updates only the core entity
+                }
 
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + entity.Id + " doesn't exist in the database!");
-				}
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-				_dbcontext.Entry(foundEntity).CurrentValues.SetValues(entity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+                throw;
+            }
+        }
 
-		public void Delete(Guid id)
-		{
-			try
-			{
-				var foundEntity = Read(id);
+        public async Task DeleteAsync(Guid key)
+        {
+            try
+            {
+                Pet pet = await ReadAsync(key, false, false);
 
-				if (foundEntity == null)
-				{
-					throw new ArgumentException("Entity with id:" + id + " doesn't exist in the database!");
-				}
-				_dbcontext.Pets.Remove(foundEntity);
-				_dbcontext.SaveChanges();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
-	}
+                if (pet is null)
+                {
+                    throw new ArgumentException("Pet with id = " + key + " does not exist!");
+                }
+
+                _dbcontext.Pets.Remove(pet);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 }
