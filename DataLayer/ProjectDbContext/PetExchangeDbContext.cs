@@ -1,15 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
 {
-    public class PetExchangeDbContext : IdentityDbContext<User>
+    public class PetExchangeDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
     {
         public PetExchangeDbContext()
-        {
-
-        }
-        public PetExchangeDbContext(DbContextOptions options) : base(options)
         {
 
         }
