@@ -11,10 +11,13 @@ using DataLayer.ModelsDbContext;
 
 namespace DataLayer
 {
-	public class UserDbContext(PetExchangeDbContext dbcontext) : IDbWithNav<User, Guid>
+	public class UserDbContext : IDbWithNav<User, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext = dbcontext;
-
+		private readonly PetExchangeDbContext _dbcontext;
+        public UserDbContext(PetExchangeDbContext context)
+        {
+            _dbcontext = context;
+        }
         public async Task CreateAsync(User entity)
         {
             try

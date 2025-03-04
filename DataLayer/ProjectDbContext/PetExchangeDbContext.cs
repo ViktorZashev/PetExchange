@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Xml;
 
 namespace DataLayer.ProjectDbContext
 {
-    public class PetExchangeDbContext : DbContext
+    public class PetExchangeDbContext : IdentityDbContext<User>
     {
         public PetExchangeDbContext()
         {

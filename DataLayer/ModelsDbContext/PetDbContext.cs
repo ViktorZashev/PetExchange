@@ -12,10 +12,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataLayer
 {
-	public class PetDbContext(PetExchangeDbContext dbcontext) : IDbWithNav<Pet, Guid>
+	public class PetDbContext : IDbWithNav<Pet, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext = dbcontext;
-
+		private PetExchangeDbContext _dbcontext;
+        public PetDbContext(PetExchangeDbContext context)
+        {
+            _dbcontext = context;
+        }
         public async Task CreateAsync(Pet entity)
 		{
 			try

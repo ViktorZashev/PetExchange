@@ -11,10 +11,14 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public class PublicOfferService(PetExchangeDbContext _ProjectContext) : IDbWithNav<PublicOffer, Guid>
+    public class PublicOfferService : IDbWithNav<PublicOffer, Guid>
     {
-        public  PublicOfferDbContext _PublicOfferContext = new(_ProjectContext);
+        public  PublicOfferDbContext _PublicOfferContext;
 
+        public PublicOfferService(PetExchangeDbContext _ProjectContext)
+        {
+            _PublicOfferContext = new PublicOfferDbContext(_ProjectContext);
+        }
         public async Task CreateAsync(PublicOffer entity)
         {
             await _PublicOfferContext.CreateAsync(entity);

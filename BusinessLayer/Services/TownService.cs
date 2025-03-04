@@ -10,10 +10,14 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public class TownService(PetExchangeDbContext _ProjectContext) : IDbWithoutNav<Town, Guid>
+    public class TownService : IDbWithoutNav<Town, Guid>
     {
-        public TownDbContext  _TownContext = new TownDbContext(_ProjectContext);
+        public TownDbContext _TownContext;
 
+        public TownService(PetExchangeDbContext _ProjectContext)
+        {
+            _TownContext = new TownDbContext(_ProjectContext);
+        }
         public async Task CreateAsync(Town entity)
         {
             await _TownContext.CreateAsync(entity);

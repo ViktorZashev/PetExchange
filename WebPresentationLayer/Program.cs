@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebPresentationLayer.Data;
-
+using DataLayer;
+using DataLayer.ProjectDbContext;
+using BusinessLayer.Models;
+using System.Security.Claims;
 namespace WebPresentationLayer
 {
     public class Program
@@ -11,14 +14,40 @@ namespace WebPresentationLayer
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            var connectionString = ConnectionString.Value;
+            builder.Services.AddDbContext<PetExchangeDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+                options.EnableSensitiveDataLogging();
+            });
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<PetExchangeDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
+
+
+
+            builder.Services.AddScoped<PetExchangeDbContext, PetExchangeDbContext>();
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Default Lockout settings.
+                // Fix the password requirements later
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 1;
+            });
 
             var app = builder.Build();
 

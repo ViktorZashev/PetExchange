@@ -10,10 +10,14 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-	public class PetService(PetExchangeDbContext _ProjectContext) : IDbWithNav<Pet,Guid>
+	public class PetService : IDbWithNav<Pet,Guid>
 	{
-		public PetDbContext _PetContext = new PetDbContext(_ProjectContext);
+		public PetDbContext _PetContext;
 
+        public PetService(PetExchangeDbContext _ProjectContext)
+        {
+            _PetContext = new PetDbContext(_ProjectContext);
+        }
         public async Task CreateAsync(Pet entity)
         {
             await _PetContext.CreateAsync(entity);
