@@ -11,88 +11,33 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public static class PublicOfferService
+    public class PublicOfferService(PetExchangeDbContext _ProjectContext) : IDbWithNav<PublicOffer, Guid>
     {
-        private static readonly PetExchangeDbContext _ProjectContext = new();
-        public static PublicOfferDbContext _PublicOfferContext = new(_ProjectContext);
+        public  PublicOfferDbContext _PublicOfferContext = new(_ProjectContext);
 
-        public static void Create(PublicOffer offer)
+        public async Task CreateAsync(PublicOffer entity)
         {
-            // Validation
-            _PublicOfferContext.Create(offer);
+            await _PublicOfferContext.CreateAsync(entity);
         }
 
-        public static void Create(List<PublicOffer> offers)
+        public async Task<PublicOffer>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-            foreach (var offer in offers)
-            {
-                Create(offer);
-            }
-        }
-        public static PublicOffer Read(Guid idt, bool useNav = true)
-        {
-            
-            return _PublicOfferContext.Read(idt, useNav);
+            return await _PublicOfferContext.ReadAsync(id, useNavigationalProperties, isReadOnly);
         }
 
-        public static List<PublicOffer> ReadAll(bool useNav = true)
+        public async Task<List<PublicOffer>>? ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-  
-            return _PublicOfferContext.ReadAll(useNav);
-        }
-        public static void Update(PublicOffer offer)
-        {
-            // validation
-            _PublicOfferContext.Update(offer);
-        }
-        public static void Delete(Guid id)
-        {
-            // validation
-            _PublicOfferContext.Delete(id);
-        }
-        public static void DeleteByPetName(string name, User LoggedUser)
-        {
-            var offers = ReadAll(true);
-            var foundOffer = offers.Where(x => x.Pet.Name == name && x.Pet.UserId == LoggedUser.Id).FirstOrDefault();
-            if (foundOffer == null)
-            {
-				throw new Exception("Name doesn't match any of users pets!");
-			}
-            Delete(foundOffer.Id);
-		}
-        public static void DeleteAll()
-        {
-            var Offers = ReadAll();
-            foreach (var Offer in Offers)
-            {
-                Delete(Offer.Id);
-            }
+            return await _PublicOfferContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
         }
 
-		public static void RegisterPet(string petName, User loggedUser)
-		{
-            var offers = ReadAll();
-            if (offers.Exists(x => x.Pet.Name == petName && x.Pet.UserId == loggedUser.Id))
-            {
-                throw new Exception("This pet is already registered!");
-            }
-            var pet = PetService.ReadAll().Where(x => x.UserId == loggedUser.Id && x.Name == petName).FirstOrDefault();
-            if (pet == null) {
-                throw new Exception("This pet doesn't exist in user's database!");
-            }
-            var newOffer = new PublicOffer(pet);
-            Create(newOffer);
-		}
-		public static void LoadDb()
-		{
-			try
-			{
-				Delete(Guid.NewGuid());
-			}
-			catch
-			{
+        public async Task UpdateAsync(PublicOffer entity, bool useNavigationalProperties = false)
+        {
+            await _PublicOfferContext.UpdateAsync(entity, useNavigationalProperties);
+        }
 
-			}
-		}
-	}
+        public async Task DeleteAsync(Guid id)
+        {
+            await _PublicOfferContext.DeleteAsync(id);
+        }
+    }
 }

@@ -11,7 +11,7 @@ namespace PetExchangeTests.DataLayer
     public class UserDbContextTests : DataLayerTestsManagement
     {
         [Test]
-        public void CreateMethod_AddsUserToDatabase()
+        public async Task CreateMethod_AddsUserToDatabase()
         {
             // Arrange
             var initialCount = db.Users.Count();
@@ -24,7 +24,7 @@ namespace PetExchangeTests.DataLayer
             };
 
             // Act
-            userContext.Create(newUser);
+            await userContext.CreateAsync(newUser);
             var actualCount = db.Users.Count();
             var expectedCount = initialCount + 1;
 
@@ -33,7 +33,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void CreateMethod_DoesNotCreateNewTownWhenAlreadyExists()
+        public async Task CreateMethod_DoesNotCreateNewTownWhenAlreadyExists()
         {
             // Arrange
             var existingTown = new Town { Name = "ExistingTown" };
@@ -43,7 +43,7 @@ namespace PetExchangeTests.DataLayer
             var newUser = new User { Name = "NewUser", UserName = "newuser", Town = existingTown };
 
             // Act
-            userContext.Create(newUser);
+            await userContext.CreateAsync(newUser);
             var actualTownCount = db.Towns.Count();
 
             // Assert
@@ -51,7 +51,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateUser()
+        public async Task CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateUser()
         {
             // Arrange
             var existingUser = new User { Name = "ExistingUser", UserName = "existinguser" };
@@ -59,11 +59,11 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userContext.Create(existingUser), "Create method doesn't throw an exception when trying to add a duplicate user!");
+            Assert.Throws<ArgumentException>(() => userContext.CreateAsync(existingUser), "Create method doesn't throw an exception when trying to add a duplicate user!");
         }
 
         [Test]
-        public void ReadMethod_RetrievesAUserFromDatabase()
+        public async Task ReadMethod_RetrievesAUserFromDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -72,7 +72,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var actualUser = userContext.Read(id);
+            var actualUser = await userContext.ReadAsync(id);
             // Assert
             Assert.Multiple(() =>
             {
@@ -84,7 +84,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_UpdatesUserInDatabase()
+        public async Task UpdateMethod_UpdatesUserInDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -95,7 +95,7 @@ namespace PetExchangeTests.DataLayer
             var updatedUser = new User { Id = id, Name = "UpdatedUserName", UserName = "updatedusername"};
 
             // Act
-            userContext.Update(updatedUser);
+            await userContext.UpdateAsync(updatedUser);
             var actualUser = db.Users.FirstOrDefault(u => u.Id == id);
 
             // Assert
@@ -107,18 +107,18 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_ThrowsExceptionWhenUserDoesNotExist()
+        public async Task UpdateMethod_ThrowsExceptionWhenUserDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
             var userToUpdate = new User { Id = nonExistentId, Name = "UserName", UserName = "username"};
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userContext.Update(userToUpdate), "Update method doesn't throw an exception when the user does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => userContext.UpdateAsync(userToUpdate), "Update method doesn't throw an exception when the user does not exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_RemovesUserFromDatabase()
+        public async Task DeleteMethod_RemovesUserFromDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -127,7 +127,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            userContext.Delete(id);
+            await userContext.DeleteAsync(id);
             var actualUser = db.Users.FirstOrDefault(u => u.Id == id);
 
             // Assert
@@ -135,7 +135,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_RetrievesAllUsersFromDatabase()
+        public async Task ReadAllMethod_RetrievesAllUsersFromDatabase()
         {
             // Arrange
             var enteredUser1 = new User { Name = "UserName1", UserName = "username1"};
@@ -145,7 +145,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var outputedUsers = userContext.ReadAll();
+            var outputedUsers = await userContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputedUsers, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
@@ -154,66 +154,36 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_ReturnsEmptyListWhenThereAreNoUsersInDatabase()
+        public async Task ReadAllMethod_ReturnsEmptyListWhenThereAreNoUsersInDatabase()
         {
             // Arrange
             // Ensure database is empty
 
             // Act
-            var outputedUsers = userContext.ReadAll();
+            var outputedUsers = await userContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputedUsers, Is.Empty, "ReadAll method doesn't return an empty list when no entries exist in the database!");
         }
 
         [Test]
-        public void ReadMethod_ReturnsNullWhenUserDoesNotExist()
+        public async Task ReadMethod_ReturnsNullWhenUserDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.That(userContext.Read(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the user does not exist in the database!");
+            Assert.That(await userContext.ReadAsync(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the user does not exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_ThrowsExceptionWhenUserDoesNotExist()
+        public async Task DeleteMethod_ThrowsExceptionWhenUserDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userContext.Delete(nonExistentId), "Delete method doesn't throw an exception when the user does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => userContext.DeleteAsync(nonExistentId), "Delete method doesn't throw an exception when the user does not exist in the database!");
         }
-
-        [Test]
-        public void CheckUsernameExistsMethod_ReturnsTrueIfUsernameExists()
-        {
-            // Arrange
-            var username = "ExistingUsername";
-            var existingUser = new User { Id = Guid.NewGuid(), UserName = username };
-            db.Users.Add(existingUser);
-            db.SaveChanges();
-
-            // Act
-            var usernameExists = userContext.CheckUsernameExists(username);
-
-            // Assert
-            Assert.That(usernameExists, Is.True, "CheckUsernameExists method doesn't return true for an existing username in the database!");
-        }
-
-        [Test]
-        public void CheckUsernameExistsMethod_ReturnsFalseIfUsernameDoesNotExist()
-        {
-            // Arrange
-            var nonExistentUsername = "NonExistentUsername";
-
-            // Act
-            var usernameExists = userContext.CheckUsernameExists(nonExistentUsername);
-
-            // Assert
-            Assert.That(usernameExists, Is.False, "CheckUsernameExists method doesn't return false for a non-existent username in the database!");
-        }
-
     }
 }

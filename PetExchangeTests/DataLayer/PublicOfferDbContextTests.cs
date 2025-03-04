@@ -11,11 +11,11 @@ namespace PetExchangeTests.DataLayer
     public class PublicOfferDbContextTests : DataLayerTestsManagement
     {
         [Test]
-        public void CreateMethod_AddsPublicOfferToDatabase()
+        public async Task CreateMethod_AddsPublicOfferToDatabase()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -24,7 +24,7 @@ namespace PetExchangeTests.DataLayer
             var initialCount = db.PublicOffers.Count();
 
             // Act
-            publicOfferContext.Create(newOffer);
+            await publicOfferContext.CreateAsync(newOffer);
             var actualCount = db.PublicOffers.Count();
             var expectedCount = initialCount + 1;
 
@@ -33,11 +33,11 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateKey()
+        public async Task CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateKey()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -47,16 +47,16 @@ namespace PetExchangeTests.DataLayer
             var duplicateOffer = new PublicOffer(newPet) { Id = matchingId };
 
             // Act & Assert
-            publicOfferContext.Create(newOffer);
-            Assert.Throws<InvalidOperationException>(() => publicOfferContext.Create(duplicateOffer));
+            await publicOfferContext.CreateAsync(newOffer);
+            Assert.Throws<InvalidOperationException>(() => publicOfferContext.CreateAsync(duplicateOffer));
         }
 
         [Test]
-        public void ReadMethod_RetrievesAPublicOfferFromDatabase()
+        public async Task ReadMethod_RetrievesAPublicOfferFromDatabase()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -67,7 +67,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var actualOffer = publicOfferContext.Read(id);
+            var actualOffer = await publicOfferContext.ReadAsync(id);
 
             // Assert
             Assert.That(actualOffer.Id, Is.EqualTo(enteredOffer.Id), "Read method doesn't return the public offer entered in the database!");
@@ -76,11 +76,11 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_UpdatesPublicOfferInDatabase()
+        public async Task UpdateMethod_UpdatesPublicOfferInDatabase()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -90,14 +90,14 @@ namespace PetExchangeTests.DataLayer
             db.PublicOffers.Add(initialOffer);
             db.SaveChanges();
 
-            var newPetUpdated = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPetUpdated = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPetUpdated);
             db.SaveChanges();
 
             var updatedOffer = new PublicOffer(newPetUpdated) { Id = id };
 
             // Act
-            publicOfferContext.Update(updatedOffer);
+            await publicOfferContext.UpdateAsync(updatedOffer);
             var actualOffer = db.PublicOffers.FirstOrDefault(po => po.Id == id);
 
             // Assert
@@ -106,24 +106,24 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_ThrowsExceptionWhenPublicOfferDoesNotExist()
+        public async Task UpdateMethod_ThrowsExceptionWhenPublicOfferDoesNotExist()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             var nonExistentId = Guid.NewGuid();
             var offerToUpdate = new PublicOffer(newPet) { Id = nonExistentId };
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => publicOfferContext.Update(offerToUpdate), "Update method doesn't throw an exception when the public offer does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => publicOfferContext.UpdateAsync(offerToUpdate), "Update method doesn't throw an exception when the public offer does not exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_RemovesPublicOfferFromDatabase()
+        public async Task DeleteMethod_RemovesPublicOfferFromDatabase()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -134,7 +134,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            publicOfferContext.Delete(id);
+            await publicOfferContext.DeleteAsync(id);
             var actualOffer = db.PublicOffers.FirstOrDefault(po => po.Id == id);
 
             // Assert
@@ -142,12 +142,12 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_RetrievesAllPublicOffersFromDatabase()
+        public async Task ReadAllMethod_RetrievesAllPublicOffersFromDatabase()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet1 = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
-            var newPet2 = new User { Id = Guid.NewGuid(), Name = "Max", UserId = newUser.Id, User = newUser };
+            var newPet1 = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet2 = new Pet { Id = Guid.NewGuid(), Name = "Max", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet1);
             db.Pets.Add(newPet2);
             db.Users.Add(newUser);
@@ -160,7 +160,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var outputedOffers = publicOfferContext.ReadAll();
+            var outputedOffers = await publicOfferContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputedOffers.Count, Is.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
@@ -169,24 +169,24 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_ReturnsEmptyListWhenThereAreNoPublicOffersInDatabase()
+        public async Task ReadAllMethod_ReturnsEmptyListWhenThereAreNoPublicOffersInDatabase()
         {
             // Arrange
             // Database is already wiped due to setup function
 
             // Act
-            var outputedOffers = publicOfferContext.ReadAll();
+            var outputedOffers = await publicOfferContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputedOffers, Is.Empty, "ReadAll method doesn't return an empty list when no entries exist in the database!");
         }
 
         [Test]
-        public void ReadAllMethod_IncludesNavigationalPropertiesWhenSpecified()
+        public async Task ReadAllMethod_IncludesNavigationalPropertiesWhenSpecified()
         {
             // Arrange
             var newUser = new User { Id = Guid.NewGuid(), TownId = Guid.NewGuid() };
-            var newPet = new User { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
+            var newPet = new Pet { Id = Guid.NewGuid(), Name = "Buddy", UserId = newUser.Id, User = newUser };
             db.Pets.Add(newPet);
             db.Users.Add(newUser);
             db.SaveChanges();
@@ -196,30 +196,30 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var outputedOffers = publicOfferContext.ReadAll(useNavigationalProperties: true);
+            var outputedOffers = await publicOfferContext.ReadAllAsync(useNavigationalProperties: true);
 
             // Assert
             Assert.IsNotNull(outputedOffers.First().Pet, "ReadAll method doesn't include navigational properties when specified!");
         }
 
         [Test]
-        public void ReadMethod_ReturnsNullWhenPublicOfferDoesNotExist()
+        public async Task ReadMethod_ReturnsNullWhenPublicOfferDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.That(publicOfferContext.Read(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the public offer does not exist in the database!");
+            Assert.That(await publicOfferContext.ReadAsync(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the public offer does not exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_ThrowsExceptionWhenPublicOfferDoesNotExist()
+        public async Task DeleteMethod_ThrowsExceptionWhenPublicOfferDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => publicOfferContext.Delete(nonExistentId), "Delete method doesn't throw an exception when the public offer does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => publicOfferContext.DeleteAsync(nonExistentId), "Delete method doesn't throw an exception when the public offer does not exist in the database!");
         }
     }
 }

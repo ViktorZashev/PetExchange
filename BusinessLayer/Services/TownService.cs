@@ -10,76 +10,33 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public static class TownService
+    public class TownService(PetExchangeDbContext _ProjectContext) : IDbWithoutNav<Town, Guid>
     {
-        private static readonly PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-        public static TownDbContext  _TownContext = new TownDbContext(_ProjectContext);
+        public TownDbContext  _TownContext = new TownDbContext(_ProjectContext);
 
-        public static void Create(Town town)
+        public async Task CreateAsync(Town entity)
         {
-            // Validation
-            _TownContext.Create(town);
+            await _TownContext.CreateAsync(entity);
         }
 
-        public static void Create(List<Town> towns)
+        public async Task<Town>? ReadAsync(Guid id,bool isReadOnly = true)
         {
-            foreach (var town in towns)
-            {
-                Create(town);
-            }
-        }
-        public static Town Read(Guid idt, bool useNav = true)
-        {
-            
-            return _TownContext.Read(idt, useNav);
+            return await _TownContext.ReadAsync(id, isReadOnly);
         }
 
-        public static List<Town> ReadAll(bool useNav = true)
+        public async Task<List<Town>>? ReadAllAsync(bool isReadOnly = true)
         {
-  
-            return _TownContext.ReadAll(useNav);
+            return await _TownContext.ReadAllAsync(isReadOnly);
         }
-        public static void Update(Town town)
-        {
-            // validation
-            _TownContext.Update(town);
-        }
-        public static void Delete(Guid id)
-        {
-            // validation
-            _TownContext.Delete(id);
-        }
-        public static void DeleteAll()
-        {
-            var Towns = ReadAll();
-            foreach (var Town in Towns)
-            {
-                Delete(Town.Id);
-            }
-        }
-        public static bool CheckIfExists(string name)
-        {
-            return _TownContext.CheckExists(name);
-        }
-        public static Town RetrieveTown(string name)
-        {
-            var foundTown = _TownContext.ReadAll().Where(x => x.Name == name).FirstOrDefault();
-            if(foundTown == null)
-            {
-                throw new IndexOutOfRangeException("No such town is found!");
-            }
-            return foundTown;
-        }
-		public static void LoadDb()
-		{
-			try
-			{
-				Delete(Guid.NewGuid());
-			}
-			catch
-			{
 
-			}
-		}
-	}
+        public async Task UpdateAsync(Town entity)
+        {
+            await _TownContext.UpdateAsync(entity);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            await _TownContext.DeleteAsync(id);
+        }
+    }
 }

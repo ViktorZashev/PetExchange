@@ -13,7 +13,7 @@ namespace PetExchangeTests.DataLayer
     public class UserRequestsDbContextTests : DataLayerTestsManagement
     {
         [Test]
-        public void CreateMethod_AddsUserRequestsToDatabase()
+        public async Task CreateMethod_AddsUserRequestsToDatabase()
         {
             // Arrange
             var publicOffer = new PublicOffer();
@@ -24,7 +24,7 @@ namespace PetExchangeTests.DataLayer
             var initialCount = db.Requests.Count();
 
             // Act
-            userRequestsContext.Create(newUserRequest);
+            await userRequestsContext.CreateAsync(newUserRequest);
             var actualCount = db.Requests.Count();
             var expectedCount = initialCount + 1;
 
@@ -33,7 +33,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void CreateMethod_ThrowsExceptionIfPublicOfferDoesNotExist()
+        public async Task CreateMethod_ThrowsExceptionIfPublicOfferDoesNotExist()
         {
             // Arrange
             var newTown = new Town("Plovdiv");
@@ -42,15 +42,15 @@ namespace PetExchangeTests.DataLayer
                 Town = newTown,
                 TownId = newTown.Id
             };
-            var newPet = new User(Guid.NewGuid(),newUser);
+            var newPet = new Pet();
             var nonExistingPublicOffer = new PublicOffer(newPet);
             var newUserRequest = new UserRequest(nonExistingPublicOffer, false);
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userRequestsContext.Create(newUserRequest), "Create method doesn't throw exception when user request doesn't include a register public offer!");
+            Assert.Throws<ArgumentException>(() => userRequestsContext.CreateAsync(newUserRequest), "Create method doesn't throw exception when user request doesn't include a register public offer!");
         }
         [Test]
-        public void CreateMethod_ThrowsArgumentNullExceptionWhenUserRequestIsNull()
+        public async Task CreateMethod_ThrowsArgumentNullExceptionWhenUserRequestIsNull()
         {
             // Arrange
             UserRequest? nullUserRequest = null;
@@ -58,12 +58,12 @@ namespace PetExchangeTests.DataLayer
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
             {
-                userRequestsContext.Create(nullUserRequest);
+                userRequestsContext.CreateAsync(nullUserRequest);
             }, "Create method doesn't throw ArgumentNullException when user request is null!");
         }
 
         [Test]
-        public void CreateMethod_DoesNotAddUserRequestIfAlreadyExists()
+        public async Task CreateMethod_DoesNotAddUserRequestIfAlreadyExists()
         {
             // Arrange
             var publicOffer = new PublicOffer();
@@ -73,11 +73,11 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userRequestsContext.Create(newUserRequest), "Create method doesn't throw exception when a duplicate entry already exists!");
+            Assert.Throws<ArgumentException>(() => userRequestsContext.CreateAsync(newUserRequest), "Create method doesn't throw exception when a duplicate entry already exists!");
         }
 
         [Test]
-        public void ReadMethod_RetrievesUserRequestFromDatabase()
+        public async Task ReadMethod_RetrievesUserRequestFromDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -88,25 +88,25 @@ namespace PetExchangeTests.DataLayer
             // Act
             db.Requests.Add(newUserRequest);
             db.SaveChanges();
-            var actualUserRequest = userRequestsContext.Read(id);
+            var actualUserRequest = await userRequestsContext.ReadAsync(id);
 
             // Assert
             Assert.That(actualUserRequest, Is.EqualTo(newUserRequest), "Read method doesn't return the user request entered in the database!");
         }
 
         [Test]
-        public void ReadMethod_ReturnsNullWhenUserRequestDoesNotExist()
+        public async Task ReadMethod_ReturnsNullWhenUserRequestDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.That(userRequestsContext.Read(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the user request does not exist in the database!");
+            Assert.That(userRequestsContext.ReadAsync(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the user request does not exist in the database!");
         }
 
 
         [Test]
-        public void UpdateMethod_UpdatesUserRequestInDatabase()
+        public async Task UpdateMethod_UpdatesUserRequestInDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -119,7 +119,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            userRequestsContext.Update(updatedUserRequest);
+            await userRequestsContext.UpdateAsync(updatedUserRequest);
             var actualUserRequest = db.Requests.FirstOrDefault(ur => ur.Id == id);
 
             // Assert
@@ -127,18 +127,18 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_ThrowsExceptionWhenUserRequestDoesNotExist()
+        public async Task UpdateMethod_ThrowsExceptionWhenUserRequestDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
             var userRequestToUpdate = new UserRequest { Id = nonExistentId };
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userRequestsContext.Update(userRequestToUpdate), "Update method doesn't throw an exception when the user request does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => userRequestsContext.UpdateAsync(userRequestToUpdate), "Update method doesn't throw an exception when the user request does not exist in the database!");
         }
 
         [Test]
-        public void ReadAllMethod_RetrievesAllUserRequestsFromDatabase()
+        public async Task ReadAllMethod_RetrievesAllUserRequestsFromDatabase()
         {
             // Arrange
             var publicOffer = new PublicOffer();
@@ -151,7 +151,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var outputUserRequests = userRequestsContext.ReadAll();
+            var outputUserRequests = await userRequestsContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputUserRequests, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
@@ -160,20 +160,20 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_ReturnsEmptyListWhenThereAreNoUserRequestsInDatabase()
+        public async Task ReadAllMethod_ReturnsEmptyListWhenThereAreNoUserRequestsInDatabase()
         {
             // Arrange
             // Ensure database is empty
 
             // Act
-            var outputUserRequests = userRequestsContext.ReadAll();
+            var outputUserRequests = await userRequestsContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputUserRequests, Is.Empty, "ReadAll method doesn't return an empty list when no entries exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_RemovesUserRequestFromDatabase()
+        public async Task DeleteMethod_RemovesUserRequestFromDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -185,7 +185,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            userRequestsContext.Delete(id);
+            await userRequestsContext.DeleteAsync(id);
             var actualUserRequest = db.Requests.FirstOrDefault(ur => ur.Id == id);
 
             // Assert
@@ -194,13 +194,13 @@ namespace PetExchangeTests.DataLayer
 
 
         [Test]
-        public void DeleteMethod_ThrowsExceptionWhenUserRequestDoesNotExist()
+        public async Task DeleteMethod_ThrowsExceptionWhenUserRequestDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => userRequestsContext.Delete(nonExistentId), "Delete method doesn't throw an exception when the user request does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => userRequestsContext.DeleteAsync(nonExistentId), "Delete method doesn't throw an exception when the user request does not exist in the database!");
         }
     }
 }

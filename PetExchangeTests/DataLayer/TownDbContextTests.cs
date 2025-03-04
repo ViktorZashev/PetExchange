@@ -10,14 +10,14 @@ namespace PetExchangeTests.DataLayer
     public class TownDbContextTests : DataLayerTestsManagement
     {
         [Test]
-        public void CreateMethod_AddsTownToDatabase()
+        public async Task CreateMethod_AddsTownToDatabase()
         {
             // Arrange
             var newTown = new Town("TownName");
             var initialCount = db.Towns.Count();
 
             // Act
-            townContext.Create(newTown);
+            await townContext.CreateAsync(newTown);
             var actualCount = db.Towns.Count();
             var expectedCount = initialCount + 1;
 
@@ -26,18 +26,18 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateTown()
+        public async Task CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateTown()
         {
             // Arrange
             var newTown = new Town("TownName");
-            townContext.Create(newTown);
+            await townContext.CreateAsync(newTown);
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => townContext.Create(newTown), "The Create method allows adding duplicate town names!");
+            Assert.Throws<ArgumentException>(() => townContext.CreateAsync(newTown), "The Create method allows adding duplicate town names!");
         }
 
         [Test]
-        public void ReadMethod_RetrievesATownFromDatabase()
+        public async Task ReadMethod_RetrievesATownFromDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -46,7 +46,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var actualTown = townContext.Read(id);
+            var actualTown = await townContext.ReadAsync(id);
             // Assert
             Assert.Multiple(() =>
             {
@@ -56,7 +56,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_UpdatesTownInDatabase()
+        public async Task UpdateMethod_UpdatesTownInDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -67,7 +67,7 @@ namespace PetExchangeTests.DataLayer
             var updatedTown = new Town("UpdatedTownName") { Id = id };
 
             // Act
-            townContext.Update(updatedTown);
+            await townContext.UpdateAsync(updatedTown);
             var actualTown = db.Towns.FirstOrDefault(t => t.Id == id);
 
             // Assert
@@ -75,18 +75,18 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void UpdateMethod_ThrowsExceptionWhenTownDoesNotExist()
+        public async Task UpdateMethod_ThrowsExceptionWhenTownDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
             var townToUpdate = new Town("TownName") { Id = nonExistentId };
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => townContext.Update(townToUpdate), "Update method doesn't throw an exception when the town does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => townContext.UpdateAsync(townToUpdate), "Update method doesn't throw an exception when the town does not exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_RemovesTownFromDatabase()
+        public async Task DeleteMethod_RemovesTownFromDatabase()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -95,7 +95,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            townContext.Delete(id);
+            await townContext.DeleteAsync(id);
             var actualTown = db.Towns.FirstOrDefault(t => t.Id == id);
 
             // Assert
@@ -103,7 +103,7 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_RetrievesAllTownsFromDatabase()
+        public async Task ReadAllMethod_RetrievesAllTownsFromDatabase()
         {
             // Arrange
             var enteredTown1 = new Town("TownName1");
@@ -113,7 +113,7 @@ namespace PetExchangeTests.DataLayer
             db.SaveChanges();
 
             // Act
-            var outputedTowns = townContext.ReadAll();
+            var outputedTowns = await townContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputedTowns, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
@@ -122,66 +122,36 @@ namespace PetExchangeTests.DataLayer
         }
 
         [Test]
-        public void ReadAllMethod_ReturnsEmptyListWhenThereAreNoTownsInDatabase()
+        public async Task ReadAllMethod_ReturnsEmptyListWhenThereAreNoTownsInDatabase()
         {
             // Arrange
             // Database is empty because of setup function
 
             // Act
-            var outputedTowns = townContext.ReadAll();
+            var outputedTowns = await townContext.ReadAllAsync();
 
             // Assert
             Assert.That(outputedTowns, Is.Empty, "ReadAll method doesn't return an empty list when no entries exist in the database!");
         }
 
         [Test]
-        public void ReadMethod_ReturnsNullWhenTownDoesNotExist()
+        public async Task ReadMethod_ReturnsNullWhenTownDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.That(townContext.Read(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the town does not exist in the database!");
+            Assert.That(townContext.ReadAsync(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the town does not exist in the database!");
         }
 
         [Test]
-        public void DeleteMethod_ThrowsExceptionWhenTownDoesNotExist()
+        public async Task DeleteMethod_ThrowsExceptionWhenTownDoesNotExist()
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => townContext.Delete(nonExistentId), "Delete method doesn't throw an exception when the town does not exist in the database!");
-        }
-
-        [Test]
-        public void CheckExistsMethod_ReturnsTrueIfTownExists()
-        {
-            // Arrange
-          
-            var townName = "ExistingTown";
-            var newTown = new Town(townName);
-            db.Towns.Add(newTown);
-            db.SaveChanges();
-
-            // Act
-            var townExists = townContext.CheckExists(townName);
-
-            // Assert
-            Assert.That(townExists, Is.True, "CheckExists method doesn't return true for a town that exists in the database!");
-        }
-
-        [Test]
-        public void CheckExistsMethod_ReturnsFalseIfTownDoesNotExist()
-        {
-            // Arrange
-            var nonExistentTownName = "NonExistentTown";
-
-            // Act
-            var townExists = townContext.CheckExists(nonExistentTownName);
-
-            // Assert
-            Assert.That(townExists, Is.False, "CheckExists method doesn't return false for a town that does not exist in the database!");
+            Assert.Throws<ArgumentException>(() => townContext.DeleteAsync(nonExistentId), "Delete method doesn't throw an exception when the town does not exist in the database!");
         }
     }
 }

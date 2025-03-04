@@ -14,6 +14,11 @@ namespace PetExchangeTests.BusinessLayer
     public class BusinessLayerTestsManagement
     {
         public static PetExchangeDbContext db;
+        public PetService _petService;
+        public PublicOfferService _publicOfferService ;
+        public TownService _townService;
+        public UserRequestsService _userRequestsService;
+        public UserService _userService;
         private static PetExchangeDbContext GetMemoryContext()
         {
             var options = new DbContextOptionsBuilder<PetExchangeDbContext>()
@@ -25,11 +30,11 @@ namespace PetExchangeTests.BusinessLayer
         public void Setup()
         {
             db = GetMemoryContext();
-            PetService._PetContext = new PetDbContext(db);
-            PublicOfferService._PublicOfferContext = new PublicOfferDbContext(db);
-            TownService._TownContext = new TownDbContext(db);
-            UserRequestsService._UserRequestsContext = new UserRequestsDbContext(db);
-            UserService._UserContext = new UserDbContext(db);
+            _petService = new PetService(db);
+            _publicOfferService = new PublicOfferService(db);
+            _townService = new TownService(db);
+            _userRequestsService = new UserRequestsService(db);
+            _userService = new UserService(db);
             DeleteAllEntriesInDb();
         }
 

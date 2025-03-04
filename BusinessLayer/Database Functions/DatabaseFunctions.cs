@@ -16,14 +16,6 @@ namespace BusinessLayer.Database_Functions
     public static class DatabaseFunctions
     {
         public static string adminPassword = "admin";
-        public static void DeleteAllEntries()
-        {
-            TownService.DeleteAll();
-            PetService.DeleteAll();
-            UserService.DeleteAll();
-            UserRequestsService.DeleteAll();
-            PublicOfferService.DeleteAll();
-        }
         /*
         public static void SeedDatabase()
         {

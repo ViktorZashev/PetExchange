@@ -11,14 +11,14 @@ namespace PetExchangeTests.BusinessLayer
     public class TownServiceTests : BusinessLayerTestsManagement
     {
 		[Test]
-		public void Create_Adds_New_Town()
+		public async Task Create_Adds_New_Town()
 		{
 			// Arrange
 
 			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town"};
 
 			// Act
-			TownService.Create(town);
+			await _townService.CreateAsync(town);
 
 			// Assert
 			var result = db.Towns.FirstOrDefault(t => t.Id == town.Id);
@@ -27,23 +27,7 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void Create_Adds_List_Of_Towns()
-		{
-			// Arrange
-			var town1 = new Town { Id = Guid.NewGuid(), Name = "Test Town 1"};
-			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2"};
-			var newTowns = new List<Town> { town1, town2 };
-
-			// Act
-			TownService.Create(newTowns);
-
-			// Assert
-			var result = db.Towns.Count();
-			Assert.That(result, Is.EqualTo(2), "Both towns should be added.");
-		}
-
-		[Test]
-		public void Read_Returns_Town_By_Id()
+		public async Task Read_Returns_Town_By_Id()
 		{
 			// Arrange
 			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town"};
@@ -51,7 +35,7 @@ namespace PetExchangeTests.BusinessLayer
 			db.SaveChanges();
 
 			// Act
-			var result = TownService.Read(town.Id);
+			var result = await _townService.ReadAsync(town.Id);
 
 			// Assert
 			Assert.That(result, Is.Not.Null, "The town should be found.");
@@ -59,7 +43,7 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void ReadAll_Returns_All_Towns()
+		public async Task ReadAll_Returns_All_Towns()
 		{
 			// Arrange
 			
@@ -69,14 +53,14 @@ namespace PetExchangeTests.BusinessLayer
 			db.SaveChanges();
 
 			// Act
-			var results = TownService.ReadAll();
+			var results = await _townService.ReadAllAsync();
 
             // Assert
             Assert.That(results, Has.Count.EqualTo(2), "Both towns should be returned.");
 		}
 
 		[Test]
-		public void Update_Modifies_Existing_Town()
+		public async Task Update_Modifies_Existing_Town()
 		{
 			// Arrange
 			
@@ -87,8 +71,8 @@ namespace PetExchangeTests.BusinessLayer
 			var updatedName = "Updated Test Town";
 			town.Name = updatedName;
 
-			// Act
-			TownService.Update(town);
+            // Act
+            await _townService.UpdateAsync(town);
 
 			// Assert
 			var result = db.Towns.FirstOrDefault(t => t.Id == town.Id);
@@ -97,92 +81,19 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void Delete_Removes_Town()
+		public async Task Delete_Removes_Town()
 		{
 			// Arrange
 			var town = new Town {Id = Guid.NewGuid(), Name = "Test Town"};
 			db.Towns.Add(town);
 			db.SaveChanges();
 
-			// Act
-			TownService.Delete(town.Id);
+            // Act
+            await _townService.DeleteAsync(town.Id);
 
 			// Assert
 			var result = db.Towns.FirstOrDefault(t => t.Id == town.Id);
 			Assert.IsNull(result, "The town should be deleted.");
-		}
-
-		[Test]
-		public void DeleteAll_Removes_All_Towns()
-		{
-			// Arrange
-			var town1 = new Town {Id = Guid.NewGuid(), Name = "Test Town 1" };
-			var town2 = new Town { Id = Guid.NewGuid(), Name = "Test Town 2"};
-			db.Towns.AddRange(town1, town2);
-			db.SaveChanges();
-
-			// Act
-			TownService.DeleteAll();
-
-			// Assert
-			var result = db.Towns.Count();
-			Assert.That(result, Is.EqualTo(0), "All towns should be deleted.");
-		}
-
-		[Test]
-		public void CheckIfExists_Returns_True_If_Town_Exists()
-		{
-			// Arrange
-			var town = new Town {Id = Guid.NewGuid(), Name = "Test Town" };
-			db.Towns.Add(town);
-			db.SaveChanges();
-
-			// Act
-			var result = TownService.CheckIfExists("Test Town");
-
-			// Assert
-			Assert.IsTrue(result, "The town should exist.");
-		}
-
-		[Test]
-		public void CheckIfExists_Returns_False_If_Town_Does_Not_Exist()
-		{
-			// Arrange
-			// Database is empty because of setup method
-
-			// Act
-			var result = TownService.CheckIfExists("Non-Existent Town");
-
-			// Assert
-			Assert.That(result, Is.False, "The town should not exist.");
-		}
-
-		[Test]
-		public void RetrieveTown_Returns_Town_By_Name()
-		{
-			// Arrange
-			
-			var town = new Town { Id = Guid.NewGuid(), Name = "Test Town"};
-			db.Towns.Add(town);
-			db.SaveChanges();
-
-			// Act
-			var result = TownService.RetrieveTown("Test Town");
-
-			// Assert
-			Assert.That(result, Is.Not.Null, "The town should be found.");
-			Assert.That(result.Name, Is.EqualTo(town.Name), "The names should match.");
-		}
-
-		[Test]
-		public void RetrieveTown_Throws_Exception_If_Town_Not_Found()
-		{
-			// Arrange
-			// Database is empty because of setup method
-
-			// Act & Assert
-			var ex = Assert.Throws<IndexOutOfRangeException>(() => TownService.RetrieveTown("Non-Existent Town"));
-			Assert.That(ex.Message, Is.EqualTo("No such town is found!"));
 		}
 	}
 }

@@ -13,16 +13,16 @@ namespace PetExchangeTests.BusinessLayer
     public class PetServiceTests : BusinessLayerTestsManagement
     {
 		[Test]
-		public void CreateMethod_CreatesPetInDatabase()
+		public async Task CreateMethod_CreatesPetInDatabase()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.SaveChanges();
 
 			// Act
-			PetService.Create(pet);
+			await _petService.CreateAsync(pet);
 			var result = db.Pets.Find(pet.Id);
 
 			// Assert
@@ -31,17 +31,17 @@ namespace PetExchangeTests.BusinessLayer
 
 
 		[Test]
-		public void ReadMethod_ReturnsCorrectPet()
+		public async Task ReadMethod_ReturnsCorrectPet()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
 
 			// Act
-			var result = PetService.Read(pet.Id);
+			var result = await _petService.ReadAsync(pet.Id);
 
 			// Assert
 			Assert.That(result, Is.Not.Null, "Read method does not return the pet from the database.");
@@ -49,47 +49,47 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void ReadMethod_ReturnsNullWhenPetDoesNotExist()
+		public async Task ReadMethod_ReturnsNullWhenPetDoesNotExist()
 		{
 			// Act
-			var result = PetService.Read(Guid.NewGuid());
+			var result = await _petService.ReadAsync(Guid.NewGuid());
 
 			// Assert
 			Assert.That(result, Is.Null, "Read method does not return null when the pet does not exist in the database.");
 		}
 
 		[Test]
-		public void ReadAllMethod_ReturnsAllPets()
+		public async Task ReadAllMethod_ReturnsAllPets()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet1 = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			var pet2 = new User(user, "Buddy", "", 3, PetTypeEnum.Dog, "A friendly dog", false);
+			var pet1 = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet2 = new Pet(user, "Buddy", "", 3, PetTypeEnum.Dog, "A friendly dog", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet1);
 			db.Pets.Add(pet2);
 			db.SaveChanges();
 
 			// Act
-			var result = PetService.ReadAll();
+			var result = await _petService.ReadAllAsync();
 
 			// Assert
 			Assert.That(result, Has.Count.EqualTo(2), "ReadAll method does not return all pets from the database.");
 		}
 
 		[Test]
-		public void UpdateMethod_UpdatesPetInDatabase()
+		public async Task UpdateMethod_UpdatesPetInDatabase()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
 			pet.Name = "Updated Fluffy";
 
 			// Act
-			PetService.Update(pet);
+			await _petService.UpdateAsync(pet);
 			var result = db.Pets.Find(pet.Id);
 
 			// Assert
@@ -99,149 +99,32 @@ namespace PetExchangeTests.BusinessLayer
 		
 
 		[Test]
-		public void UpdateMethod_ThrowsExceptionWhenPetDoesNotExist()
+		public async Task UpdateMethod_ThrowsExceptionWhenPetDoesNotExist()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(Guid.NewGuid(), user, "Nonexistent Pet", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet = new Pet(user, "Nonexistent Pet", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 
 			// Act & Assert
-			Assert.Throws<ArgumentException>(() => PetService.Update(pet), "Update method does not throw an exception when the pet does not exist in the database.");
+			Assert.ThrowsAsync<ArgumentException>(() => _petService.UpdateAsync(pet), "Update method does not throw an exception when the pet does not exist in the database.");
 		}
 
 		[Test]
-		public void DeleteMethod_DeletesPetFromDatabase()
+		public async Task DeleteMethod_DeletesPetFromDatabase()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+			var pet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
 			db.Users.Add(user);
 			db.Pets.Add(pet);
 			db.SaveChanges();
 
 			// Act
-			PetService.Delete(pet.Id);
+			await _petService.DeleteAsync(pet.Id);
 			var result = db.Pets.Find(pet.Id);
 
 			// Assert
 			Assert.IsNull(result, "Pet was not deleted from database!");
 		}
-
-        [Test]
-        public void DeleteMethod_RemovesPetForGivenNameAndUser()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			db.Users.Add(user);
-			db.Pets.Add(pet);
-			db.SaveChanges();
-
-			// Act
-			PetService.Delete("Fluffy", user);
-
-			// Assert
-			var deletedPet = db.Pets.FirstOrDefault(p => p.Name == "Fluffy");
-			Assert.IsNull(deletedPet, "The pet 'Fluffy' should have been deleted.");
-		}
-		[Test]
-		public void DeleteAllMethod_RemovesAllPetsFromDatabase()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet1 = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			var pet2 = new User(user, "Max", "", 3, PetTypeEnum.Dog, "A playful dog", true);
-			db.Users.Add(user);
-			db.Pets.AddRange(new[] { pet1, pet2 });
-			db.SaveChanges();
-
-			// Act
-			PetService.DeleteAll();
-
-			// Assert
-			var count = db.Pets.Count();
-			Assert.That(count, Is.EqualTo(0), "All pets should have been deleted from the database.");
-		}
-
-		[Test]
-		public void CheckPetExistsMethod_ReturnsTrueIfPetExists()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			db.Users.Add(user);
-			db.Pets.Add(pet);
-			db.SaveChanges();
-
-			// Act
-			var result = PetService.CheckPetExists("Fluffy");
-
-			// Assert
-			Assert.That(result, Is.True, "Pet 'Fluffy' should exist in the database.");
-		}
-
-		[Test]
-		public void ReturnAllPetsForUserMethod_ReturnsPetsBelongingToSpecificUser()
-		{
-			// Arrange
-			var user1 = new User { Id = Guid.NewGuid(), Name = "John" };
-			var user2 = new User { Id = Guid.NewGuid(), Name = "Alice" };
-			var pet1 = new User(user1, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			var pet2 = new User(user1, "Max", "", 3, PetTypeEnum.Dog, "A playful dog", true);
-			var pet3 = new User(user2, "Buddy", "", 4, PetTypeEnum.Dog, "A loyal dog", false);
-			db.Users.AddRange([user1, user2]);
-			db.Pets.AddRange([pet1, pet2, pet3]);
-			db.SaveChanges();
-
-			// Act
-			var user1Pets = PetService.ReturnAllPets(user1);
-			var user2Pets = PetService.ReturnAllPets(user2);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(user1Pets, Has.Count.EqualTo(2), "There should be 2 pets belonging to user 'John'.");
-                Assert.That(user2Pets, Has.Count.EqualTo(1), "There should be 1 pet belonging to user 'Alice'.");
-            });
-        }
-
-		[Test]
-		public void ReturnAllPetsMethod_ReturnsAllPets()
-		{
-			// Arrange
-			var user1 = new User { Id = Guid.NewGuid(), Name = "John" };
-			var user2 = new User { Id = Guid.NewGuid(), Name = "Alice" };
-			var pet1 = new User(user1, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			var pet2 = new User(user1, "Max", "", 3, PetTypeEnum.Dog, "A playful dog", true);
-			var pet3 = new User(user2, "Buddy", "", 4, PetTypeEnum.Dog, "A loyal dog", false);
-			db.Users.AddRange([user1, user2]);
-			db.Pets.AddRange([pet1, pet2, pet3]);
-			db.SaveChanges();
-
-			// Act
-			var pets = PetService.ReturnAllPets();
-
-			// Assert
-			Assert.That(pets, Has.Count.EqualTo(3), "There should be 3 pets in total.");
-		}
-
-		[Test]
-		public void ReturnPetByNameMethod_ReturnsPetWithGivenName()
-		{
-			// Arrange
-			var user = new User { Id = Guid.NewGuid(), Name = "John" };
-			var pet = new User(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-			db.Users.Add(user);
-			db.Pets.Add(pet);
-			db.SaveChanges();
-
-			// Act
-			var result = PetService.ReturnPetByname("Fluffy");
-
-			// Assert
-			Assert.IsNotNull(result, "Pet 'Fluffy' should exist in the database.");
-			Assert.That(result.Name, Is.EqualTo("Fluffy"), "Returned pet should have name 'Fluffy'.");
-		}
-
 	}
 }

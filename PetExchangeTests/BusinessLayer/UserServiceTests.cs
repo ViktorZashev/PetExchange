@@ -11,28 +11,8 @@ namespace PetExchangeTests.BusinessLayer
 {
 	public class UserServiceTests : BusinessLayerTestsManagement
 	{
-		private StringWriter consoleOutput;
-		private TextWriter originalOutput;
-
-		[SetUp]
-		public void RedirectConsoleOutput()
-		{
-			// Redirect Console.Out to a StringWriter
-			consoleOutput = new StringWriter();
-			originalOutput = Console.Out;
-			Console.SetOut(consoleOutput);
-		}
-
-		[TearDown]
-		public void RestoreConsoleOutput()
-		{
-			// Restore Console.Out to its original stream
-			Console.SetOut(originalOutput);
-			consoleOutput.Dispose();
-		}
-
 		[Test]
-		public void Create_Adds_New_User_To_Database()
+		public async Task Create_Adds_New_User_To_Database()
 		{
 			// Arrange
 			var initialUsersCount = db.Users.Count();
@@ -40,7 +20,7 @@ namespace PetExchangeTests.BusinessLayer
 			var user = new User { Id = Guid.NewGuid(), Name = "Test User", Town = town, TownId = town.Id };
 
 			// Act
-			UserService.Create(user);
+			await _userService.CreateAsync(user);
 			var newUser = db.Users.Find(user.Id);
 			var newUsersCount = db.Users.Count();
 
@@ -54,31 +34,9 @@ namespace PetExchangeTests.BusinessLayer
                     "The count of users should increment by 1 after creating a new user.");
             });
         }
-		[Test]
-		public void Create_List_Adds_New_Users_To_Database()
-		{
-			// Arrange
-			var newTown = new Town("Plovdiv");
-
-			var initialUsersCount = db.Users.Count();
-			var users = new List<User>
-				{
-					new() { Id = Guid.NewGuid(), Name = "Test User 1", Town = newTown, TownId = newTown.Id},
-					new() { Id = Guid.NewGuid(), Name = "Test User 2", Town = newTown, TownId = newTown.Id},
-					new() { Id = Guid.NewGuid(), Name = "Test User 3", Town = newTown, TownId = newTown.Id}
-				};
-
-			// Act
-			UserService.Create(users);
-			var newUsersCount = db.Users.Count();
-
-			// Assert
-			Assert.That(newUsersCount, Is.EqualTo(initialUsersCount + users.Count),
-				"The count of users should increment by the number of users added.");
-		}
 
 		[Test]
-		public void Read_Returns_Correct_User()
+		public async Task Read_Returns_Correct_User()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "Test User" };
@@ -86,7 +44,7 @@ namespace PetExchangeTests.BusinessLayer
 			db.SaveChanges();
 
 			// Act
-			var result = UserService.Read(user.Id);
+			var result = await _userService.ReadAsync(user.Id);
 
 			// Assert
 			Assert.That(result, Is.Not.Null);
@@ -94,20 +52,20 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void ReadAll_Returns_All_Users()
+		public async Task ReadAll_Returns_All_Users()
 		{
 			// Arrange
 			var initialCount = db.Users.Count();
 
 			// Act
-			var result = UserService.ReadAll();
+			var result = await _userService.ReadAllAsync();
 
 			// Assert
 			Assert.That(result, Has.Count.EqualTo(initialCount));
 		}
 
 		[Test]
-		public void Update_Modifies_Existing_User()
+		public async Task Update_Modifies_Existing_User()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "Test User" };
@@ -116,7 +74,7 @@ namespace PetExchangeTests.BusinessLayer
 
 			// Act
 			user.Name = "Updated User";
-			UserService.Update(user);
+            await _userService.UpdateAsync(user);
 			var updatedUser = db.Users.Find(user.Id);
 
 			// Assert
@@ -124,7 +82,7 @@ namespace PetExchangeTests.BusinessLayer
 		}
 
 		[Test]
-		public void Delete_Removes_User_From_Database()
+		public async Task Delete_Removes_User_From_Database()
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid(), Name = "Test User" };
@@ -132,8 +90,8 @@ namespace PetExchangeTests.BusinessLayer
 			db.SaveChanges();
 			var initialUsersCount = db.Users.Count();
 
-			// Act
-			UserService.Delete(user.Id);
+            // Act
+            await _userService.DeleteAsync(user.Id);
 			var newUsersCount = db.Users.Count();
             // Assert
             Assert.Multiple(() =>
@@ -144,27 +102,5 @@ namespace PetExchangeTests.BusinessLayer
                     "The user should no longer exist in the database after deletion.");
             });
         }
-
-		[Test]
-		public void DeleteAll_Removes_All_Users_From_Database()
-		{
-			// Arrange
-			var users = new List<User>
-		{
-			new User { Id = Guid.NewGuid(), Name = "Test User 1" },
-			new User { Id = Guid.NewGuid(), Name = "Test User 2" }
-		};
-			db.Users.AddRange(users);
-			db.SaveChanges();
-
-			// Act
-			UserService.DeleteAll();
-			var newUsersCount = db.Users.Count();
-
-			// Assert
-			Assert.That(newUsersCount, Is.EqualTo(0),
-				"All users should be removed from the database.");
-		}
-
 	}
 }

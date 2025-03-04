@@ -10,88 +10,33 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-    public static class UserRequestsService
+    public class UserRequestsService(PetExchangeDbContext _ProjectContext) : IDbWithNav<UserRequest, Guid>
     {
-        private static readonly PetExchangeDbContext _ProjectContext = new();
-        public static UserRequestsDbContext  _UserRequestsContext = new (_ProjectContext);
+        public UserRequestsDbContext  _UserRequestsContext = new (_ProjectContext);
 
-        public static void Create(UserRequest request)
+        public async Task CreateAsync(UserRequest entity)
         {
-            // Validation
-            _UserRequestsContext.Create(request);
+            await _UserRequestsContext.CreateAsync(entity);
         }
 
-        public static void Create(List<UserRequest> requests)
+        public async Task<UserRequest>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-            foreach (var request in requests)
-            {
-                Create(request);
-            }
-        }
-        public static UserRequest Read(Guid idt, bool useNav = true)
-        {
-            
-            return _UserRequestsContext.Read(idt, useNav);
+            return await _UserRequestsContext.ReadAsync(id, useNavigationalProperties, isReadOnly);
         }
 
-        public static List<UserRequest> ReadAll(bool useNav = true)
+        public async Task<List<UserRequest>>? ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-  
-            return _UserRequestsContext.ReadAll(useNav);
+            return await _UserRequestsContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
         }
-        public static void Update(UserRequest request)
-        {
-            // validation
-            _UserRequestsContext.Update(request);
-        }
-        public static void Delete(Guid id)
-        {
-            // validation
-            _UserRequestsContext.Delete(id);
-        }
-        public static void DeleteAll()
-        {
-            var Requests = ReadAll();
-            foreach (var Request in Requests)
-            {
-                Delete(Request.Id);
-            }
-        }
-        public static List<UserRequest> ReadAll(User user)
-        {
-          return user.Requests.ToList();
-        }
-        public static void DeleteRequest(User user, string petName)
-        {
-            var requests = ReadAll(user);
-        
-            var deletedRequest = requests.Where(x => PetService.Read(PublicOfferService.Read(x.PublicOfferId).PetId).Name == petName).FirstOrDefault() ?? throw new Exception("No such request exists for this user!");
-            Delete(deletedRequest.Id);
-        }
-        public static void CreateRequest(User user, string petName)
-        {
-            var offer = PublicOfferService.ReadAll().Where(x => x.TownId == user.TownId).Where(x => x.Pet.Name == petName).FirstOrDefault();
-            if(PetService.ReturnAllPets(user).Any(x => x.Name == petName) == true)
-            {
-                throw new Exception("You can't create a request for a pet you own!");
-            }
-            if (offer == null)
-            {
-                throw new Exception("No such public offer exists for petName");
-            }
-            var request = new UserRequest(offer, false);
-            Create(request);
-        }
-		public static void LoadDb()
-		{
-			try
-			{
-				Delete(Guid.NewGuid());
-			}
-			catch
-			{
 
-			}
-		}
-	}
+        public async Task UpdateAsync(UserRequest entity, bool useNavigationalProperties = false)
+        {
+            await _UserRequestsContext.UpdateAsync(entity, useNavigationalProperties);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            await _UserRequestsContext.DeleteAsync(id);
+        }
+    }
 }

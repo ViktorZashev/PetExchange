@@ -10,52 +10,33 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Functions
 {
-	public static class UserService
-	{
-		private static PetExchangeDbContext _ProjectContext = new PetExchangeDbContext();
-		public static UserDbContext _UserContext = new UserDbContext(_ProjectContext);
+	public class UserService(PetExchangeDbContext _ProjectContext) : IDbWithNav<User, Guid>
+    {
+		public  UserDbContext _UserContext = new UserDbContext(_ProjectContext);
 
-		public static void Create(User user)
-		{
-			// Validation
-			_UserContext.Create(user);
-		}
-		public static void Create(List<User> users)
-		{
-			foreach (var user in users)
-			{
-				Create(user);
-			}
-		}
-		public static User Read(Guid idt, bool useNav = true)
-		{
+        public async Task CreateAsync(User entity)
+        {
+            await _UserContext.CreateAsync(entity);
+        }
 
-			return _UserContext.Read(idt, useNav);
-		}
+        public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            return await _UserContext.ReadAsync(id, useNavigationalProperties, isReadOnly);
+        }
 
-		public static List<User> ReadAll(bool useNav = true)
-		{
+        public async Task<List<User>>? ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        {
+            return await _UserContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
+        }
 
-			return _UserContext.ReadAll(useNav);
-		}
-		public static void Update(User user)
-		{
-			// validation
-			_UserContext.Update(user);
-		}
-		public static void Delete(Guid id)
-		{
-			// validation
-			_UserContext.Delete(id);
-		}
+        public async Task UpdateAsync(User entity, bool useNavigationalProperties = false)
+        {
+            await _UserContext.UpdateAsync(entity, useNavigationalProperties);
+        }
 
-		public static void DeleteAll()
-		{
-			var Users = ReadAll();
-			foreach (var User in Users)
-			{
-				Delete(User.Id);
-			}
-		}
-	}
+        public async Task DeleteAsync(Guid id)
+        {
+            await _UserContext.DeleteAsync(id);
+        }
+    }
 }
