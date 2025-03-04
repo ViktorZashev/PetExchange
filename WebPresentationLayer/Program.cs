@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
 using System.Security.Claims;
+using BusinessLayer;
 
 namespace WebPresentationLayer
 {
@@ -21,11 +22,8 @@ namespace WebPresentationLayer
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
-            })
-                .AddRoles<IdentityRole>()
+            builder.Services.AddIdentity<User, IdentityRole<Guid>>()
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<PetExchangeDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -33,9 +31,22 @@ namespace WebPresentationLayer
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddScoped<IDbWithNav<Pet, Guid>, PetDbContext>();
+            builder.Services.AddScoped<PetService, PetService>();
 
+            builder.Services.AddScoped<IDbWithNav<PublicOffer, Guid>, PublicOfferDbContext>();
+            builder.Services.AddScoped<PublicOfferService, PublicOfferService>();
 
-            builder.Services.AddScoped<PetExchangeDbContext, PetExchangeDbContext>();
+            builder.Services.AddScoped<IDbWithoutNav<Town, Guid>, TownDbContext>();
+            builder.Services.AddScoped<TownService, TownService>();
+
+            builder.Services.AddScoped<IDbWithNav<UserRequest, Guid>, UserRequestsDbContext>();
+            builder.Services.AddScoped<UserRequestsService, UserRequestsService>();
+
+            builder.Services.AddScoped<IDbWithNav<User, Guid>, UserDbContext>();
+            builder.Services.AddScoped<UserManager<User>>();
+            builder.Services.AddScoped<UserService, UserService>();
+
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 // Default Lockout settings.
@@ -46,6 +57,17 @@ namespace WebPresentationLayer
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 1;
             });
+            
+            builder.Services.AddScoped<SignInManager<User>>();
+
+            builder.Services.ConfigureApplicationCookie(o =>
+            {
+                // Change TimeSpan later due to security reasons
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(505);
+                o.LoginPath = "/login";
+                o.AccessDeniedPath = "/login";
+            }
+            );
 
             var app = builder.Build();
 
