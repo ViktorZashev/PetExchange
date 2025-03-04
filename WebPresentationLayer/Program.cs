@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebPresentationLayer.Data;
 using DataLayer;
-using DataLayer.ProjectDbContext;
-using BusinessLayer.Models;
 using System.Security.Claims;
+
 namespace WebPresentationLayer
 {
     public class Program

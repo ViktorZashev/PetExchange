@@ -1,17 +1,8 @@
-﻿using BusinessLayer.Models;
-using DataLayer.ProjectDbContext;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLayer.ModelsDbContext;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
 {
-	public class UserRequestsDbContext: IDbWithNav<UserRequest, Guid>
+    public class UserRequestsDbContext: IDbWithNav<UserRequest, Guid>
 	{
 		private readonly PetExchangeDbContext _dbcontext;
         public UserRequestsDbContext(PetExchangeDbContext context)

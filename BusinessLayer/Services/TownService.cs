@@ -1,14 +1,7 @@
-﻿using BusinessLayer.Models;
+﻿using DataLayer;
 using DataLayer;
-using DataLayer.ModelsDbContext;
-using DataLayer.ProjectDbContext;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLayer.Functions
+namespace BusinessLayer
 {
     public class TownService : IDbWithoutNav<Town, Guid>
     {

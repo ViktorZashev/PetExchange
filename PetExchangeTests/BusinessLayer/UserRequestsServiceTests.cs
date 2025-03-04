@@ -1,13 +1,6 @@
-﻿using BusinessLayer.Functions;
-using BusinessLayer.Models;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataLayer;
 
-namespace PetExchangeTests.BusinessLayer
+namespace PetExchangeTests
 {
 	public class UserRequestsServiceTests : BusinessLayerTestsManagement
 	{

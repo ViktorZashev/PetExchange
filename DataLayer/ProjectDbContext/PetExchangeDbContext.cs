@@ -1,15 +1,7 @@
-﻿using BusinessLayer.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
-namespace DataLayer.ProjectDbContext
+namespace DataLayer
 {
     public class PetExchangeDbContext : IdentityDbContext<User>
     {

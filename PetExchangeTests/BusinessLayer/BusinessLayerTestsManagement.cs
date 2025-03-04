@@ -1,15 +1,8 @@
-﻿using BusinessLayer.Functions;
-using DataLayer;
-using DataLayer.ModelsDbContext;
-using DataLayer.ProjectDbContext;
+﻿using DataLayer;
+using BusinessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PetExchangeTests.BusinessLayer
+namespace PetExchangeTests
 {
     public class BusinessLayerTestsManagement
     {

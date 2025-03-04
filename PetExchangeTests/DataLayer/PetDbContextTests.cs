@@ -1,16 +1,8 @@
-﻿using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using BusinessLayer.Models;
-using DataLayer.ProjectDbContext;
-using DataLayer;
-using DataLayer.Models;
+﻿using DataLayer;
 
-namespace PetExchangeTests.DataLayer
+namespace PetExchangeTests
 {
-	public class PetDbContextTests : DataLayerTestsManagement
+    public class PetDbContextTests : DataLayerTestsManagement
 	{
 		[Test]
 		public async Task CreateMethod_AddsPetModelToDatabase()

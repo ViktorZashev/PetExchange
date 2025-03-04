@@ -1,15 +1,6 @@
-﻿using BusinessLayer.Models;
-using DataLayer;
-using DataLayer.ModelsDbContext;
-using DataLayer.ProjectDbContext;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataLayer;
 
-namespace BusinessLayer.Functions
+namespace BusinessLayer
 {
     public class PublicOfferService : IDbWithNav<PublicOffer, Guid>
     {

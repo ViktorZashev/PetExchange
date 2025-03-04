@@ -1,11 +1,8 @@
-﻿using DataLayer.Models;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
-using System.Text.Json.Serialization;
 
-namespace BusinessLayer.Models
+namespace DataLayer
 {
     public class Pet
     {

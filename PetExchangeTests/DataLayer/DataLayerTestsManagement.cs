@@ -1,10 +1,7 @@
-using BusinessLayer.Models;
-using DataLayer;
-using DataLayer.ModelsDbContext;
-using DataLayer.ProjectDbContext;
+﻿using DataLayer;
 using Microsoft.EntityFrameworkCore;
 
-namespace PetExchangeTests.DataLayer
+namespace PetExchangeTests
 {
     public partial class DataLayerTestsManagement
     {

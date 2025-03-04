@@ -1,17 +1,4 @@
-﻿using BusinessLayer.Functions;
-using BusinessLayer.Models;
-using DataLayer;
-using DataLayer.Models;
-using DataLayer.ProjectDbContext;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessLayer.Database_Functions
+﻿namespace BusinessLayer
 {
     public static class DatabaseFunctions
     {
