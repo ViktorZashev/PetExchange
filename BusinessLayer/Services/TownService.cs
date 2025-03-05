@@ -43,6 +43,7 @@ namespace BusinessLayer
             {
                 result.Add(new SelectOption(label: town.Name, value: town.Id.ToString()));
             }
+            result = result.OrderBy(x => x.Label).ToList();
             return result;
         }
     }
