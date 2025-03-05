@@ -1,10 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DataLayer
 {
-    public class PetExchangeDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class PetExchangeDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public PetExchangeDbContext()
         {
@@ -27,56 +32,10 @@ namespace DataLayer
         {
             base.OnModelCreating(modelBuilder);
 
-            /*
-            // Disable cascade delete for Pet → User
-            modelBuilder.Entity<Pet>()
-                .HasOne(p => p.User)
-                .WithMany(u => u.Pets)
-                .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.NoAction); // Prevents multiple cascade paths
-
-            // Disable cascade delete for Pet → Town
-            modelBuilder.Entity<Pet>()
-                .HasOne(p => p.Town)
-                .WithMany() // If Town does not need a Pets collection, avoid tracking
-                .HasForeignKey(p => p.TownId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            // Disable cascade delete for User → Town
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Town)
-                .WithMany()
-                .HasForeignKey(u => u.TownId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            // Disable cascade delete for UserRequests → User
-            modelBuilder.Entity<UserRequests>()
-                .HasOne(ur => ur.User)
-                .WithMany() // Avoid tracking UserRequests in User
-                .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.NoAction); // Prevents cascade delete issue
-
-            // Disable cascade delete for UserRequests → PublicOffer
-            modelBuilder.Entity<UserRequests>()
-                .HasOne(ur => ur.PublicOffer)
-                .WithMany() // Avoid tracking UserRequests in PublicOffer
-                .HasForeignKey(ur => ur.PublicOfferId)
-                .OnDelete(DeleteBehavior.NoAction);
-           
-            // Disable cascade delete for PublicOffer → User
-            modelBuilder.Entity<PublicOffer>()
-                .HasOne(po => po.User)
-                .WithMany() // Avoid tracking PublicOffers in User
-                .HasForeignKey(po => po.UserId)
-                .OnDelete(DeleteBehavior.NoAction); // Prevents cascade delete issue
-
-            // Disable cascade delete for PublicOffer → Pet
-            modelBuilder.Entity<PublicOffer>()
-                .HasOne(po => po.Pet)
-                .WithMany() // Avoid tracking PublicOffers in Pet
-                .HasForeignKey(po => po.PetId)
-                .OnDelete(DeleteBehavior.NoAction);
-             */
+            /*modelBuilder.Entity<Town>()
+            .Property(e => e.Id)
+            .HasDefaultValueSql("NEWID()"); 
+            */
         }
 
         public DbSet<Pet> Pets { get; set; }
@@ -84,5 +43,44 @@ namespace DataLayer
         public DbSet<Town> Towns { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRequest> Requests { get; set; }
+
+        #region Seeding Database
+        public void Seed()
+        {
+            if (!Towns.Any())
+            {
+                Towns.AddRange(
+                    new Town { Name = "Благоевград" },
+                    new Town { Name = "Бургас" },
+                    new Town { Name = "Варна" },
+                    new Town { Name = "Велико Търново" },
+                    new Town { Name = "Видин" },
+                    new Town { Name = "Враца" },
+                    new Town { Name = "Габрово" },
+                    new Town { Name = "Добрич" },
+                    new Town { Name = "Кърджали" },
+                    new Town { Name = "Кюстендил" },
+                    new Town { Name = "Ловеч" },
+                    new Town { Name = "Монтана" },
+                    new Town { Name = "Пазарджик" },
+                    new Town { Name = "Перник" },
+                    new Town { Name = "Плевен" },
+                    new Town { Name = "Пловдив" },
+                    new Town { Name = "Разград" },
+                    new Town { Name = "Русе" },
+                    new Town { Name = "Силистра" },
+                    new Town { Name = "Сливен" },
+                    new Town { Name = "Смолян" },
+                    new Town { Name = "София" },
+                    new Town { Name = "Стара Загора" },
+                    new Town { Name = "Търговище" },
+                    new Town { Name = "Хасково" },
+                    new Town { Name = "Шумен" },
+                    new Town { Name = "Ямбол" }
+                );
+                SaveChanges();
+            }
+        }
+        #endregion
     }
 }

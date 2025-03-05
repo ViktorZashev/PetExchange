@@ -1,14 +1,27 @@
 ﻿using DataLayer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer
 {
 	public class UserService : IDbWithNav<User, Guid>
     {
 		public  UserDbContext _UserContext;
-
+        public UserService(PetExchangeDbContext _ProjectContext,UserManager<User> userManager,SignInManager<User> signInManager)
+        {
+            _UserContext = new UserDbContext(_ProjectContext,userManager,signInManager);
+        }
         public UserService(PetExchangeDbContext _ProjectContext)
         {
             _UserContext = new UserDbContext(_ProjectContext);
+        }
+        public async Task CreateAsync(User entity, string passWord)
+        {
+            await _UserContext.CreateAsync(entity, passWord);
+        }
+        public async Task ChangePassWord(User entity, string newPassWord)
+        {
+            await _UserContext.ChangePassWord(entity, newPassWord);
         }
         public async Task CreateAsync(User entity)
         {

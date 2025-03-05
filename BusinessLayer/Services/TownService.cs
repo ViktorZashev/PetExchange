@@ -35,5 +35,15 @@ namespace BusinessLayer
         {
             await _TownContext.DeleteAsync(id);
         }
+
+        public async Task<List<SelectOption>> GetTownOptions()
+        {
+            var result = new List<SelectOption>();
+            foreach (var town in await ReadAllAsync())
+            {
+                result.Add(new SelectOption(label: town.Name, value: town.Id.ToString()));
+            }
+            return result;
+        }
     }
 }

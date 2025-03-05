@@ -1,13 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
 {
     public class UserDbContext : IDbWithNav<User, Guid>
 	{
-		private readonly PetExchangeDbContext _dbcontext;
-        public UserDbContext(PetExchangeDbContext context)
+        private readonly PetExchangeDbContext _dbcontext;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly string adminRole = "Administrator";
+        public UserDbContext(PetExchangeDbContext petExchangeDbContext, UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _dbcontext = context;
+            _dbcontext = petExchangeDbContext;
+            this.userManager = userManager;
+            _signInManager = signInManager;
+        }
+        public UserDbContext(PetExchangeDbContext petExchangeDbContext)
+        {
+            _dbcontext = petExchangeDbContext;
+        }
+        public async Task CreateAsync(User entity, string passWord)
+        {
+            await userManager.CreateAsync(entity, passWord);
+            await _dbcontext.SaveChangesAsync();
+        }
+        public async Task ChangePassWord(User entity, string newPassWord)
+        {
+            var userFromDb = await userManager.FindByNameAsync(entity.UserName);
+            var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
+            var result = await userManager.ResetPasswordAsync(userFromDb, token, newPassWord);
+            await _dbcontext.SaveChangesAsync();
         }
         public async Task CreateAsync(User entity)
         {
@@ -21,7 +43,6 @@ namespace DataLayer
                 throw;
             }
         }
-
 
         public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {

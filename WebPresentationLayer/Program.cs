@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DataLayer;
 using System.Security.Claims;
 using BusinessLayer;
+using Microsoft.Data.SqlClient;
 
 namespace WebPresentationLayer
 {
@@ -44,7 +45,9 @@ namespace WebPresentationLayer
             builder.Services.AddScoped<UserRequestsService, UserRequestsService>();
 
             builder.Services.AddScoped<IDbWithNav<User, Guid>, UserDbContext>();
+            builder.Services.AddScoped<RoleManager<IdentityRole<Guid>>>();
             builder.Services.AddScoped<UserManager<User>>();
+            builder.Services.AddScoped<SignInManager<User>>();
             builder.Services.AddScoped<UserService, UserService>();
 
             builder.Services.Configure<IdentityOptions>(options =>
@@ -58,7 +61,6 @@ namespace WebPresentationLayer
                 options.Password.RequiredLength = 1;
             });
             
-            builder.Services.AddScoped<SignInManager<User>>();
 
             builder.Services.ConfigureApplicationCookie(o =>
             {
@@ -94,6 +96,13 @@ namespace WebPresentationLayer
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            // Calling seeding function
+            using (var _context = new PetExchangeDbContext())
+            {
+                _context.Seed();
+            }
+            //
 
             app.Run();
         }
