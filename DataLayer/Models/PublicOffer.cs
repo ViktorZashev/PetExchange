@@ -14,7 +14,7 @@ namespace DataLayer
         [ForeignKey("PetId")]
         public Pet Pet { get; set; }
 
-        public List<UserRequest>? Requests { get; set; }
+        public List<UserRequest>? Requests { get; set; } = new();
 
         [NotMapped]
         public Town Town

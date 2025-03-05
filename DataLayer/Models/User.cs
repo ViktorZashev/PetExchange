@@ -32,11 +32,11 @@ namespace DataLayer
         [ForeignKey("TownId")]
         public Town Town { get; set; }
 
-        public List<Pet> Pets { get; set; }
+        public List<Pet> Pets { get; set; } = new();
 
-        public List<UserRequest> Requests { get; set; }
+        public List<UserRequest> Requests { get; set; } = new();
 
-        public List<PublicOffer> PublicOffers { get; set; }
+        public List<PublicOffer> PublicOffers { get; set; } = new();
 
         public User() { }
 

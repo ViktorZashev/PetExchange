@@ -234,6 +234,17 @@ namespace DataLayer
                     Pet = donutPet
                 };
                 PublicOffers.AddRange(tropchoPublicOffer,donutPublicOffer);
+                viktorAdmin.PublicOffers.Add(tropchoPublicOffer);
+                toshoUser.PublicOffers.Add(donutPublicOffer);
+
+                var userRequestTropcho = new UserRequest
+                {
+                    IsAccepted = false,
+                    PublicOffer = tropchoPublicOffer,
+                    PublicOfferId = tropchoPublicOffer.Id,
+                };
+                goshoUser.Requests.Add(userRequestTropcho);
+
                 SaveChanges();
             }
 
