@@ -14,6 +14,10 @@ namespace BusinessLayer
         {
             await _PetContext.CreateAsync(entity);
         }
+        public async Task CreateAsync(List<Pet> pets)
+        {
+            await _PetContext.CreateAsync(pets);
+        }
 
         public async Task<Pet>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {

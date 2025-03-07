@@ -4,6 +4,9 @@
     {
         // CRUD Operations
         Task CreateAsync(T entity);
+
+        Task CreateAsync(List<T> entities);
+
         Task<T>? ReadAsync(K id, bool useNavigationalProperties = false, bool isReadOnly = true);
 
         Task<List<T>>? ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true);

@@ -4,12 +4,13 @@ using DataLayer;
 using System.Security.Claims;
 using BusinessLayer;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebPresentationLayer
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ namespace WebPresentationLayer
             builder.Services.AddScoped<UserRequestsService, UserRequestsService>();
 
             builder.Services.AddScoped<IDbWithNav<User, Guid>, UserDbContext>();
+            builder.Services.AddScoped<UserDbContext, UserDbContext>();
             builder.Services.AddScoped<RoleManager<IdentityRole<Guid>>>();
             builder.Services.AddScoped<UserManager<User>>();
             builder.Services.AddScoped<SignInManager<User>>();
@@ -96,12 +98,27 @@ namespace WebPresentationLayer
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
             // Calling seeding function
-            using (var _context = new PetExchangeDbContext())
+            using (var scope = app.Services.CreateScope())
             {
-                _context.Seed();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+                var roles = Enum.GetValues(typeof(RoleEnum))
+                    .Cast<RoleEnum>()
+                    .Select(v => v.ToString())
+                    .ToList();
+
+                foreach (var role in roles)
+                {
+                    if(!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole<Guid>(role));
+                    }
+                }
+                var _context = new PetExchangeDbContext();
+                await _context.SeedAsync(scope.ServiceProvider.GetRequiredService<UserDbContext>());
             }
+            
             //
 
             app.Run();

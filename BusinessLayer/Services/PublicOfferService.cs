@@ -14,7 +14,10 @@ namespace BusinessLayer
         {
             await _PublicOfferContext.CreateAsync(entity);
         }
-
+        public async Task CreateAsync(List<PublicOffer> offers)
+        {
+            await _PublicOfferContext.CreateAsync(offers);
+        }
         public async Task<PublicOffer>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             return await _PublicOfferContext.ReadAsync(id, useNavigationalProperties, isReadOnly);

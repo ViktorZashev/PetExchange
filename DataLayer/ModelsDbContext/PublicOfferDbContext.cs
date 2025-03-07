@@ -22,6 +22,20 @@ namespace DataLayer
             }
         }
 
+        public async Task CreateAsync(List<PublicOffer> offers)
+        {
+            try
+            {
+                foreach (var offer in offers)
+                {
+                    await CreateAsync(offer);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<PublicOffer>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {

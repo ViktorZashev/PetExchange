@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-
 namespace DataLayer
 {
     public class PetExchangeDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
@@ -45,12 +39,17 @@ namespace DataLayer
         public DbSet<UserRequest> Requests { get; set; }
 
         #region Seeding Database
-        public void Seed()
+        public async Task SeedAsync(UserDbContext userContext)
         {
             if (Users.Count() + Pets.Count() + Requests.Count() + PublicOffers.Count() + Towns.Count() == 0)
             {
-                var Plovdiv = new Town("Plovdiv");
-                var Sofia = new Town("Sofia");
+                var townContext = new TownDbContext(this);
+                var petContext = new PetDbContext(this);
+                var offerContext = new PublicOfferDbContext(this);
+                var requestContext = new UserRequestsDbContext(this);
+
+                var Plovdiv = new Town("Пловдив");
+                var Sofia = new Town("София");
                 var viktorAdmin = new User
                 {
                     Id = Guid.NewGuid(),
@@ -117,9 +116,7 @@ namespace DataLayer
                     LockoutEnabled = true,
                     AccessFailedCount = 0
                 };
-                Towns.AddRange(
-                    Plovdiv,
-                    Sofia,
+                await townContext.CreateAsync(new List<Town>() {
                     new Town { Name = "Благоевград" },
                     new Town { Name = "Бургас" },
                     new Town { Name = "Варна" },
@@ -145,9 +142,10 @@ namespace DataLayer
                     new Town { Name = "Хасково" },
                     new Town { Name = "Шумен" },
                     new Town { Name = "Ямбол" }
+                    }
                 );
-
-                Users.AddRange(viktorAdmin, goshoUser, toshoUser);
+                //SaveChanges();
+                await userContext.CreateAsync(new List<User>() { viktorAdmin, goshoUser, toshoUser });
 
                 // INCLUDE PHOTOPATH, WHEN YOU HAVE IT IMPLEMENTED
                 var tropchoPet = new Pet
@@ -221,7 +219,7 @@ namespace DataLayer
                     User = goshoUser,
                     UserId = goshoUser.Id
                 };
-                Pets.AddRange(tropchoPet, milesPet, daisyPet, donutPet, horsePet);
+                await petContext.CreateAsync(new List<Pet>() { tropchoPet, milesPet, daisyPet, donutPet, horsePet });
 
                 var tropchoPublicOffer = new PublicOffer
                 {
@@ -233,9 +231,7 @@ namespace DataLayer
                     PetId = donutPet.Id,
                     Pet = donutPet
                 };
-                PublicOffers.AddRange(tropchoPublicOffer,donutPublicOffer);
-                viktorAdmin.PublicOffers.Add(tropchoPublicOffer);
-                toshoUser.PublicOffers.Add(donutPublicOffer);
+                await offerContext.CreateAsync(new List<PublicOffer>() { tropchoPublicOffer, donutPublicOffer });
 
                 var userRequestTropcho = new UserRequest
                 {

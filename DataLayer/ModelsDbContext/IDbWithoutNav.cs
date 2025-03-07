@@ -4,6 +4,9 @@
     {
         // CRUD Operations
         Task CreateAsync(T entity);
+
+        Task CreateAsync(List<T> entities);
+
         Task<T>? ReadAsync(K id, bool isReadOnly = true);
 
         Task<List<T>>? ReadAllAsync(bool isReadOnly = true);

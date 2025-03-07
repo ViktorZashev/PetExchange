@@ -22,8 +22,22 @@ namespace DataLayer
 			}
 		}
 
+        public async Task CreateAsync(List<Pet> pets)
+        {
+            try
+            {
+                foreach (var pet in pets)
+                {
+                    await CreateAsync(pet);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		public async Task<Pet>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<Pet>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
 		{
             try
             {

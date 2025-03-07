@@ -15,7 +15,10 @@ namespace BusinessLayer
         {
             await _TownContext.CreateAsync(entity);
         }
-
+        public async Task CreateAsync(List<Town> towns)
+        {
+            await _TownContext.CreateAsync(towns);
+        }
         public async Task<Town>? ReadAsync(Guid id,bool isReadOnly = true)
         {
             return await _TownContext.ReadAsync(id, isReadOnly);

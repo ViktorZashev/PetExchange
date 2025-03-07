@@ -22,6 +22,20 @@ namespace DataLayer
             }
         }
 
+        public async Task CreateAsync(List<UserRequest> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
+                {
+                    await CreateAsync(request);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<UserRequest>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {

@@ -7,9 +7,9 @@ namespace BusinessLayer
 	public class UserService : IDbWithNav<User, Guid>
     {
 		public  UserDbContext _UserContext;
-        public UserService(PetExchangeDbContext _ProjectContext,UserManager<User> userManager,SignInManager<User> signInManager)
+        public UserService(PetExchangeDbContext _ProjectContext,UserManager<User> userManager)
         {
-            _UserContext = new UserDbContext(_ProjectContext,userManager,signInManager);
+            _UserContext = new UserDbContext(_ProjectContext,userManager);
         }
         public UserService(PetExchangeDbContext _ProjectContext)
         {
@@ -26,6 +26,10 @@ namespace BusinessLayer
         public async Task CreateAsync(User entity)
         {
             await _UserContext.CreateAsync(entity);
+        }
+        public async Task CreateAsync(List<User> users)
+        {
+            await _UserContext.CreateAsync(users);
         }
 
         public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)

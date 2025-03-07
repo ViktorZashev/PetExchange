@@ -13,6 +13,10 @@ namespace BusinessLayer
         {
             await _UserRequestsContext.CreateAsync(entity);
         }
+        public async Task CreateAsync(List<UserRequest> requests)
+        {
+            await _UserRequestsContext.CreateAsync(requests); 
+        }
 
         public async Task<UserRequest>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {

@@ -22,7 +22,20 @@ namespace DataLayer
                 throw;
             }
         }
-
+        public async Task CreateAsync(List<Town> towns)
+        {
+            try
+            {
+                foreach (var town in towns)
+                {
+                    await CreateAsync(town);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<Town>? ReadAsync(Guid id, bool isReadOnly = true)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace DataLayer
 {
@@ -7,13 +8,12 @@ namespace DataLayer
 	{
         private readonly PetExchangeDbContext _dbcontext;
         private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly string adminRole = "Administrator";
-        public UserDbContext(PetExchangeDbContext petExchangeDbContext, UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly RoleEnum adminRole = RoleEnum.Admin;
+        private readonly RoleEnum userRole = RoleEnum.User;
+        public UserDbContext(PetExchangeDbContext petExchangeDbContext, UserManager<User> userManager)
         {
             _dbcontext = petExchangeDbContext;
             this.userManager = userManager;
-            _signInManager = signInManager;
         }
         public UserDbContext(PetExchangeDbContext petExchangeDbContext)
         {
@@ -22,6 +22,14 @@ namespace DataLayer
         public async Task CreateAsync(User entity, string passWord)
         {
             await userManager.CreateAsync(entity, passWord);
+            if (entity.Role == adminRole)
+            {
+                await userManager.AddToRoleAsync(entity,adminRole.ToString());
+            }
+            else if (entity.Role == userRole)
+            {
+                await userManager.AddToRoleAsync(entity,userRole.ToString());
+            }
             await _dbcontext.SaveChangesAsync();
         }
         public async Task ChangePassWord(User entity, string newPassWord)
@@ -37,13 +45,35 @@ namespace DataLayer
             {
                 await _dbcontext.Users.AddAsync(entity);
                 await _dbcontext.SaveChangesAsync();
+                if (entity.Role == adminRole)
+                {
+                    await userManager.AddToRoleAsync(entity, adminRole.ToString());
+                }
+                else if (entity.Role == userRole)
+                {
+                    await userManager.AddToRoleAsync(entity, userRole.ToString());
+                }
+               
             }
             catch (Exception)
             {
                 throw;
             }
         }
-
+        public async Task CreateAsync(List<User> users)
+        {
+            try
+            {
+                foreach (var user in users)
+                {
+                    await CreateAsync(user);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try
@@ -102,7 +132,14 @@ namespace DataLayer
                 {
                     _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // updates only the core entity
                 }
-
+                if(user.Role == adminRole && user.Role != userFromDb.Role)
+                {
+                    await userManager.AddToRoleAsync(user, adminRole.ToString());
+                }
+                else if(user.Role == userRole && user.Role != userFromDb.Role)
+                {
+                    await userManager.AddToRoleAsync(user, userRole.ToString());
+                }
                 await _dbcontext.SaveChangesAsync();
             }
             catch (Exception)
@@ -122,8 +159,7 @@ namespace DataLayer
                 {
                     throw new ArgumentException("User with id = " + key + " does not exist!");
                 }
-
-                _dbcontext.Users.Remove(user);
+                await userManager.DeleteAsync(user);
                 await _dbcontext.SaveChangesAsync();
             }
             catch (Exception)
