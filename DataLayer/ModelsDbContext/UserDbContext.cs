@@ -53,7 +53,6 @@ namespace DataLayer
                 {
                     await userManager.AddToRoleAsync(entity, userRole.ToString());
                 }
-               
             }
             catch (Exception)
             {

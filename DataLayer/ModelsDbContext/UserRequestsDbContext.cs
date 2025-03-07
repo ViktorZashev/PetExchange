@@ -5,15 +5,25 @@ namespace DataLayer
     public class UserRequestsDbContext: IDbWithNav<UserRequest, Guid>
 	{
 		private readonly PetExchangeDbContext _dbcontext;
+        private readonly UserDbContext _usercontext;
+
         public UserRequestsDbContext(PetExchangeDbContext context)
         {
             _dbcontext = context;
+            _usercontext = new UserDbContext(context);
         }
         public async Task CreateAsync(UserRequest entity)
         {
             try
             {
                 await _dbcontext.Requests.AddAsync(entity);
+                var userId = entity.PublicOffer.Pet.UserId;
+                var userFromDb = await _dbcontext.Users.FindAsync(userId) ;
+                if (userFromDb == null)
+                {
+                    throw new Exception("Associated user with public offer is null!");
+                }
+                userFromDb.Requests.Add(entity);
                 await _dbcontext.SaveChangesAsync();
             }
             catch (Exception)
