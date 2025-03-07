@@ -36,7 +36,7 @@ namespace DataLayer
                 throw;
             }
         }
-
+        /*
         public async Task<List<Tuple<Town, int>>> ReadAllWithFilterAsync(bool ascendingNumberUsers, int page = 1, int pageSize = 10, bool isReadOnly = true)
         {
             try
@@ -64,7 +64,7 @@ namespace DataLayer
                 throw;
             }
         }
-
+        */
         #region CRUD
         public async Task<Town>? ReadAsync(Guid id, bool isReadOnly = true)
         {
