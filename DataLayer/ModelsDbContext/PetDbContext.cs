@@ -9,6 +9,29 @@ namespace DataLayer
         {
             _dbcontext = context;
         }
+
+        public async Task<List<Pet>> ReadAllWithFilterAsync(string name, string petType, string gender, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            try
+            {
+                var allPets = await ReadAllAsync(useNavigationalProperties, isReadOnly);
+                // filtering
+                var filteredPets = allPets.Where(x =>
+                        (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name)
+                        && (String.IsNullOrWhiteSpace(petType) || x.PetType.ToString() == petType)
+                        && (String.IsNullOrWhiteSpace(gender) || x.Gender.ToString() == gender)))
+                        .ToList();
+                // paging
+                filteredPets = filteredPets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                return filteredPets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #region CRUD
         public async Task CreateAsync(Pet entity)
 		{
 			try
@@ -124,5 +147,6 @@ namespace DataLayer
                 throw;
             }
         }
+        #endregion
     }
 }

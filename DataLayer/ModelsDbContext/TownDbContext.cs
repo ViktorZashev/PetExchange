@@ -37,6 +37,35 @@ namespace DataLayer
             }
         }
 
+        public async Task<List<Tuple<Town, int>>> ReadAllWithFilterAsync(bool ascendingNumberUsers, int page = 1, int pageSize = 10, bool isReadOnly = true)
+        {
+            try
+            {
+                var allUsers = await ReadAllAsync(useNavigationalProperties, isReadOnly);
+                // filtering
+                var filteredUsers = allUsers.Where(x =>
+                        (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
+                        && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))
+                        && (String.IsNullOrWhiteSpace(email) || x.Email.Contains(email))
+                        && (String.IsNullOrWhiteSpace(town) || x.Town.ToString() == town)
+                        && (String.IsNullOrWhiteSpace(role) || x.Role.ToString() == role)
+                        ).ToList();
+                // sorting
+                if (ascendingUsername == true)
+                {
+                    filteredUsers = filteredUsers.OrderBy(x => x.UserName).ThenBy(x => x.Name).ToList();
+                }
+                // paging
+                filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                return filteredUsers;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #region CRUD
         public async Task<Town>? ReadAsync(Guid id, bool isReadOnly = true)
         {
             try
@@ -115,5 +144,6 @@ namespace DataLayer
                 throw;
             }
         }
+        #endregion
     }
 }

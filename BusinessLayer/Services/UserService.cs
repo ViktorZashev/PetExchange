@@ -15,6 +15,24 @@ namespace BusinessLayer
         {
             _UserContext = new UserDbContext(_ProjectContext);
         }
+
+        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, bool ascendingUsername, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            return await _UserContext.ReadAllWithFilterAsync(
+            username: username,
+            name: name,
+            email: email,
+            town: town,
+            role: role,
+            ascendingUsername: ascendingUsername,
+            page: page,
+            pageSize: pageSize,
+            useNavigationalProperties: useNavigationalProperties,
+            isReadOnly:isReadOnly
+            );
+        }
+
+        #region CRUD
         public async Task CreateAsync(User entity, string passWord)
         {
             await _UserContext.CreateAsync(entity, passWord);
@@ -51,5 +69,6 @@ namespace BusinessLayer
         {
             await _UserContext.DeleteAsync(id);
         }
+        #endregion
     }
 }

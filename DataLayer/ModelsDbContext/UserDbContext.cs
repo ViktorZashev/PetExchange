@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 using System.Runtime.CompilerServices;
 
 namespace DataLayer
@@ -10,15 +11,54 @@ namespace DataLayer
         private readonly UserManager<User> userManager;
         private readonly RoleEnum adminRole = RoleEnum.Admin;
         private readonly RoleEnum userRole = RoleEnum.User;
+
         public UserDbContext(PetExchangeDbContext petExchangeDbContext, UserManager<User> userManager)
         {
             _dbcontext = petExchangeDbContext;
             this.userManager = userManager;
         }
+
         public UserDbContext(PetExchangeDbContext petExchangeDbContext)
         {
             _dbcontext = petExchangeDbContext;
         }
+
+        public async Task ChangePassWord(User entity, string newPassWord)
+        {
+            var userFromDb = await userManager.FindByNameAsync(entity.UserName);
+            var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
+            var result = await userManager.ResetPasswordAsync(userFromDb, token, newPassWord);
+            await _dbcontext.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, bool ascendingUsername, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            try
+            {
+                var allUsers = await ReadAllAsync(useNavigationalProperties,isReadOnly);
+                // filtering
+                var filteredUsers = allUsers.Where(x =>
+                        (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
+                        && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))
+                        && (String.IsNullOrWhiteSpace(email) || x.Email.Contains(email))
+                        && (String.IsNullOrWhiteSpace(town) || x.Town.ToString() == town)
+                        && (String.IsNullOrWhiteSpace(role) || x.Role.ToString() == role)
+                        ).ToList();
+                // sorting
+                if (ascendingUsername == true) {
+                    filteredUsers = filteredUsers.OrderBy(x => x.UserName).ThenBy(x => x.Name).ToList();
+                }
+                // paging
+                filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList(); 
+                return filteredUsers;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #region CRUD
         public async Task CreateAsync(User entity, string passWord)
         {
             await userManager.CreateAsync(entity, passWord);
@@ -32,13 +72,7 @@ namespace DataLayer
             }
             await _dbcontext.SaveChangesAsync();
         }
-        public async Task ChangePassWord(User entity, string newPassWord)
-        {
-            var userFromDb = await userManager.FindByNameAsync(entity.UserName);
-            var token = await userManager.GeneratePasswordResetTokenAsync(userFromDb);
-            var result = await userManager.ResetPasswordAsync(userFromDb, token, newPassWord);
-            await _dbcontext.SaveChangesAsync();
-        }
+
         public async Task CreateAsync(User entity)
         {
             try
@@ -59,6 +93,7 @@ namespace DataLayer
                 throw;
             }
         }
+
         public async Task CreateAsync(List<User> users)
         {
             try
@@ -73,6 +108,7 @@ namespace DataLayer
                 throw;
             }
         }
+
         public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try
@@ -131,12 +167,15 @@ namespace DataLayer
                 {
                     _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // updates only the core entity
                 }
+ 
                 if(user.Role == adminRole && user.Role != userFromDb.Role)
                 {
+                    await userManager.RemoveFromRoleAsync(user, userRole.ToString());
                     await userManager.AddToRoleAsync(user, adminRole.ToString());
                 }
                 else if(user.Role == userRole && user.Role != userFromDb.Role)
                 {
+                    await userManager.RemoveFromRoleAsync(user, adminRole.ToString());
                     await userManager.AddToRoleAsync(user, userRole.ToString());
                 }
                 await _dbcontext.SaveChangesAsync();
@@ -166,5 +205,6 @@ namespace DataLayer
                 throw;
             }
         }
+        #endregion
     }
 }

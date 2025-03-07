@@ -4,12 +4,10 @@ namespace DataLayer
     public class PublicOfferDbContext : IDbWithNav<PublicOffer, Guid>
 	{
 		private readonly PetExchangeDbContext _dbcontext;
-        private readonly UserDbContext _usercontext;
 
         public PublicOfferDbContext(PetExchangeDbContext context)
         {
             _dbcontext = context;
-            _usercontext = new UserDbContext(context);
         }
         public async Task CreateAsync(PublicOffer entity)
         {

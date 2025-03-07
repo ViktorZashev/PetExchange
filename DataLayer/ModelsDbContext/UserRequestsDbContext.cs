@@ -5,12 +5,10 @@ namespace DataLayer
     public class UserRequestsDbContext: IDbWithNav<UserRequest, Guid>
 	{
 		private readonly PetExchangeDbContext _dbcontext;
-        private readonly UserDbContext _usercontext;
 
         public UserRequestsDbContext(PetExchangeDbContext context)
         {
             _dbcontext = context;
-            _usercontext = new UserDbContext(context);
         }
         public async Task CreateAsync(UserRequest entity)
         {
