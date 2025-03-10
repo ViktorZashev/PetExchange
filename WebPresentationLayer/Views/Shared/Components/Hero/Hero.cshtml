@@ -1,0 +1,60 @@
+﻿@model Hero;
+
+@if (Model.Page == "home")
+{
+	<section class="hero-wrapper home">
+		<div class="container">
+			<div class="hero">
+				<div class="hero-text">
+					<div class="hero-title">Вземи домашен любимец</div>
+					<div class="hero-subtitle">Отвори сърцето си за топка щастие</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}
+else if (Model.Page == "pets")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Любимци</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "register")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Регистрация</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "login")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Вход</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "contacts")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Contacts</li>
+			</ol>
+		</div>
+	</section>
+}
+

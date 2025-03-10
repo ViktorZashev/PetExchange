@@ -1,5 +1,6 @@
 ﻿using DataLayer;
 using DataLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer
 {
@@ -11,6 +12,24 @@ namespace BusinessLayer
         {
             _TownContext = new TownDbContext(_ProjectContext);
         }
+
+        public async Task<List<Tuple<Town, int>>> ReadAllWithFilterAsync(bool ascendingNumberUsers, int page = 1, int pageSize = 10, bool isReadOnly = true)
+        {
+            return await _TownContext.ReadAllWithFilterAsync(ascendingNumberUsers, page, pageSize, isReadOnly);
+        }
+        public async Task<List<SelectOption>> GetTownOptions()
+        {
+            var result = new List<SelectOption>();
+            foreach (var town in await ReadAllAsync())
+            {
+                result.Add(new SelectOption(label: town.Name, value: town.Id.ToString()));
+            }
+            result = result.OrderBy(x => x.Label).ToList();
+            return result;
+        }
+
+
+        #region CRUD
         public async Task CreateAsync(Town entity)
         {
             await _TownContext.CreateAsync(entity);
@@ -38,16 +57,7 @@ namespace BusinessLayer
         {
             await _TownContext.DeleteAsync(id);
         }
+        #endregion
 
-        public async Task<List<SelectOption>> GetTownOptions()
-        {
-            var result = new List<SelectOption>();
-            foreach (var town in await ReadAllAsync())
-            {
-                result.Add(new SelectOption(label: town.Name, value: town.Id.ToString()));
-            }
-            result = result.OrderBy(x => x.Label).ToList();
-            return result;
-        }
     }
 }

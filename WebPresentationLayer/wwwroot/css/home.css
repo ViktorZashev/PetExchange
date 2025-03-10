@@ -1,0 +1,23 @@
+﻿
+
+
+.homeinfo-wrapper {
+	background:#20c997;
+	padding:2rem 0;
+}
+
+	.homeinfo-wrapper .imageblock {
+		margin-bottom:3rem;
+	}
+
+		.homeinfo-wrapper .row div:last-child .imageblock {
+			margin-bottom:0;
+		}
+
+
+@media (min-width: 992px) {
+	.homeinfo-wrapper .imageblock {
+		margin-bottom:0;
+	}
+}
+

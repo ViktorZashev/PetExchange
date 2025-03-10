@@ -1,0 +1,96 @@
+﻿.header-wrapper {
+	background: #d2f4ea;
+	display: flex;
+	height: 60px;
+	align-items: center;
+}
+
+header {
+	display:flex;
+	flex-wrap:wrap;
+	align-items:center;
+	justify-content:space-between;
+
+}
+
+	header .navbar-toggler {
+		box-shadow:none !important;
+	}
+
+/*Logo*/
+.logo {
+	display: inline-flex;
+	align-items: center;
+	outline: none;
+}
+
+.logo-image {
+	flex: 0 0 auto;
+}
+
+	.logo-image svg {
+		color: #495057;
+		width: 36px;
+	}
+
+.logo:hover .logo-image svg {
+	transform: rotate(-5deg) scale(1.1);
+}
+
+.logo-text {
+	padding-left: 10px;
+	flex: 1 1 auto;
+}
+
+.logo-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #495057;
+	line-height: 1.15em;
+}
+
+
+.logo-slogan {
+	font-size: 14px;
+	color: #343a40;
+}
+
+/* Nav */
+header .nav .nav-link {
+	font-size: 14px;
+	font-weight: 500;
+	text-transform: uppercase;
+	margin-right: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: #1aa179;
+	border-radius: 5px;
+}
+
+	header .nav .nav-link:hover {
+		background: #a6e9d5;
+	}
+
+	header .nav .nav-link.active {
+		background: #20c997;
+		color: white;
+	}
+
+
+@media (min-width: 1200px) {
+	.header-wrapper {
+		height: 80px;
+	}
+
+	header {
+		justify-content:space-between;
+	}
+
+	.logo-image svg {
+		width: 48px;
+	}
+
+	.logo-title {
+		font-size: 24px;
+	}
+}

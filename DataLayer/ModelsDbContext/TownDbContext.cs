@@ -36,35 +36,43 @@ namespace DataLayer
                 throw;
             }
         }
-        /*
+        
         public async Task<List<Tuple<Town, int>>> ReadAllWithFilterAsync(bool ascendingNumberUsers, int page = 1, int pageSize = 10, bool isReadOnly = true)
         {
             try
             {
-                var allUsers = await ReadAllAsync(useNavigationalProperties, isReadOnly);
+                var allTowns = await ReadAllAsync(isReadOnly);
                 // filtering
-                var filteredUsers = allUsers.Where(x =>
-                        (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
-                        && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))
-                        && (String.IsNullOrWhiteSpace(email) || x.Email.Contains(email))
-                        && (String.IsNullOrWhiteSpace(town) || x.Town.ToString() == town)
-                        && (String.IsNullOrWhiteSpace(role) || x.Role.ToString() == role)
-                        ).ToList();
-                // sorting
-                if (ascendingUsername == true)
+                var allUsers = await _dbcontext.Users.ToListAsync();
+                var filteredList = new List<Tuple<Town, int>>();
+                foreach (var town in allTowns)
                 {
-                    filteredUsers = filteredUsers.OrderBy(x => x.UserName).ThenBy(x => x.Name).ToList();
+                    var numberOfUsersInTown = allUsers.Where(u => u.TownId == town.Id).Count();
+                    if(numberOfUsersInTown > 0)
+                    {
+                        filteredList.Add(new Tuple<Town,int>(town,numberOfUsersInTown));
+                    }
                 }
+                // sorting
+                if (ascendingNumberUsers)
+                {
+                    filteredList = filteredList.OrderBy(x => x.Item2).ToList();
+                }
+                else
+                {
+                    filteredList = filteredList.OrderByDescending(x => x.Item2).ToList();
+                }
+
                 // paging
-                filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-                return filteredUsers;
+                filteredList = filteredList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                return filteredList;
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        */
+        
         #region CRUD
         public async Task<Town>? ReadAsync(Guid id, bool isReadOnly = true)
         {
