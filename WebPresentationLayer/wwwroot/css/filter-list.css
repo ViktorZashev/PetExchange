@@ -1,0 +1,51 @@
+﻿.filter-list {
+	
+}
+
+.filter {
+	margin-bottom:1rem;
+}
+
+.filter-title {
+	font-weight:bold;
+	margin-bottom:5px;
+	padding-left:2px;
+}
+
+.filter-option {
+	display:flex;
+	align-items:center;
+	cursor:pointer;
+	padding:1px 2px 3px 2px;
+	border-radius:3px;
+	transition:background ease 0.25s;
+
+}
+
+	.filter-option:hover {
+		background:#e9ecef;
+	}
+
+	.filter-option .icon {
+		flex:0 0 20px;
+	}
+
+	.filter-option.selected .icon {
+		color:#20c997;
+	}
+
+	.filter-option .icon .checked {
+		display:none;
+	}
+
+	.filter-option.selected .icon .checked {
+		display:inline-block;
+	}
+	.filter-option.selected .icon .unchecked {
+		display:none;
+	}
+
+
+	.filter-option .title {
+		flex:1 1 auto;
+	}

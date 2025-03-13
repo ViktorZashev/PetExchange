@@ -1,0 +1,74 @@
+﻿.card-list {
+	padding-top:1rem;
+}
+.card-list .card {
+	transition:all ease-in 0.25s; 
+}
+.card-list .card:hover{
+	box-shadow:0 .5rem 1rem rgba(0,0,0,.15)!important;
+	cursor:pointer;
+}
+
+	.card-list .aside {
+		width:180px;
+	}
+
+	.card-list .filters {
+		height:40px;
+		display:flex;
+
+	}
+
+	.card-list .toolbar {
+		margin-bottom:1rem;
+	}
+
+.pet-card .card-body{
+	position:relative;
+	padding-top:30px;
+}
+
+.pet-card .gender{
+	position:absolute;
+	color:white;
+	height:36px;
+	width:36px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	top:-18px;
+	right:0;
+	border-radius:5px 0 0 5px;
+}
+
+	.pet-card .gender svg {
+		width:21px;
+		height:21px;
+	}
+
+	.pet-card .gender.male {
+		background:#9ec5fe;
+	}
+
+	.pet-card .gender.female {
+		background:#efadce;
+	}
+
+	.pet-card .gender.other {
+		background:#c5b3e6;
+	}
+
+.pet-card .age{
+	position:absolute;
+	color:#6c757d;
+	background:#e9ecef;
+	height:36px;
+	min-width:60px;
+	padding:5px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	top:-18px;
+	left:0;
+	border-radius:0 5px 5px 0;
+}
