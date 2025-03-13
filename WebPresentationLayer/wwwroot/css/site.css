@@ -1,14 +1,8 @@
-﻿@import "card-list.css";
-@import "filter-list.css";
-@import "footer.css";
+﻿@import "footer.css";
 @import "header.css";
 @import "home.css";
 @import "hero.css";
 @import "imageblock.css";
-
-main {
-
-}
 
 
 .btn-primary {
@@ -22,7 +16,3 @@ main {
 		border-color:#ffc107;
 		color:#332701;
 	}
-
-.btn-icon svg{
-	vertical-align:text-bottom;
-}
