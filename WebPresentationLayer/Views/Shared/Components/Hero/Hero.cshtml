@@ -46,15 +46,91 @@ else if (Model.Page == "login")
 		</div>
 	</section>
 }
-else if (Model.Page == "contacts")
+else if (Model.Page == "aboutus")
 {
 	<section class="hero-wrapper">
 		<div class="container">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
-				<li class="breadcrumb-item active" aria-current="page">Contacts</li>
+				<li class="breadcrumb-item active" aria-current="page">За нас</li>
 			</ol>
 		</div>
 	</section>
 }
-
+else if (Model.Page == "admin-users" || Model.Page == "admin-usermanage")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Users">Администрация</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Потребители</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "admin-pets")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Users">Администрация</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Любимци</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "admin-requests")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Users">Администрация</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Искания</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "account-details")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Искания</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "account-changepassword")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Смяна на парола</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "account-pets")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Моите Любимци</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "account-requests")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Искания</li>
+			</ol>
+		</div>
+	</section>
+}

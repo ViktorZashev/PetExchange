@@ -111,6 +111,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            TownOptions = await _townService.GetTownOptions();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();

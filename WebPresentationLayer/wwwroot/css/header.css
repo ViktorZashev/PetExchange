@@ -76,6 +76,10 @@ header .nav .nav-link {
 		color: white;
 	}
 
+header a svg {
+	color: #495057;
+}
+
 
 @media (min-width: 1200px) {
 	.header-wrapper {

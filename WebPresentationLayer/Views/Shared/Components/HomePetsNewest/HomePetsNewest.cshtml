@@ -1,0 +1,19 @@
+﻿@{
+	var pets = (List<Pet>)ViewBag.Pets;
+}
+
+<div class="container my-5">
+	<h3 class="section-title">Най-нови любимци</h3>
+	<section class="card-list">
+		<div class="row">
+			@foreach (var pet in pets)
+			{
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 pb-4">
+					@await Component.InvokeAsync("PetCard", new { pet = pet })
+				</div>
+			}
+		</div>
+	</section>
+</div>
+
+

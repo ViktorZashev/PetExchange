@@ -1,0 +1,56 @@
+﻿@{
+	var Item = (MenuItem)ViewBag.Item;
+	var Type = (MenuItemType)ViewBag.Type;
+}
+
+@if (Type == MenuItemType.NavLink)
+{
+	if (!String.IsNullOrWhiteSpace(Item.Area))
+	{
+		<a asp-area="@Item.Area" asp-page="@Item.Page" class="nav-link @(Item.IsActive ? "active" : "")">@Item.Title</a>
+	}
+	else if (!String.IsNullOrWhiteSpace(Item.Action))
+	{
+		<a asp-controller="@Item.Controller" asp-action="@Item.Action" class="nav-link @(Item.IsActive ? "active" : "")">@Item.Title</a>
+	}
+	else
+	{
+		<span class="nav-link @(Item.IsActive ? "active" : "")">@Item.Title</span>
+	}
+}
+
+@if (Type == MenuItemType.DropdownItem)
+{
+	if (Item.IsDivider)
+	{
+		<hr class="dropdown-divider">
+	}
+	else if(!String.IsNullOrWhiteSpace(Item.Area))
+	{
+		<a asp-area="@Item.Area" asp-page="@Item.Page" class="dropdown-item @(Item.IsActive ? "active" : "")">@Item.Title</a>
+	}
+	else if (!String.IsNullOrWhiteSpace(Item.Action))
+	{
+		<a asp-controller="@Item.Controller" asp-action="@Item.Action" class="dropdown-item @(Item.IsActive ? "active" : "")">@Item.Title</a>
+	}
+	else
+	{
+		<span class="dropdown-item @(Item.IsActive ? "active" : "")">@Item.Title</span>
+	}
+}
+
+@if (Type == MenuItemType.Button)
+{
+	if (!String.IsNullOrWhiteSpace(Item.Area))
+	{
+		<a asp-area="@Item.Area" asp-page="@Item.Page" class="btn w-100 my-1 @(Item.IsActive ? "btn-outline-primary" : "btn-outline-secondary")">@Item.Title</a>
+	}
+	else if (!String.IsNullOrWhiteSpace(Item.Action))
+	{
+		<a asp-controller="@Item.Controller" asp-action="@Item.Action" class="btn w-100 my-1 @(Item.IsActive ? "btn-outline-primary" : "btn-outline-secondary")">@Item.Title</a>
+	}
+	else
+	{
+		<span class="btn w-100 my-1 @(Item.IsActive ? "btn-outline-primary" : "btn-outline-secondary")">@Item.Title</span>
+	}
+}

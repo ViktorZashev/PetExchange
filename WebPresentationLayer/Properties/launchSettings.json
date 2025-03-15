@@ -22,7 +22,7 @@
         "commandName": "Project",
         "dotnetRunMessages": true,
         "launchBrowser": true,
-        "launchUrl": "Pets",
+        "launchUrl": "admin/users/b73da40b-935a-404d-a6d4-08dd5e23b062?returnUrl=%2fAdmin%2fUsers",
         "applicationUrl": "https://localhost:7015;http://localhost:5258",
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development"

@@ -1,0 +1,23 @@
+﻿.sidebar {
+	width:240px;
+}
+
+.sidebar .nav{
+	margin:0.5rem;
+	padding:5px;
+	border:1px solid #adb5bd;
+	background:#dee2e6;
+	border-radius:5px;
+	min-height:300px;
+}
+
+	.sidebar .nav-link.active {
+		background-color:#20c997;
+	}
+
+	.sidebar .nav-link:not(.active):hover {
+		background:#ced4da;
+	}
+	.sidebar .nav-link {
+		color:#1aa179;
+	}

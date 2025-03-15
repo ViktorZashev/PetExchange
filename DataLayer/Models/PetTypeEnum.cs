@@ -4,23 +4,23 @@ namespace DataLayer
 {
     public enum PetTypeEnum
     {
-        [Description("Друго")]
-        Other = 0,
-        [Description("Котка")]
-        Cat = 1,
-        [Description("Куче")]
-        Dog = 2,
-        [Description("Риба")]
-        Fish = 3,
-        [Description("Малък бозайник")]
-        SmallMammal = 4,
-        [Description("Птица")]
-        Bird = 5,
-        [Description("Влечуго")]
-        Reptile = 6,
-        [Description("Земноводно")]
-        Amphibian = 7,
-        [Description("Кон")]
-        Horse = 8
+        [Description("котки")]
+        Cat = 0,
+        [Description("кучета")]
+        Dog = 1,
+        [Description("риби")]
+        Fish = 2,
+        [Description("малки бозайници")]
+        SmallMammal = 3,
+        [Description("птици")]
+        Bird = 4,
+        [Description("влечуги")]
+        Reptile = 5,
+        [Description("земноводни")]
+        Amphibian = 6,
+        [Description("коне")]
+        Horse = 7,
+        [Description("други")]
+        Other = 8,
     }
 }

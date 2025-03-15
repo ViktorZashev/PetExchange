@@ -4,11 +4,11 @@ namespace DataLayer
 {
     public enum GenderEnum
     {
-        [Description("Друг")]
-        Other = 0,
-        [Description("Мъжки")]
-        Male = 1,
-        [Description("Женски")]
-        Female = 2
+        [Description("мъжки")]
+        Male = 0,
+        [Description("женски")]
+        Female = 1,
+        [Description("не се знае")]
+        Other = 2,
     }
 }

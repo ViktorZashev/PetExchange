@@ -8,7 +8,7 @@ namespace WebPresentationLayer.Controllers;
 [Authorize]
 public class AccountController : Controller
 {
-    public IActionResult Index()
+    public IActionResult Details()
     {
         return View();
     }
@@ -18,7 +18,7 @@ public class AccountController : Controller
         return View();
     }
 
-    public IActionResult MyPets()
+    public IActionResult Pets()
     {
         return View();
     }

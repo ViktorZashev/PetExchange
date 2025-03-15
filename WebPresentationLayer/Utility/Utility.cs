@@ -26,7 +26,15 @@ public class Utils
 
 			if (controller == "site")
 			{
-				return httpContext.Request.RouteValues["action"]?.ToString().ToLower();
+				return action;
+			}
+			else if (controller == "admin")
+			{
+				return "admin-" + action;
+			}
+			else if (controller == "account")
+			{
+				return "account-" + action;
 			}
 			else
 			{
@@ -34,6 +42,19 @@ public class Utils
 			}
 		}
 
+		return "home";
+	}
+
+	public string GetActiveController(HttpContext httpContext)
+	{
+		if (httpContext.Request.RouteValues.ContainsKey("page"))
+		{
+			return "site";
+		}
+		else if (httpContext.Request.RouteValues.ContainsKey("controller"))
+		{
+			return httpContext.Request.RouteValues["controller"]?.ToString().ToLower();
+		}
 		return "home";
 	}
 }

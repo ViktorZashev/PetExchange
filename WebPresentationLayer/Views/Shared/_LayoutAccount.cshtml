@@ -1,0 +1,13 @@
+﻿@{
+	Layout = "/Views/Shared/_LayoutSite.cshtml";
+}
+<div class="container pt-3">
+	<div class="row">
+		<aside class="sidebar col-auto">
+			@await Component.InvokeAsync("UserNav")
+		</aside>
+		<section class="content col">
+			@RenderBody()
+		</section>
+	</div>
+</div>

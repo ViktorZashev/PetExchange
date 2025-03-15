@@ -1,4 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Pets";
+	ViewData["Title"] = "Pets";
+	var pets = (List<Pet>)ViewBag.Pets;
+	var filters = (List<FilterGroup>)ViewBag.Filters;
 }
-
+<div class="container">
+	<div class="card-list">
+		<div class="row">
+			<div class="col-auto aside">
+				<div class="filter-list">
+					@foreach (var filter in filters)
+					{
+						@await Component.InvokeAsync("FilterGroupComponent", new { Group = filter })
+					}
+				</div>
+				<a href="#" class="btn btn-outline-secondary my-2 w-100" id="clear-filters">без филтри</a>
+			</div>
+			<div class="col content">
+				<div class="row">
+					@foreach (var pet in pets)
+					{
+						<div class="col-12 col-md-6 col-lg-4 col-xl-3 pb-4">
+							@await Component.InvokeAsync("PetCard", new { pet = pet })
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

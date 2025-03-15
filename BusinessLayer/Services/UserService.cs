@@ -69,6 +69,7 @@ namespace BusinessLayer
         {
             await _UserContext.DeleteAsync(id);
         }
+
         #endregion
     }
 }
