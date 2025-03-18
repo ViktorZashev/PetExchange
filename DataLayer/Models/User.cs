@@ -7,8 +7,6 @@ namespace DataLayer
 {
 	public class User : IdentityUser<Guid>
 	{
-
-
 		[Required(ErrorMessage = "задължително")]
 		[DisplayName("Имейл")]
 		public override string? Email { get; set; } = null;

@@ -157,9 +157,9 @@ namespace DataLayer
 					LockoutEnabled = true,
 					AccessFailedCount = 0
 				};
-
+                // Todo add 7
 				await userContext.CreateAsync(new List<User>() { viktorAdmin, goshoUser, toshoUser });
-
+                #endregion
 
                 #region PETS SEED
                 // distrubute the users evenly over the remaining pets
@@ -899,6 +899,8 @@ namespace DataLayer
 					RecipientId = tropchoPet.UserId,
 					RequestMessage = "Много ми харесва и ще е чудесна компания са моят джербил"
 				};
+                // Todo add 2-3 more for currently owned pets (tests) 
+                // Todo and a few more for others sprinkled in
 				await requestContext.CreateAsync(userRequestTropcho);
 			}
 		}
