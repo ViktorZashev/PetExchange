@@ -92,8 +92,9 @@ namespace DataLayer
 					new Town(new Guid("e8dc0ef0-9839-4314-90dd-7eed54d48f59"), "Ямбол"),
 					}
 				);
-				// Add new users
-				var viktorAdmin = new User
+
+                #region USER SEED
+                var viktorAdmin = new User
 				{
 					Id = new Guid("c510ccc5-031e-4652-be85-77f49eb2efc1"),
 					Name = "Виктор Зашев",
@@ -158,9 +159,13 @@ namespace DataLayer
 				};
 
 				await userContext.CreateAsync(new List<User>() { viktorAdmin, goshoUser, toshoUser });
-				// distrubute the users evenly over the remaining pets
-				// малки бозайници
-				var petList = new List<Pet>();
+
+
+                #region PETS SEED
+                // distrubute the users evenly over the remaining pets
+
+                // малки бозайници
+                var petList = new List<Pet>();
 				var tropchoPet = new Pet
 				{
 					Id = new Guid("284071e6-cf59-41d5-b02d-f7fea5042e83"),
@@ -263,6 +268,25 @@ namespace DataLayer
                     Breed = "морско свинче"
                 };
                 petList.Add(oskarPet);
+
+                var pychcoPet = new Pet
+                {
+                    Id = new Guid("a1037404-0b05-4306-a0a1-9c794f963224"),
+                    IsActive = true,
+                    Name = "Пухчо",
+                    Birthday = DateTime.Now.AddDays(-4),
+                    PetType = PetTypeEnum.SmallMammal,
+                    Gender = GenderEnum.Other,
+                    Description =
+                    "Току-що родено джербилче. Полът не може да се определи в такава възраст.",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/3f3c1b7a-5c7c-420f-8546-c1f11034cd27.jpg",
+                    AddedOn = DateTime.Now.AddDays(-5),
+                    AdoptedOn = null,
+                    Breed = "джербил"
+                };
+                petList.Add(pychcoPet);
                 // кучета
                 var daisyPet = new Pet
 				{
@@ -284,6 +308,46 @@ namespace DataLayer
 					Breed = "питбул"
 				};
                 petList.Add(daisyPet);
+
+                var rayPet = new Pet
+                {
+                    Id = new Guid("67748ed8-9e96-4fa2-8e17-d2dbbe604cb4"),
+                    IsActive = true,
+                    Name = "Рей",
+                    Birthday = DateTime.Now.AddMonths(-60),
+                    PetType = PetTypeEnum.Dog,
+                    Gender = GenderEnum.Male,
+                    Description =
+					"Обича плюшки и е много опасен. " +
+					"Обича да яде всякакво месо. " +
+					"Много е активен всяка вечер. ",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/d09315ef-b81d-4896-873d-0e43add2b010.jpg",
+                    AddedOn = DateTime.Now.AddDays(-25),
+                    AdoptedOn = null,
+                    Breed = "кавалер Кинг Чарлз шпаньол"
+                };
+                petList.Add(rayPet);
+
+                var АrisPet = new Pet
+                {
+                    Id = new Guid("29bc5a0e-63cb-45ed-bb72-abc7397235d6"),
+                    IsActive = true,
+                    Name = "Арис",
+                    Birthday = DateTime.Now.AddMonths(-72),
+                    PetType = PetTypeEnum.Dog,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Обича да яде чехли и чорапи. Прави се на смел, но всъщност е много страшлив",
+                    IncludesCage = true,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/afcb4bc6-b67b-49c5-b5e8-b6c533719cf1.jpg",
+                    AddedOn = DateTime.Now.AddDays(-39),
+                    AdoptedOn = null,
+                    Breed = "немски спиц"
+                };
+                petList.Add(АrisPet);
 
                 var rexPet = new Pet
                 {
@@ -349,7 +413,7 @@ namespace DataLayer
                 petList.Add(brunoPet);
 
 				// коне
-                var horsePet = new Pet
+                var ferdinantPet = new Pet
 				{
 					Id = new Guid("417c44ab-5bd4-4b85-a546-330790211366"),
 					IsActive = true,
@@ -367,7 +431,73 @@ namespace DataLayer
 					AdoptedOn = null,
 					Breed = "арабски жребец"
 				};
-                petList.Add(horsePet);
+                petList.Add(ferdinantPet);
+
+				var blazePet = new Pet
+				{
+					Id = new Guid("b68c5c15-48bd-464e-ba51-4a9c71340c27"),
+					IsActive = true,
+					Name = "Блейз",
+					Birthday = DateTime.Now.AddMonths(-72),
+					PetType = PetTypeEnum.Horse,
+					Gender = GenderEnum.Male,
+					Description =
+					"Блейз е елегантен и издръжлив кон с грациозни движения. " +
+					"Той е много интелигентен и силно привързан към своя ездач. " +
+					"Обича дългите разходки и бързия галоп по открити пространства.",
+					IncludesCage = false,
+					UserId = toshoUser.Id,
+					PhotoPath = "/pet/4cfd1ed5-6417-45ed-8f1a-8cd82f4f0a0e.jpg",
+					AddedOn = DateTime.Now.AddDays(-100),
+					AdoptedOn = null,
+					Breed = "мустанг"
+				};
+                petList.Add(blazePet);
+
+                var lunaPet = new Pet
+                {
+                    Id = new Guid("e814f3c2-1e65-4b23-afd2-bdff10460b7a"),
+                    IsActive = true,
+                    Name = "Луна",
+                    Birthday = DateTime.Now.AddMonths(-48),
+                    PetType = PetTypeEnum.Horse,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Луна е нежно и игриво пони с гъста грива и красива сива окраска. " +
+                    "я е дружелюбна и подходяща за деца. " +
+                    "Обича да бъде глезена с лакомства и редовно разресвана.",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/0b825209-1dd6-48a5-83e1-99b0714f3f55.jpg",
+                    AddedOn = DateTime.Now.AddDays(-156),
+                    AdoptedOn = null,
+                    Breed = "уелско пони"
+                };
+                petList.Add(lunaPet);
+
+                var tornadoPet = new Pet
+                {
+                    Id = new Guid("744002a7-3bad-4f9b-bdfe-850ed4ed2ce8"),
+                    IsActive = true,
+                    Name = "Торнадо",
+                    Birthday = DateTime.Now.AddMonths(-84),
+                    PetType = PetTypeEnum.Horse,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Торнадо е величествен черен кон с дълга и гъста грива. " +
+                    "Той е силен, енергичен и подходящ за ездови спортове. " +
+                    "Въпреки внушителния си вид, е много спокоен и лесно се поддава на обучение.",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/625f7189-0677-47ba-bb7a-4842182cbe17.jpg",
+                    AddedOn = DateTime.Now.AddDays(-300),
+                    AdoptedOn = null,
+                    Breed = "фризийски кон"
+                };
+                petList.Add(tornadoPet);
+
+
+				// котки
                 var donutPet = new Pet
 				{
 					Id = new Guid("8213a55f-323a-47e9-bc48-7cc14fff307b"),
@@ -390,9 +520,378 @@ namespace DataLayer
 					Breed = "персийска котка"
 				};
                 petList.Add(donutPet);
+
+                var simonPet = new Pet
+                {
+                    Id = new Guid("63ddfebb-3323-45ff-810c-8d8d6f7122e5"),
+                    IsActive = true,
+                    Name = "Симон",
+                    Birthday = DateTime.Now.AddMonths(-120),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Национален шампион по борба, тежка категория. 6 килограма (с лятна козина). Най-велик улов - кактус." +
+                    "цвят на козината - рижаво таби",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/60db9245-ff5f-4981-b2f1-8c7bd180a204.jpg",
+                    AddedOn = DateTime.Now.AddDays(-25),
+                    AdoptedOn = null,
+                    Breed = "американска късокосместа"
+                };
+                petList.Add(simonPet);
+
+                var bombasticPet = new Pet
+                {
+                    Id = new Guid("0ba70d0f-1f79-4d59-ad8a-bc2f2781e57e"),
+                    IsActive = true,
+                    Name = "Мистър Бомбастик",
+                    Birthday = DateTime.Now.AddMonths(-36),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Male,
+                    Description =
+                   "Ще покани всички жени в къщата ти на вечеря.",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/edb9935c-cc14-40e9-8e94-ffd794e92d52.jpg",
+                    AddedOn = DateTime.Now.AddDays(-37),
+                    AdoptedOn = null,
+                    Breed = "тонкинска котка"
+                };
+                petList.Add(bombasticPet);
+
+                var megatronPet = new Pet
+                {
+                    Id = new Guid("eec28cf3-ceef-434f-b49a-db302de0dfd9"),
+                    IsActive = true,
+                    Name = "Мегатрон",
+                    Birthday = DateTime.Now.AddMonths(-2),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Male,
+                    Description =
+					"Малко коте, но в бъдеще ще си носи името с гордост.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/62282089-a6fe-4be0-97e2-e4d879c97d70.jpg",
+                    AddedOn = DateTime.Now.AddDays(-37),
+                    AdoptedOn = null,
+                    Breed = "австралийска котка Мист"
+                };
+                petList.Add(megatronPet);
+
+                var alexPet = new Pet
+                {
+                    Id = new Guid("88b03bae-8e15-45a4-917e-e4ab9401b9bf"),
+                    IsActive = true,
+                    Name = "Алекс",
+                    Birthday = DateTime.Now.AddMonths(-17),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Луна е спокойна и дружелюбна котка, която обича да се излежава на слънце. Обича да бъде гушкана и често мърка, когато е доволна. Има красиви златисти очи и мека, плюшена козина.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/630595bf-1502-461d-8dcb-327752efe685.jpg",
+                    AddedOn = DateTime.Now.AddDays(-25),
+                    AdoptedOn = null,
+                    Breed = "британска късокосместа"
+                };
+                petList.Add(alexPet);
+
+                var maxPet = new Pet
+                {
+                    Id = new Guid("743db3b8-399d-4f21-b6a5-c866892b4798"),
+                    IsActive = true,
+                    Name = "Макс",
+                    Birthday = DateTime.Now.AddMonths(-60),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Макс е голям и пухкав котарак с величествена осанка. Има дружелюбен и игрив характер, но също така е много интелигентен. Обича да се катери на високи места и да наблюдава какво се случва около него.",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/0ff28d39-d91e-414d-95a5-cdb4f5c7a75f.jpg",
+                    AddedOn = DateTime.Now.AddDays(-50),
+                    AdoptedOn = null,
+                    Breed = "мейн Куун"
+                };
+                petList.Add(maxPet);
+
+                var belaPet = new Pet
+                {
+                    Id = new Guid("bf92add4-7d4a-4a86-9afe-9b0f01658002"),
+                    IsActive = true,
+                    Name = "Бела",
+                    Birthday = DateTime.Now.AddMonths(-24),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Бела е енергична и любопитна котка, която обича вниманието. Има характерни сини очи и контрастна окраска. Лесно се привързва към стопаните си и обича да „разговаря“ с тях с нежни мяукания.",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/4af67d2e-e0f6-4dae-b9c7-5ef3c0755c2a.jpg",
+                    AddedOn = DateTime.Now.AddDays(-5),
+                    AdoptedOn = null,
+                    Breed = "сиамска котка"
+                };
+                petList.Add(belaPet);
+
+                var mifinPet = new Pet
+                {
+                    Id = new Guid("f790130a-5de7-4967-936a-bd2b80b8e062"),
+                    IsActive = true,
+                    Name = "Мъфин",
+                    Birthday = DateTime.Now.AddDays(-7),
+                    PetType = PetTypeEnum.Cat,
+                    Gender = GenderEnum.Other,
+                    Description =
+                    "Мъфин е малко, пухкаво котенце със затворени очички и меко, кремаво-бежово козинче. То прекарва по-голямата част от времето си в сън, сгушено до майка си и братчетата си. Въпреки крехката си възраст, вече започва да мърда лапичките си в опити да се придвижва по-гъвкаво.",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/7d73cb50-7cf6-4c8c-b624-f10f1d35da12.jpg",
+                    AddedOn = DateTime.Now.AddDays(-10),
+                    AdoptedOn = null,
+                    Breed = "оранжево таби"
+                };
+                petList.Add(mifinPet);
+
+                // птици
+                var rioPet = new Pet
+                {
+                    Id = new Guid("7f83b43f-0ba5-4574-a479-ab8b0005bc57"),
+                    IsActive = true,
+                    Name = "Рио",
+                    Birthday = DateTime.Now.AddMonths(-12),
+                    PetType = PetTypeEnum.Bird,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Рио е игрив и социален папагал, който обича да имитира звуци. Той е интелигентен и може да научи няколко думи. Обича да се люлее на клончето си и да си играе с огледало.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/b267a516-8d2e-49af-acdf-7d8562796ec0.jpg",
+                    AddedOn = DateTime.Now.AddDays(-12),
+                    AdoptedOn = null,
+                    Breed = "вълнисто папагалче"
+                };
+                petList.Add(rioPet);
+
+                var pikaPet = new Pet
+                {
+                    Id = new Guid("f5bb41e5-1e4c-4a03-868d-395526abfa0c"),
+                    IsActive = true,
+                    Name = "Пика",
+                    Birthday = DateTime.Now.AddMonths(-36),
+                    PetType = PetTypeEnum.Bird,
+                    Gender = GenderEnum.Female,
+                    Description =
+                   "Пика е нежна и любопитна птица с красива жълта качулка. Обича да комуникира със стопанина си и да свири мелодии. Лесно се привързва към хората и обича да бъде извън клетката си.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/5889107c-621e-440f-a329-739605f7c344.jpg",
+                    AddedOn = DateTime.Now.AddDays(-40),
+                    AdoptedOn = null,
+                    Breed = "корела"
+                };
+                petList.Add(pikaPet);
+
+                var charliPet = new Pet
+                {
+                    Id = new Guid("84231b84-3275-4400-b3c1-494cc53d64eb"),
+                    IsActive = true,
+                    Name = "Чарли",
+                    Birthday = DateTime.Now.AddMonths(-24),
+                    PetType = PetTypeEnum.Bird,
+                    Gender = GenderEnum.Male,
+                    Description =
+                   "Чарли е малка и пъстра птичка, която обича да пее. Той е много социален и обича компанията на други птици. Харесва му да си играе с малки играчки и да лети в просторна клетка.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/4954bfeb-4f0c-43d5-a51c-a5f99f52698b.jpg",
+                    AddedOn = DateTime.Now.AddDays(-7),
+                    AdoptedOn = null,
+                    Breed = "aмадина"
+                };
+                petList.Add(charliPet);
+
+                //риби
+                var nemoPet = new Pet
+                {
+                    Id = new Guid("de186934-895f-40c6-ab7f-94e780688f87"),
+                    IsActive = true,
+                    Name = "Немо",
+                    Birthday = DateTime.Now.AddMonths(-2),
+                    PetType = PetTypeEnum.Fish,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Немо е малка, но живописна рибка с ярки оранжеви и бели ивици. Обича да плува около анемоните и е активен през целия ден. Лесен е за отглеждане и придава екзотичен вид на всеки аквариум.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/849db0ef-7acf-4e46-9834-bd92ec131971.jpg",
+                    AddedOn = DateTime.Now.AddDays(-14),
+                    AdoptedOn = null,
+                    Breed = "клоунова рибка"
+                };
+                petList.Add(nemoPet);
+
+                var doriPet = new Pet
+                {
+                    Id = new Guid("2a234376-6b24-4ad5-a56e-1dad1c8c3120"),
+                    IsActive = true,
+                    Name = "Дори",
+                    Birthday = DateTime.Now.AddMonths(-7),
+                    PetType = PetTypeEnum.Fish,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Дори е красива бойна рибка с дълги, вълнообразни перки в наситен син цвят. Тя е самостоятелна и обича да плува в уединени пространства. Въпреки малкия си размер, има впечатляващо присъствие.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/c80fccf3-d089-4751-95e2-85ed83b48167.jpg",
+                    AddedOn = DateTime.Now.AddDays(-20),
+                    AdoptedOn = null,
+                    Breed = "син танг"
+                };
+                petList.Add(doriPet);
+
+                var goldyPet = new Pet
+                {
+                    Id = new Guid("31b9c2ff-0750-4fb1-a62e-0d0626302e64"),
+                    IsActive = true,
+                    Name = "Голди",
+                    Birthday = DateTime.Now.AddMonths(-36),
+                    PetType = PetTypeEnum.Fish,
+                    Gender = GenderEnum.Female,
+                    Description =
+                   " Голди е класическа златна рибка с блестящи люспи и спокоен темперамент. Тя обича да изследва аквариума си и да се храни с гранулирана храна. Гледането ѝ носи спокойствие и хармония.",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/43ac113f-4eeb-4d0d-bf1a-b3e94bdf8ce5.jpg",
+                    AddedOn = DateTime.Now.AddDays(-9),
+                    AdoptedOn = null,
+                    Breed = "златна рибка"
+                };
+                petList.Add(goldyPet);
+
+                //влегучи
+                var rockyPet = new Pet
+                {
+                    Id = new Guid("d476fd74-0da9-4c7f-83cc-005bdcaab0d8"),
+                    IsActive = true,
+                    Name = "Роки",
+                    Birthday = DateTime.Now.AddMonths(-48),
+                    PetType = PetTypeEnum.Reptile,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Роки е спокоен и любознателен гущер, който обича да се припича на топло място. Той има златистокафяви люспи и впечатляващ гребен около главата си. Обича да похапва зеленчуци и насекоми.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/77b91e8b-7045-445d-82ca-98b47f53f845.jpg",
+                    AddedOn = DateTime.Now.AddDays(-25),
+                    AdoptedOn = null,
+                    Breed = "брадат дракон"
+                };
+                petList.Add(rockyPet);
+
+                var zaraPet = new Pet
+                {
+                    Id = new Guid("7ea05589-465e-4983-b128-48537277ad1c"),
+                    IsActive = true,
+                    Name = "Зара",
+                    Birthday = DateTime.Now.AddMonths(-24),
+                    PetType = PetTypeEnum.Reptile,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Зара е стройна и елегантна змия с червено-оранжева окраска. Тя е напълно безвредна и лесна за отглеждане. Обича да се увива около клончета и да се крие в укритията си.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/c6428db0-f081-4c19-9052-33a65036ff86.jpg",
+                    AddedOn = DateTime.Now.AddDays(-32),
+                    AdoptedOn = null,
+                    Breed = "царевичен смок"
+                };
+                petList.Add(zaraPet);
+
+                var leoPet = new Pet
+                {
+                    Id = new Guid("7b3dd63e-b350-4dea-bfed-5fe78c412382"),
+                    IsActive = true,
+                    Name = "Лео",
+                    Birthday = DateTime.Now.AddMonths(-2),
+                    PetType = PetTypeEnum.Reptile,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Лео е малък и пъстър гекон с характерни черни петна по тялото. Той е спокоен и лесен за хващане, тъй като не е агресивен. Обича нощния живот и предпочита да се крие през деня.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/c23a78e3-55cf-4618-a30c-bae789416ab0.jpg",
+                    AddedOn = DateTime.Now.AddDays(-15),
+                    AdoptedOn = null,
+                    Breed = "леопардов гекон"
+                };
+                petList.Add(leoPet);
+
+                //земноводни
+                var bubblePet = new Pet
+                {
+                    Id = new Guid("91b782cb-c2be-4fa4-85f0-0b054b370061"),
+                    IsActive = true,
+                    Name = "Бъбълс",
+                    Birthday = DateTime.Now.AddMonths(-1),
+                    PetType = PetTypeEnum.Amphibian,
+                    Gender = GenderEnum.Other,
+                    Description =
+                    "Бъбълс е малка и игрива жабка, която прекарва повечето си време плувайки в аквариума.Твърде е млада,за да се определи пола. В момента е още в етап на развитие и кожата ѝ е гладка и полупрозрачна. Обича да си играе с водните растения и да се крие под камъни.",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/2c58a1f6-7417-48df-b906-146662f1f613.jpg",
+                    AddedOn = DateTime.Now.AddDays(-27),
+                    AdoptedOn = null,
+                    Breed = "африканска водна жаба"
+                };
+                petList.Add(bubblePet);
+
+                var oliverPet = new Pet
+                {
+                    Id = new Guid("214d7207-4566-4b04-8e5f-a59061b79879"),
+                    IsActive = true,
+                    Name = "Оливър",
+                    Birthday = DateTime.Now.AddMonths(-12),
+                    PetType = PetTypeEnum.Amphibian,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Оливър е дребна, но ярко оцветена жаба със зеленикаво-кафяв гръб и яркочервен корем. Той е активен и често издава специфични звуци, когато е развълнуван. Обича влажни среди и прекарва времето си както във водата, така и на сушата.",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/3456612d-08e4-4c3f-91f9-2521fb117896.jpg",
+                    AddedOn = DateTime.Now.AddDays(-12),
+                    AdoptedOn = null,
+                    Breed = "червенокоремна бумка"
+                };
+                petList.Add(oliverPet);
+
+                var lilyPet = new Pet
+                {
+                    Id = new Guid("31d92998-7bb7-4704-b7d6-eb33d5a30fc5"),
+                    IsActive = true,
+                    Name = "Лили",
+                    Birthday = DateTime.Now.AddMonths(-15),
+                    PetType = PetTypeEnum.Amphibian,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Лили е нощно активно земноводно с големи, златисти очи. Тя обича да се катери по клони и да ловува малки насекоми. Кожата ѝ е гладка и леко лепкава, което ѝ помага да се придържа към повърхности.",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/bc8442a3-7395-4bdd-9745-01313d0f1021.jpg",
+                    AddedOn = DateTime.Now.AddDays(-45),
+                    AdoptedOn = null,
+                    Breed = "кубинска дървесна жаба"
+                };
+                petList.Add(lilyPet);
+
                 await petContext.CreateAsync(petList);
 
-				var userRequestTropcho = new UserRequest
+                #endregion
+
+                var userRequestTropcho = new UserRequest
 				{
 					PetId = tropchoPet.Id,
 					CreatedOn = DateTime.Now,
