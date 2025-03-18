@@ -28,8 +28,18 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("AdoptedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Breed")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -39,6 +49,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IncludesCage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -60,27 +73,6 @@ namespace DataLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Pets");
-                });
-
-            modelBuilder.Entity("DataLayer.PublicOffer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PetId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PublicOffers");
                 });
 
             modelBuilder.Entity("DataLayer.Town", b =>
@@ -112,10 +104,14 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -140,6 +136,7 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -162,6 +159,7 @@ namespace DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -186,20 +184,40 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("bit");
+                    b.Property<DateTime?>("AcceptedOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PublicOfferId")
+                    b.Property<string>("AnswerMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CanceledOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeniedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PetId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("RecipientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RequestMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PublicOfferId");
+                    b.HasIndex("PetId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Requests");
                 });
@@ -346,21 +364,6 @@ namespace DataLayer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataLayer.PublicOffer", b =>
-                {
-                    b.HasOne("DataLayer.Pet", "Pet")
-                        .WithMany()
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.User", null)
-                        .WithMany("PublicOffers")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Pet");
-                });
-
             modelBuilder.Entity("DataLayer.User", b =>
                 {
                     b.HasOne("DataLayer.Town", "Town")
@@ -374,17 +377,29 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.UserRequest", b =>
                 {
-                    b.HasOne("DataLayer.PublicOffer", "PublicOffer")
-                        .WithMany("Requests")
-                        .HasForeignKey("PublicOfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("DataLayer.Pet", "Pet")
+                        .WithMany("UserRequests")
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.User", null)
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId");
+                    b.HasOne("DataLayer.User", "Recipient")
+                        .WithMany("RequestInbox")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("PublicOffer");
+                    b.HasOne("DataLayer.User", "Sender")
+                        .WithMany("RequestOutbox")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Pet");
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -438,18 +453,18 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DataLayer.PublicOffer", b =>
+            modelBuilder.Entity("DataLayer.Pet", b =>
                 {
-                    b.Navigation("Requests");
+                    b.Navigation("UserRequests");
                 });
 
             modelBuilder.Entity("DataLayer.User", b =>
                 {
                     b.Navigation("Pets");
 
-                    b.Navigation("PublicOffers");
+                    b.Navigation("RequestInbox");
 
-                    b.Navigation("Requests");
+                    b.Navigation("RequestOutbox");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,7 +6,7 @@
 	var roles = (List<SelectListItem>)ViewBag.Roles;
 
 }
-<h2>Редакция на Потребител</h2>
+<h2 class="page-title">Редакция на Потребител</h2>
 
 <form method="post" asp-name="filter" enctype="multipart/form-data">
 	<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
@@ -62,7 +62,7 @@
 			</div>
 			<div class="row">
 				<div class="col-6">
-					@Model.PhotoPath
+					<img src="@Model.PhotoPath" class="img-thumbnail" style="max-width:100%;max-height:80px"/>
 				</div>
 				<div class="col-6">
 					<div class="mb-3">

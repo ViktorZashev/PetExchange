@@ -120,7 +120,7 @@ namespace DataLayer
                 }
                 if (useNavigationalProperties)
                 {
-                    query = query.Include(e => e.Town).Include(e => e.Requests).Include(e => e.PublicOffers).Include(e => e.Pets);
+                    query = query.Include(e => e.Town).Include(e => e.RequestOutbox).Include(e => e.Pets);
                 }
                 return await query.SingleOrDefaultAsync(e => e.Id == id);
             }
@@ -142,7 +142,7 @@ namespace DataLayer
                 }
                 if (useNavigationalProperties)
                 {
-                    query = query.Include(e => e.Town).Include(e => e.Requests).Include(e => e.PublicOffers).Include(e => e.Pets);
+                    query = query.Include(e => e.Town).Include(e => e.RequestOutbox).Include(e => e.Pets);
                 }
                 return await query.ToListAsync();
             }

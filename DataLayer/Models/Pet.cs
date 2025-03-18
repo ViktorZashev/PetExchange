@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace DataLayer
 {
@@ -17,14 +18,30 @@ namespace DataLayer
 		public string PhotoPath { get; set; } = string.Empty;
 
 		[Required]
-		[DisplayName("Възраст")]
-		public int Age { get; set; } = 0; //TODO VIKTOR: Age should be AgeDays and should be converted to days
+		[DisplayName("Добавен")]
+		public DateTime AddedOn { get; set; }
+
+		[DisplayName("Осиновен")]
+		public DateTime? AdoptedOn { get; set; }
+
+		[Required]
+		[DisplayName("Порода")]
+		public string Breed { get; set; } = string.Empty;
+
+		[Required]
+		[DisplayName("Роден на")]
+		public DateTime Birthday { get; set; }
+
+		public int AgeDays
+		{
+			get => (DateTime.Now - Birthday).Days;
+		}
 
 		public PetAgeEnum AgeEnum
 		{
 			get
 			{
-				if(Age <= 90) return PetAgeEnum.Young;
+				if (AgeDays <= 90) return PetAgeEnum.Young;
 				return PetAgeEnum.Adult;
 			}
 		}
@@ -51,6 +68,10 @@ namespace DataLayer
 		[ForeignKey("UserId")]
 		public User User { get; set; }
 
+		[DisplayName("Активен")]
+		[Required(ErrorMessage = "задължително")]
+		public bool IsActive { get; set; } = true;
+
 		[NotMapped]
 		public Town Town
 		{
@@ -69,6 +90,8 @@ namespace DataLayer
 			}
 		}
 
+		public List<UserRequest> UserRequests { get; set; } = new();
+
 		public Pet() { }
 
 		public Pet(User user, string name, string photoPath, int age, PetTypeEnum petType, string description, bool includesCage)
@@ -77,7 +100,7 @@ namespace DataLayer
 			User = user;
 			UserId = User.Id;
 			Name = name;
-			Age = age;
+			Birthday = DateTime.Now.AddMonths(-3);
 			PetType = petType;
 			PhotoPath = photoPath;
 			Description = description;

@@ -123,13 +123,24 @@ else if (Model.Page == "account-pets")
 		</div>
 	</section>
 }
-else if (Model.Page == "account-requests")
+else if (Model.Page == "account-requestoutbox")
 {
 	<section class="hero-wrapper">
 		<div class="container">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
-				<li class="breadcrumb-item active" aria-current="page">Искания</li>
+				<li class="breadcrumb-item active" aria-current="page">Изпратени Искания</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "account-requestinbox")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Получени Искания</li>
 			</ol>
 		</div>
 	</section>

@@ -1,0 +1,15 @@
+﻿
+.pet-details {
+
+
+}
+	.pet-details .image-wrapper {
+		background:#dee2e6;
+	}
+	.pet-details .image {
+		height:300px;
+		content:"";
+		background-repeat:no-repeat;
+		background-size:contain;
+		background-position:center center;
+	}

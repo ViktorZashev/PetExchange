@@ -8,7 +8,6 @@ namespace PetExchangeTests
     {
         public static PetExchangeDbContext db;
         public PetService _petService;
-        public PublicOfferService _publicOfferService ;
         public TownService _townService;
         public UserRequestsService _userRequestsService;
         public UserService _userService;
@@ -24,7 +23,6 @@ namespace PetExchangeTests
         {
             db = GetMemoryContext();
             _petService = new PetService(db);
-            _publicOfferService = new PublicOfferService(db);
             _townService = new TownService(db);
             _userRequestsService = new UserRequestsService(db);
             _userService = new UserService(db);
@@ -46,11 +44,6 @@ namespace PetExchangeTests
             foreach (var entity in db.Towns)
             {
                 db.Towns.Remove(entity);
-            }
-
-            foreach (var entity in db.PublicOffers)
-            {
-                db.PublicOffers.Remove(entity);
             }
 
             foreach (var entity in db.Requests)

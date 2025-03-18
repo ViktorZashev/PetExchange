@@ -1,0 +1,212 @@
+﻿@model UserRequestAction;
+@{
+	var item = (UserRequest)ViewBag.Item;
+	var currentUser = (User)ViewBag.CurrentUser;
+}
+@* View *@
+<a class="btn btn-outline-secondary" href="#" data-bs-toggle="modal" data-bs-target="@("#details-" + item.Id)" title="детайли">
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+		<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+		<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+	</svg>
+</a>
+<div class="modal fade " id="@("details-"+item.Id)" tabindex="-1">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Детайли на Искане</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12 col-md-6">
+						<div class="pet-details">
+							<div class="image-wrapper">
+								<div class="image" style="background-image:url(@item.Pet.PhotoPath);"></div>
+							</div>
+							<div class="meta">
+								<table class="table table-bordered mt-3">
+									<tbody>
+										<tr>
+											<th style="width:200px;">Име</th>
+											<td>@item.Pet.Name</td>
+										</tr>
+										<tr>
+											<th style="width:200px;">Порода</th>
+											<td>@item.Pet.Breed</td>
+										</tr>
+										<tr>
+											<th>Собственик</th>
+											<td>@item.Recipient.Name</td>
+										</tr>
+										<tr>
+											<th>Телефон</th>
+											<td>@item.Recipient.PhoneNumber</td>
+										</tr>
+										<tr>
+											<th>Имейл</th>
+											<td>@item.Recipient.Email</td>
+										</tr>
+										<tr>
+											<th>Град</th>
+											<td>@item.Recipient.Town.Name</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-md-6">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width:200px;">Създадено на</th>
+									<td>@item.CreatedOn.ToShortDateString()</td>
+								</tr>
+								@if (item.AcceptedOn.HasValue)
+								{
+									<tr>
+										<th>Прието на</th>
+										<td>@item.AcceptedOn.Value.ToShortDateString()</td>
+									</tr>
+								}
+								else if (item.DeniedOn.HasValue)
+								{
+									<tr>
+										<th>Отказано на</th>
+										<td>@item.DeniedOn.Value.ToShortDateString()</td>
+									</tr>
+								}
+								else if (item.CanceledOn.HasValue)
+								{
+									<tr>
+										<th>Отменено на</th>
+										<td>@item.CanceledOn.Value.ToShortDateString()</td>
+									</tr>
+								}
+								<tr>
+									<th style="width:200px;">Изпращач име</th>
+									<td>@item.Sender.Name</td>
+								</tr>
+								<tr>
+									<th style="width:200px;">Изпращач телефон</th>
+									<td>@item.Sender.PhoneNumber</td>
+								</tr>
+								<tr>
+									<th style="width:200px;">Изпращач имейл</th>
+									<td>@item.Sender.Email</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered">
+							<tbody>
+							<tr>
+								<th colspan="2">Съобщение</th>
+							</tr>
+							<tr>
+								<td colspan="2">@(!String.IsNullOrWhiteSpace(item.RequestMessage) ? item.RequestMessage : "няма")</td>
+							</tr>
+							<tr>
+								<th colspan="2">Отговор</th>
+							</tr>
+							<tr>
+								<td colspan="2">@(!String.IsNullOrWhiteSpace(item.AnswerMessage) ? item.AnswerMessage : "няма")</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Затвори</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@if (item.IsActive && item.SenderId == currentUser.Id)
+{
+	@* Cancel *@
+	<button type="submit" form="@("form-cancel-" + item.Id)" onclick="return confirm('Наистина ли искате да отмените това искане?');" class="btn btn-outline-danger" title="отмени">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+			<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+			<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+		</svg>
+	</button>
+	<form method="post" asp-action="CancelRequest" id="@("form-cancel-" + item.Id)">
+		<input type="hidden" name="requestId" value="@item.Id" />
+	</form>
+}
+else if (item.IsActive && item.RecipientId == currentUser.Id)
+{
+	@* Accept *@
+	<a class="btn btn-outline-success" href="#" data-bs-toggle="modal" data-bs-target="@("#accept-" + item.Id)" title="приеми">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+			<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z" />
+		</svg>
+	</a>
+	<div class="modal fade " id="@("accept-"+item.Id)" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Детайли на Искане</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="post" asp-action="AcceptRequest" id="@("form-accept-" + item.Id)">
+						<input type="hidden" asp-for="PetId" />
+						<input type="hidden" asp-for="RequestId" />
+						<label asp-for="Message" class="col-form-label"></label>
+						<textarea class="form-control" asp-for=Message></textarea>
+						<span asp-validation-for="Message" class="text-danger"></span>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="submit" form="@("form-accept-" + item.Id)" class="btn btn-success" title="отмени">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+							<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z" />
+						</svg>
+						Приеми
+					</button>
+					<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Затвори</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@* Deny *@
+	<a class="btn btn-outline-danger" href="#" data-bs-toggle="modal" data-bs-target="@("#deny-" + item.Id)" title="откажи">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+			<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+		</svg>
+	</a>
+	<div class="modal fade " id="@("deny-"+item.Id)" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Детайли на Искане</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form method="post" asp-action="DenyRequest" id="@("form-deny-" + item.Id)">
+						<input type="hidden" asp-for="PetId" />
+						<input type="hidden" asp-for="RequestId" />
+						<label asp-for="Message" class="col-form-label"></label>
+						<textarea class="form-control" asp-for=Message></textarea>
+						<span asp-validation-for="Message" class="text-danger"></span>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="submit" form="@("form-deny-" + item.Id)" class="btn btn-danger" title="отмени">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+							<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+						</svg>
+						Откажи
+					</button>
+					<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Затвори</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}

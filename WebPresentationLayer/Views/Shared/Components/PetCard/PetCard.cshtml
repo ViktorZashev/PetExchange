@@ -1,55 +1,166 @@
-﻿@model Pet;
-@{
+﻿@{
 	var componentId = Guid.NewGuid();
+	var pet = (Pet)ViewBag.Pet;
+	var showCreateRequest = (bool)ViewBag.ShowCreateRequest;
 }
 
 <div class="card pet-card" data-bs-toggle="modal" data-bs-target="@("#pet-" + componentId)">
-	<img class="card-img-top" src="@Model.PhotoPath" />
+	<div class="card-img-top" style="background-image:url(@pet.PhotoPath);"></div>
 	<div class="card-body">
-		<h5 class="card-title">@Model.Name</h5>
-		@* <a href="#" class="btn btn-outline-secondary btn-sm w-100">вземи</a> *@
-		@if (Model.Gender == GenderEnum.Male)
+		<h5 class="card-title">@pet.Name</h5>
+		<div class="card-subtitle">@pet.Breed</div>
+		@if (pet.Gender == GenderEnum.Male)
 		{
-			<div class="gender male" title="мъжки">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-male" viewBox="0 0 16 16">
-					<path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8" />
-				</svg>
+			<div class="gender male">
+				@if (pet.AgeEnum == PetAgeEnum.Young)
+				{
+					<span title="млад">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mortarboard me-2" viewBox="0 0 16 16">
+							<path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917zM8 8.46 1.758 5.965 8 3.052l6.242 2.913z" />
+							<path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466zm-.068 1.873.22-.748 3.496 1.311a.5.5 0 0 0 .352 0l3.496-1.311.22.748L8 12.46z" />
+						</svg>
+					</span>
+				}
+				<span title="мъжки">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-male" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8" />
+					</svg>
+				</span>
 			</div>
 		}
-		else if (Model.Gender == GenderEnum.Female)
+		else if (pet.Gender == GenderEnum.Female)
 		{
-			<div class="gender female" title="женски">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-female" viewBox="0 0 16 16">
-					<path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5" />
-				</svg>
+			<div class="gender female">
+				@if (pet.AgeEnum == PetAgeEnum.Young)
+				{
+					<span title="млад">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mortarboard me-2" viewBox="0 0 16 16">
+							<path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917zM8 8.46 1.758 5.965 8 3.052l6.242 2.913z" />
+							<path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466zm-.068 1.873.22-.748 3.496 1.311a.5.5 0 0 0 .352 0l3.496-1.311.22.748L8 12.46z" />
+						</svg>
+					</span>
+				}
+				<span title="женски">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-female" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5" />
+					</svg>
+				</span>
 			</div>
 		}
 		else
 		{
-			<div class="gender other" title="не се знае">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question" viewBox="0 0 16 16">
-					<path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
-				</svg>
+			<div class="gender other">
+				@if (pet.AgeEnum == PetAgeEnum.Young)
+				{
+					<span title="млад">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mortarboard me-2" viewBox="0 0 16 16">
+							<path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917zM8 8.46 1.758 5.965 8 3.052l6.242 2.913z" />
+							<path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466zm-.068 1.873.22-.748 3.496 1.311a.5.5 0 0 0 .352 0l3.496-1.311.22.748L8 12.46z" />
+						</svg>
+					</span>
+				}
+				<span title="не се знае">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question" viewBox="0 0 16 16">
+						<path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+					</svg>
+				</span>
 			</div>
 		}
 		<div class="age">
-			@Model.Age г.
+			@Utility.ConvertDaysToString(pet.AgeDays, true)
+		</div>
+	</div>
+	<div class="card-footer text-muted">
+		<div class="row">
+			<div class="col">@pet.PetType.ToDescriptionString()</div>
+			<div class="col-auto">
+				@if (pet.IncludesCage)
+				{
+					<span title="с клетка">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
+							<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+							<path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 1 0 1 0v-1h1a.5.5 0 1 0 0-1h-1v-1a.5.5 0 0 0-.5-.5" />
+						</svg>
+					</span>
+				}
+			</div>
 		</div>
 	</div>
 </div>
 <div class="modal fade " id="@("pet-"+componentId)" tabindex="-1">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Modal title</h5>
+				<h5 class="modal-title">Любимец</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<p>Modal body text goes here.</p>
+				<div class="pet-details">
+					<div class="image-wrapper">
+						<div class="image" style="background-image:url(@pet.PhotoPath);"></div>
+					</div>
+					<div class="meta">
+						<table class="table table-bordered mt-3">
+							<tbody>
+								<tr>
+									<th style="width:200px;">Име</th>
+									<td>@pet.Name</td>
+								</tr>
+								<tr>
+									<th style="width:200px;">Порода</th>
+									<td>@pet.Breed</td>
+								</tr>
+								<tr>
+									<th>Възраст</th>
+									<td>
+										<span>@(Utility.ConvertDaysToString(pet.AgeDays))</span>
+										<span class="badge text-bg-secondary ms-2">@pet.AgeEnum.ToDescriptionString()</span>
+									</td>
+								</tr>
+								<tr>
+									<th>Пол</th>
+									<td>@pet.Gender.ToDescriptionString()</td>
+								</tr>
+								<tr>
+									<th>Описание</th>
+									<td>@pet.Description</td>
+								</tr>
+								<tr>
+									<th>Клетка</th>
+									<td>
+										@if (pet.IncludesCage)
+										{
+											<div>с клетка</div>
+										}
+										else
+										{
+											<div>без клетка</div>
+										}
+									</td>
+								</tr>
+								<tr>
+									<th>Собственик</th>
+									<td>@pet.User.Name</td>
+								</tr>
+								<tr>
+									<th>Град</th>
+									<td>@pet.Town.Name</td>
+								</tr>
+								<tr>
+									<th>Обявен на</th>
+									<td>@pet.AddedOn.ToShortDateString()</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+			<div class="modal-footer justify-content-center">
+				@if (showCreateRequest)
+				{
+					<a href="/account/create-request?petId=@(pet.Id)" class="btn btn-primary">Изпрати искане</a>
+				}
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Затвори</button>
 			</div>
 		</div>
 	</div>

@@ -15,9 +15,15 @@ namespace DataLayer
 		public string Name { get; set; } = string.Empty;
 		
 		public Town() { }
+
 		public Town(string name)
 		{
 			Id = Guid.NewGuid();
+			Name = name;
+		}
+		public Town(Guid id, string name)
+		{
+			Id = id;
 			Name = name;
 		}
 	}

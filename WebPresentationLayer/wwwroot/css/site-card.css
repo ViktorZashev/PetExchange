@@ -1,0 +1,20 @@
+﻿.site-card {
+	margin:2rem 0;
+}
+
+.site-card h2 {
+	text-align:center;
+	margin-bottom:2rem;
+}
+
+.site-card-right {
+	padding:1rem;
+	background:#20c997;
+	border-radius:.25rem;
+	height:100%;
+	color:white;
+}
+
+	.site-card-right p {
+		text-align:center;
+	}

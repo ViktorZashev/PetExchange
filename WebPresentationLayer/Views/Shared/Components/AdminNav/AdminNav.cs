@@ -8,7 +8,7 @@ public class AdminNav : ViewComponent
 	public string Page { get; set; } = "users";
 	public async Task<IViewComponentResult> InvokeAsync()
 	{
-		Page = new Utils().GetActivePage(HttpContext);
+		Page = new Utility.Utility().GetActivePage(HttpContext);
 
 		return View("AdminNav", this);
 	}

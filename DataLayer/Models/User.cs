@@ -7,6 +7,8 @@ namespace DataLayer
 {
 	public class User : IdentityUser<Guid>
 	{
+
+
 		[Required(ErrorMessage = "задължително")]
 		[DisplayName("Имейл")]
 		public override string? Email { get; set; } = null;
@@ -25,6 +27,10 @@ namespace DataLayer
 
 		public string PhotoPath { get; set; } = string.Empty;
 
+		[DisplayName("Активен")]
+		[Required(ErrorMessage = "задължително")]
+		public bool IsActive { get; set; } = true;
+
 		[DisplayName("Роля")]
 		[Required(ErrorMessage = "задължително")]
 		public RoleEnum Role { get; set; } = RoleEnum.User;
@@ -39,9 +45,8 @@ namespace DataLayer
 
 		public List<Pet> Pets { get; set; } = new();
 
-		public List<UserRequest> Requests { get; set; } = new();
-
-		public List<PublicOffer> PublicOffers { get; set; } = new();
+		public List<UserRequest> RequestOutbox { get; set; } = new();
+		public List<UserRequest> RequestInbox { get; set; } = new();
 
 		public User() { }
 

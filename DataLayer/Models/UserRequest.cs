@@ -9,24 +9,43 @@ namespace DataLayer
 		[Key]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
-		[Required]
-		[DisplayName("Потвърден")]
-		public bool IsAccepted { get; set; } = false;
+        [Required]
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? DeniedOn { get; set; }
+        public DateTime? CanceledOn { get; set; }
+        public DateTime? AcceptedOn { get; set; }
+        [Required]
+        public Guid SenderId { get; set; }
+
+        [ForeignKey("SenderId")]
+        public User Sender { get; set; }
 
         [Required]
-        public Guid PublicOfferId { get; set; }
+        public Guid RecipientId { get; set; }
 
-        [ForeignKey("PublicOfferId")]
-        public PublicOffer PublicOffer { get; set; }
+        [ForeignKey("RecipientId")]
+        public User Recipient { get; set; }
+
+        [Required]
+        public Guid PetId { get; set; }
+
+        [ForeignKey("PetId")]
+        public Pet Pet { get; set; }
+        public string? RequestMessage { get; set; } = null;
+        public string? AnswerMessage { get; set; } = null;
+
+        [NotMapped]
+        public bool IsActive { get => AcceptedOn is null && DeniedOn is null && CanceledOn is null; }
 
         public UserRequest() { }
 
-		public UserRequest(PublicOffer publicOffer,bool isAccepted)
+		public UserRequest(Pet pet,DateTime? acceptedOn)
 		{
 			Id = Guid.NewGuid();
-			PublicOffer = publicOffer;
-			PublicOfferId = PublicOffer.Id;
-			IsAccepted = isAccepted;
+			Pet = pet;
+			Pet.Id = pet.Id;
+			AcceptedOn = acceptedOn;
 		}
 	}
 }

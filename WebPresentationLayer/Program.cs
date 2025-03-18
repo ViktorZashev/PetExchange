@@ -46,10 +46,6 @@ namespace WebPresentationLayer
 
 			builder.Services.AddScoped<IDbWithNav<Pet, Guid>, PetDbContext>();
 			builder.Services.AddScoped<PetService, PetService>();
-
-			builder.Services.AddScoped<IDbWithNav<PublicOffer, Guid>, PublicOfferDbContext>();
-			builder.Services.AddScoped<PublicOfferService, PublicOfferService>();
-
 			builder.Services.AddScoped<IDbWithoutNav<Town, Guid>, TownDbContext>();
 			builder.Services.AddScoped<TownService, TownService>();
 
@@ -83,8 +79,8 @@ namespace WebPresentationLayer
 			{
 				// Change TimeSpan later due to security reasons
 				o.ExpireTimeSpan = TimeSpan.FromMinutes(505);
-				o.LoginPath = "/login";
-				o.AccessDeniedPath = "/login";
+				o.LoginPath = "/Identity/Account/Login";
+				o.AccessDeniedPath = "/Identity/Account/Login";
 			}
 			);
 

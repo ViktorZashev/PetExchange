@@ -10,14 +10,14 @@ namespace PetExchangeTests
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var offer = new PublicOffer { Id = Guid.NewGuid() };
+			var pet = new Pet { Id = Guid.NewGuid() };
 			db.Users.Add(user);
-			db.PublicOffers.Add(offer);
+			db.Pets.Add(pet);
 			db.SaveChanges();
 			var initialRequestsCount = db.Requests.Count();
 
 			// Act
-			var request = new UserRequest(offer, false);
+			var request = new UserRequest(pet, null);
 			await _userRequestsService.CreateAsync(request);
 			var newRequestsCount = db.Requests.Count();
 
@@ -30,10 +30,10 @@ namespace PetExchangeTests
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequest(offer, false) { Id = Guid.NewGuid() };
+			var pet = new Pet { Id = Guid.NewGuid() };
+			var request = new UserRequest(pet, null) { Id = Guid.NewGuid() };
 			db.Users.Add(user);
-			db.PublicOffers.Add(offer);
+			db.Pets.Add(pet);
 			db.Requests.Add(request);
 			db.SaveChanges();
 
@@ -63,20 +63,20 @@ namespace PetExchangeTests
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequest(offer, false);
+			var pet = new Pet { Id = Guid.NewGuid() };
+			var request = new UserRequest(pet, null);
 			db.Users.Add(user);
-			db.PublicOffers.Add(offer);
+			db.Pets.Add(pet);
 			db.Requests.Add(request);
 			db.SaveChanges();
 
 			// Act
-			request.IsAccepted = true;
+			request.AcceptedOn = DateTime.Now;
             await _userRequestsService.UpdateAsync(request);
 			var updatedRequest = db.Requests.Find(request.Id);
 
 			// Assert
-			Assert.That(updatedRequest.IsAccepted, Is.True);
+			Assert.NotNull(updatedRequest.AcceptedOn);
 		}
 
 		[Test]
@@ -84,10 +84,10 @@ namespace PetExchangeTests
 		{
 			// Arrange
 			var user = new User { Id = Guid.NewGuid() };
-			var offer = new PublicOffer { Id = Guid.NewGuid() };
-			var request = new UserRequest(offer, false);
+			var pet = new Pet { Id = Guid.NewGuid() };
+			var request = new UserRequest(pet, null);
 			db.Users.Add(user);
-			db.PublicOffers.Add(offer);
+			db.Pets.Add(pet);
 			db.Requests.Add(request);
 			db.SaveChanges();
 			var initialRequestsCount = db.Requests.Count();

@@ -5,11 +5,17 @@
 @import "home.css";
 @import "hero.css";
 @import "imageblock.css";
+@import "pet-details.css";
 @import "sidebar.css";
+@import "site-card.css";
 
 .bi {
     vertical-align: -.125em;
     fill: currentColor;
+}
+
+.page-title {
+	margin-bottom:1rem;
 }
 
 .btn-primary {
@@ -26,4 +32,9 @@
 
 .btn-icon svg{
 	vertical-align:text-bottom;
+}
+
+
+.table tr.has-background td{
+	background:#f8f9fa;
 }

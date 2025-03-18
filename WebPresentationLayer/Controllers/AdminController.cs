@@ -105,7 +105,9 @@ public class AdminController : Controller
 				var imageName = $"{Guid.NewGuid()}{extension}";
 				_fileSrv.SaveMemoryStreamToFile(fileBytes, "account", imageName);
 				//Delete old photo file
-				_fileSrv.DeleteFile(dbUser.PhotoPath);
+				if(!String.IsNullOrWhiteSpace(dbUser.PhotoPath))
+					_fileSrv.DeleteFile(dbUser.PhotoPath);
+
 				dbUser.PhotoPath = $"/account/{imageName}";
 			}
 			dbUser.UserName = user.UserName;

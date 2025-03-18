@@ -1,20 +1,14 @@
 ﻿namespace WebPresentationLayer.Components;
 public class HomePetsOldest : ViewComponent
 {
+	private readonly PetService _petSrv;
+	public HomePetsOldest(PetService petService)
+	{
+		_petSrv = petService;
+	}
 	public async Task<IViewComponentResult> InvokeAsync()
 	{
-		List<Pet> pets = new List<Pet>();
-		for (int i = 1; i <= 4; i++)
-		{
-			pets.Add(new Pet
-			{
-				Id = Guid.NewGuid(),
-				PhotoPath = $"/media/pet-{i}.webp",
-				Name = "Pet Name",
-				Gender = i % 2 == 0 ? GenderEnum.Male : GenderEnum.Female
-			});
-		}
-		ViewBag.Pets = pets;
+		ViewBag.Pets = await _petSrv.Read4OldestAsync();
 		return View("HomePetsOldest");
 	}
 }

@@ -20,8 +20,8 @@ public class Header : ViewComponent
 	public User? CurrentUser { get; set; } = null;
 	public async Task<IViewComponentResult> InvokeAsync()
 	{
-		PageName = new Utils().GetActivePage(HttpContext);
-		ControllerName = new Utils().GetActiveController(HttpContext);
+		PageName = new Utility.Utility().GetActivePage(HttpContext);
+		ControllerName = new Utility.Utility().GetActiveController(HttpContext);
 		//Site Menu
 		SiteMenu.Add(new MenuItem()
 		{
@@ -82,9 +82,19 @@ public class Header : ViewComponent
 			});
 			UserMenu.Add(new MenuItem()
 			{
-				Title = "Искания",
+				Title = "Получени Искания",
 				Controller = "Account",
-				Action = "Requests"
+				Action = "RequestInbox"
+			});
+			UserMenu.Add(new MenuItem()
+			{
+				IsDivider = true,
+			});
+			UserMenu.Add(new MenuItem()
+			{
+				Title = "Изпратени Искания",
+				Controller = "Account",
+				Action = "RequestOutbox"
 			});
 			UserMenu.Add(new MenuItem()
 			{

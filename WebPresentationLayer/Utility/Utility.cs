@@ -1,6 +1,6 @@
 ﻿namespace WebPresentationLayer.Utility;
 
-public class Utils
+public class Utility
 {
 	public string GetActivePage(HttpContext httpContext)
 	{
@@ -57,4 +57,38 @@ public class Utils
 		}
 		return "home";
 	}
+
+	public static string ConvertDaysToString(int totalDays, bool isAbbriviation = false)
+	{
+		const int DaysPerYear = 365;
+		const int DaysPerMonth = 30;
+
+		int years = totalDays / DaysPerYear;
+		int remainingDaysAfterYears = totalDays % DaysPerYear;
+
+		int months = remainingDaysAfterYears / DaysPerMonth;
+		int days = remainingDaysAfterYears % DaysPerMonth;
+
+
+		if (isAbbriviation)
+		{
+			if (years > 0)
+				return $"{years} {(years != 1 ? "години" : "година")}";
+			if (months > 0)
+				return $"{months} {(months != 1 ? "месеца" : "месец")}";
+
+			return $"{days} {(days != 1 ? "дни" : "ден")}";
+		}
+		else
+		{
+			if (years > 0)
+				return $"{years} {(years != 1 ? "години" : "година")}, {months} {(months != 1 ? "месеца" : "месец")}, {days} {(days != 1 ? "дни" : "ден")}";
+			if (months > 0)
+				return $"{months} {(months != 1 ? "месеца" : "месец")}, {days} {(days != 1 ? "дни" : "ден")}";
+
+			return $"{days} {(days != 1 ? "дни" : "ден")}";
+
+		}
+	}
+
 }

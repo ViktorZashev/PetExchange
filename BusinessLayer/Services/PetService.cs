@@ -13,19 +13,6 @@ namespace BusinessLayer
             _PetContext = new PetDbContext(_ProjectContext);
         }
 
-        public async Task<List<Pet>> ReadAllWithFilterAsync(string name, string petType, string gender, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
-        {
-            return await _PetContext.ReadAllWithFilterAsync(
-            name: name,
-            petType: petType,
-            gender: gender,
-            page: page,
-            pageSize: pageSize,
-            useNavigationalProperties: useNavigationalProperties,
-            isReadOnly: isReadOnly
-            );
-        }
-
         #region CRUD
         public async Task CreateAsync(Pet entity)
         {
@@ -44,6 +31,21 @@ namespace BusinessLayer
         public async Task<List<Pet>>? ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             return await _PetContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
+        }
+
+        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types,List<GenderEnum> genders, List<PetAgeEnum> ages, bool? withCage)
+        {
+            return await _PetContext.ReadWithFiltersAsync(types,genders,ages,withCage);
+        }
+
+        public async Task<List<Pet>>? Read4NewestAsync()
+        {
+            return await _PetContext.Read4NewestAsync();
+        }
+
+        public async Task<List<Pet>>? Read4OldestAsync()
+        {
+            return await _PetContext.Read4OldestAsync();
         }
 
         public async Task UpdateAsync(Pet entity, bool useNavigationalProperties = false)

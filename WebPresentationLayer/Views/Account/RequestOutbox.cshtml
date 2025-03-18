@@ -1,0 +1,70 @@
+﻿@{
+
+	ViewData["Title"] = "Account Index";
+	Layout = "/Views/Shared/_LayoutAccount.cshtml";
+	var items = (List<UserRequest>)ViewBag.Requests;
+	var showCreateSuccess = (bool?)ViewBag.ShowCreateSuccess ?? false;
+	var showCancelSuccess = (bool?)ViewBag.ShowCancelSuccess ?? false;
+	var currentUser = (User)ViewBag.CurrentUser;
+}
+
+<h2 class="page-title">Изпратени искания</h2>
+@if (showCreateSuccess)
+{
+	<div class="alert alert-success" role="alert">Искането е успешно създадено!</div>
+}
+
+@if (showCancelSuccess)
+{
+	<div class="alert alert-success" role="alert">Искането е успешно отменено!</div>
+}
+
+<table class="table table-bordered w-100">
+	<thead>
+		<tr>
+			<th style="width:160px;"></th>
+			<th style="width:120px;">статус</th>
+			<th style="width:140px;">създадено</th>
+			<th>любимец</th>
+			<th>порода</th>
+			<th>град</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in items)
+		{
+
+			<tr>
+				<td>@await Component.InvokeAsync("UserRequestActions", new { item = item, currentUser = currentUser })</td>
+				<td>
+					@if (item.AcceptedOn.HasValue)
+					{
+						<span class="text-success">прието</span>
+					}
+					else if (item.DeniedOn.HasValue)
+					{
+						<span class="text-danger">отказано</span>
+					}
+					else if (item.CanceledOn.HasValue)
+					{
+						<span class="text-danger">отменено</span>
+					}
+					else
+					{
+						<span class="text-info">разглежда се</span>
+					}
+				</td>
+				<td>@item.CreatedOn.ToShortDateString()</td>
+				<td>@item.Pet.Name</td>
+				<td>@item.Pet.Breed</td>
+				<td>@item.Pet.User.Town.Name</td>
+			</tr>
+		}
+		@if (items.Count == 0)
+		{
+			<tr>
+				<td colspan="6">нямаш още искания</td>
+			</tr>
+		}
+	</tbody>
+</table>

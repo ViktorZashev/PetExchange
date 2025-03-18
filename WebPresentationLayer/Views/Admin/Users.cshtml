@@ -5,7 +5,7 @@
 	var currentPage = (int)ViewBag.Page;
 	var pageSize = (int)ViewBag.PageSize;
 }
-<h2>Потребители</h2>
+<h2 class="page-title">Потребители</h2>
 <form method="get" name="filter">
 	<input type="hidden" name="page" value="@currentPage" />
 	<table class="table table-bordered table-striped w-100">
@@ -63,8 +63,8 @@
 					<td>@item.Name</td>
 					<td>@item.Town.Name</td>
 					<td>@item.Role.ToDescriptionString()</td>
-					<td>@item.Requests.Count</td>
-					<td>@item.PublicOffers.Count</td>
+					<td>@item.RequestOutbox.Count</td>
+					<td>@item.Pets.Count</td>
 				</tr>
 			}
 			@if (items.Count == 0)

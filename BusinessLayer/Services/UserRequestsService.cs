@@ -28,6 +28,32 @@ namespace BusinessLayer
             return await _UserRequestsContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
         }
 
+        public async Task<List<UserRequest>>? ReadUserRequestOutboxAsync(Guid userId)
+        {
+            return await _UserRequestsContext.ReadUserRequestOutboxAsync(userId);
+        }
+
+        public async Task<List<UserRequest>>? ReadUserRequestInboxAsync(Guid userId)
+        {
+            return await _UserRequestsContext.ReadUserRequestInboxAsync(userId);
+        }
+
+        public async Task CancelAsync(Guid requestId)
+        {
+            await _UserRequestsContext.CancelAsync(requestId);
+        }
+
+        public async Task AcceptAsync(Guid requestId, string? message)
+        {
+            await _UserRequestsContext.AcceptAsync(requestId,message);
+        }
+
+        public async Task DenyAsync(Guid requestId, string? message)
+        {
+            await _UserRequestsContext.DenyAsync(requestId, message);
+        }
+
+
         public async Task UpdateAsync(UserRequest entity, bool useNavigationalProperties = false)
         {
             await _UserRequestsContext.UpdateAsync(entity, useNavigationalProperties);
