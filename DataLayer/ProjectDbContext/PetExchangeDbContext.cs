@@ -92,7 +92,7 @@ namespace DataLayer
 					new Town(new Guid("e8dc0ef0-9839-4314-90dd-7eed54d48f59"), "Ямбол"),
 					}
 				);
-
+				// Add new users
 				var viktorAdmin = new User
 				{
 					Id = new Guid("c510ccc5-031e-4652-be85-77f49eb2efc1"),
@@ -137,7 +137,7 @@ namespace DataLayer
 				};
 				var toshoUser = new User
 				{
-				Id = new Guid("3377e18e-c516-4b81-9843-1e78b9659e8f"),
+					Id = new Guid("3377e18e-c516-4b81-9843-1e78b9659e8f"),
 					Name = "Тодор Бояджиев",
 					Role = RoleEnum.User,
 					TownId = Sofia.Id,
@@ -158,8 +158,9 @@ namespace DataLayer
 				};
 
 				await userContext.CreateAsync(new List<User>() { viktorAdmin, goshoUser, toshoUser });
-
-				// INCLUDE PHOTOPATH, WHEN YOU HAVE IT IMPLEMENTED
+				// distrubute the users evenly over the remaining pets
+				// малки бозайници
+				var petList = new List<Pet>();
 				var tropchoPet = new Pet
 				{
 					Id = new Guid("284071e6-cf59-41d5-b02d-f7fea5042e83"),
@@ -179,6 +180,7 @@ namespace DataLayer
 					AdoptedOn = null,
 					Breed = "джербил"
 				};
+				petList.Add(tropchoPet);
 				var milesPet = new Pet
 				{
 					Id = new Guid("4a7dbb23-c7d2-46c9-8b0e-cdfb1e21c5a5"),
@@ -198,7 +200,71 @@ namespace DataLayer
 					AdoptedOn = null,
 					Breed = "джербил"
 				};
-				var daisyPet = new Pet
+				petList.Add(milesPet);
+                var chipPet = new Pet
+                {
+                    Id = new Guid("6dc05d6d-073a-4407-8af9-5c0dd21b5495"),
+                    IsActive = true,
+                    Name = "Чип",
+                    Birthday = DateTime.Now.AddMonths(-6),
+                    PetType = PetTypeEnum.SmallMammal,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Чип е мъничък и любопитен хамстер, който обича да се катери и да гризе дървени играчки. " +
+                    "Обича да се крие в тунелите си и да събира храна в бузите си. " +
+                    "Макар да е плах, с време става дружелюбен. ",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/933ec530-6127-477a-ae51-e50d67fad831.jpg",
+                    AddedOn = DateTime.Now.AddDays(-15),
+                    AdoptedOn = null,
+                    Breed = "декоративен хамстер"
+                };
+				petList.Add(chipPet);
+
+                var liliPet = new Pet
+                {
+                    Id = new Guid("c3b8b1fd-3b49-49d3-850e-88db0afdcead"),
+                    IsActive = true,
+                    Name = "Лили",
+                    Birthday = DateTime.Now.AddMonths(-13),
+                    PetType = PetTypeEnum.SmallMammal,
+                    Gender = GenderEnum.Female,
+                    Description =
+                    "Лили е пухкав и нежен заек, който обича да похапва моркови и сено " +
+                    "Много социална и обича да бъде гушкана. " +
+                    "Козината ѝ е мека като памук и изисква редовно разресване. ",
+                    IncludesCage = false,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/9d5bd6ea-5611-4aac-88c4-f2d45674eb87.jpg",
+                    AddedOn = DateTime.Now.AddDays(-5),
+                    AdoptedOn = null,
+                    Breed = "миниатюрен заек"
+                };
+                petList.Add(liliPet);
+
+                var oskarPet = new Pet
+                {
+                    Id = new Guid("f1ca1062-22be-4903-86db-b4b9a6b8215c"),
+                    IsActive = true,
+                    Name = "Оскар",
+                    Birthday = DateTime.Now.AddMonths(-24),
+                    PetType = PetTypeEnum.SmallMammal,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Оскар е дружелюбно морско свинче с пухкава, кафяво-бяла козина. " +
+                    "Той обича да похапва пресни зеленчуци и да издава писукащи звуци, когато е щастлив. " +
+                    "Изисква внимателна грижа и обича вниманието на стопаните си. ",
+                    IncludesCage = true,
+                    UserId = goshoUser.Id,
+                    PhotoPath = "/pet/24c20cbd-b4f0-4087-911a-daf8d5f79956.jpg",
+                    AddedOn = DateTime.Now.AddDays(-50),
+                    AdoptedOn = null,
+                    Breed = "морско свинче"
+                };
+                petList.Add(oskarPet);
+                // кучета
+                var daisyPet = new Pet
 				{
 					Id = new Guid("a3c2d6c3-73b8-40cf-a9ef-5ff0ca8453e8"),
 					IsActive = true,
@@ -217,7 +283,73 @@ namespace DataLayer
 					AdoptedOn = null,
 					Breed = "питбул"
 				};
-				var horsePet = new Pet
+                petList.Add(daisyPet);
+
+                var rexPet = new Pet
+                {
+                    Id = new Guid("484df000-af5c-4b15-b6f6-0633cacfffc2"),
+                    IsActive = true,
+                    Name = "Рекс",
+                    Birthday = DateTime.Now.AddMonths(-48),
+                    PetType = PetTypeEnum.Dog,
+                    Gender = GenderEnum.Male,
+                    Description =
+                   "Рекс е смел и лоялен пазач, който винаги защитава своето семейство. " +
+                   "Обича дългите разходки и тренировките. " +
+                   "Отличава се с интелигентност и лесно се поддава на обучение. ",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/db74c626-2172-467b-b880-bc88f9d67eb6.jpg",
+                    AddedOn = DateTime.Now.AddDays(-50),
+                    AdoptedOn = null,
+                    Breed = "немска овчарка"
+                };
+                petList.Add(rexPet);
+
+                var jackiPet = new Pet
+                {
+                    Id = new Guid("02892fb3-d3e0-4f01-a5c5-d3557330ecec"),
+                    IsActive = true,
+                    Name = "Джаки",
+                    Birthday = DateTime.Now.AddMonths(-3),
+                    PetType = PetTypeEnum.Dog,
+                    Gender = GenderEnum.Female,
+                    Description =
+                   "Джаки е нежно и дружелюбно куче, което обича да играе с деца. " +
+                   "Винаги носи със себе си някаква играчка, която предлага на всеки нов приятел. " +
+                   "Отличава се със златиста козина и вечна усмивка. ",
+                    IncludesCage = true,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/e5f77f66-fe12-48e0-8695-962e1d30cd4c.jpg",
+                    AddedOn = DateTime.Now.AddDays(-54),
+                    AdoptedOn = null,
+                    Breed = "голдън ретривър"
+                };
+                petList.Add(jackiPet);
+
+                var brunoPet = new Pet
+                {
+                    Id = new Guid("6feaf997-9355-43d5-9549-29e669f49e38"),
+                    IsActive = true,
+                    Name = "Бруно",
+                    Birthday = DateTime.Now.AddMonths(-24),
+                    PetType = PetTypeEnum.Dog,
+                    Gender = GenderEnum.Male,
+                    Description =
+                   "Бруно е забавен и игрив домашен любимец с много енергия.  " +
+                   "Обича да бъде в центъра на вниманието и винаги е готов за игра. " +
+                   "Късата му муцуна му придава характерен израз, който винаги носи усмивки. ",
+                    IncludesCage = false,
+                    UserId = toshoUser.Id,
+                    PhotoPath = "/pet/d1a47268-3e4d-40f8-aa76-3835869984bc.jpg",
+                    AddedOn = DateTime.Now.AddDays(-24),
+                    AdoptedOn = null,
+                    Breed = "френски булдог"
+                };
+                petList.Add(brunoPet);
+
+				// коне
+                var horsePet = new Pet
 				{
 					Id = new Guid("417c44ab-5bd4-4b85-a546-330790211366"),
 					IsActive = true,
@@ -235,7 +367,8 @@ namespace DataLayer
 					AdoptedOn = null,
 					Breed = "арабски жребец"
 				};
-				var donutPet = new Pet
+                petList.Add(horsePet);
+                var donutPet = new Pet
 				{
 					Id = new Guid("8213a55f-323a-47e9-bc48-7cc14fff307b"),
 					IsActive = true,
@@ -256,7 +389,8 @@ namespace DataLayer
 					AdoptedOn = null,
 					Breed = "персийска котка"
 				};
-				await petContext.CreateAsync(new List<Pet>() { tropchoPet, milesPet, daisyPet, donutPet, horsePet });
+                petList.Add(donutPet);
+                await petContext.CreateAsync(petList);
 
 				var userRequestTropcho = new UserRequest
 				{
