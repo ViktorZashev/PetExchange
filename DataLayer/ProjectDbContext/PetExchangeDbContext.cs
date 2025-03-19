@@ -94,6 +94,8 @@ namespace DataLayer
 				);
 
                 #region USER SEED
+                var userList = new List<User>();
+
                 var viktorAdmin = new User
 				{
 					Id = new Guid("c510ccc5-031e-4652-be85-77f49eb2efc1"),
@@ -115,6 +117,8 @@ namespace DataLayer
 					LockoutEnabled = true,
 					AccessFailedCount = 0
 				};
+                userList.Add(viktorAdmin);
+
 				var goshoUser = new User
 				{
 					Id = new Guid("b059bb39-8f5e-4a33-86e0-00bc9cbc2aa2"),
@@ -136,6 +140,8 @@ namespace DataLayer
 					LockoutEnabled = true,
 					AccessFailedCount = 0
 				};
+                userList.Add(goshoUser);
+
 				var toshoUser = new User
 				{
 					Id = new Guid("3377e18e-c516-4b81-9843-1e78b9659e8f"),
@@ -157,8 +163,170 @@ namespace DataLayer
 					LockoutEnabled = true,
 					AccessFailedCount = 0
 				};
-                // Todo add 7
-				await userContext.CreateAsync(new List<User>() { viktorAdmin, goshoUser, toshoUser });
+                userList.Add(toshoUser);
+
+                var nikolaiUser = new User
+                {
+                    Id = new Guid("C83D871D-BC2C-4DAF-9E8D-08DD66BD544C"),
+                    Name = "Николай Славчев",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("D85F4585-383F-4167-9C14-122A5D3A2690"),
+                    UserName = "nikolaiUser",
+                    NormalizedUserName = "NIKOLAIUSER",
+                    Email = "nikolai@gmail.com",
+                    NormalizedEmail = "NIKOLAI@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAECj9GAf5sGjOJN6cIv4iciVtR1R3E2K6MuiwT9KrJxN/gQY0APhAFxfjuhF8pgTScw==", // 3yNx?H~j^v\(dRJ@)/mE
+                    SecurityStamp = "YP6CGJSEGJ73P25J3TJFT3ATBSV5TQ2T",
+                    ConcurrencyStamp = "31beaa35-c34f-42aa-9ce5-b94c980432d0",
+                    PhoneNumber = "088 425 6589",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(nikolaiUser);
+
+                var vasilUser = new User
+                {
+                    Id = new Guid("2C983602-162D-4F59-4146-08DD66BDF7F7"),
+                    Name = "Васил Стоянов",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("C798FA35-CEE8-462F-9669-02F24A74B845"),
+                    UserName = "vasilUser",
+                    NormalizedUserName = "VASILUSER",
+                    Email = "vasil@gmail.com",
+                    NormalizedEmail = "VASIL@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAEJEpPO5ebHi1Eq6PzTNpLpEDSOC5LKY2Oo8hcS5FMFSOroOFbd45/HUVvqq49/c7BA==", // %S/g$itz7";-4TFD.'vk
+                    SecurityStamp = "7RNWB7P5HZQPJI65WMTCFTUPB6XCN564",
+                    ConcurrencyStamp = "7aa1cf67-a000-490b-a66d-70d17443184b",
+                    PhoneNumber = "085 538 0847",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(vasilUser);
+
+                var viktoriaUser = new User
+                {
+                    Id = new Guid("3DF1F93C-510F-4A30-4147-08DD66BDF7F7"),
+                    Name = "Виктория Стаменова",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("FBDC1C05-D193-4E34-A89D-39F74FFBDA5A"),
+                    UserName = "viktoriaUser",
+                    NormalizedUserName = "VIKTORIAUSER",
+                    Email = "viktoria@gmail.com",
+                    NormalizedEmail = "VIKTORIA@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAEEHNhO7S9eyVFb1ieOkor/sdsyp8CQWryadl88FtCt61O17G4ShzS99Rw37tk2wXzg==", // pXS.v5r"`wbZ_VFZ^P'\
+                    SecurityStamp = "WEO6FPNTGYWPHTD7YHXIQFCN3DWF6PZR",
+                    ConcurrencyStamp = "3f28885e-0aa1-4ef5-9242-27fb2ae7ed53",
+                    PhoneNumber = "087 273 7502",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(viktoriaUser);
+
+                var boyanUser = new User
+                {
+                    Id = new Guid("C965ABB8-63AA-44EC-4148-08DD66BDF7F7"),
+                    Name = "Боян Стойчев",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("F820909A-0E26-4B44-8E67-320A5D4A1512"),
+                    UserName = "boyanUser",
+                    NormalizedUserName = "BOYANUSER",
+                    Email = "boyan@gmail.com",
+                    NormalizedEmail = "BOYAN@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAEAy6JKHZ/WIllCwPtOSvQybSX0/lBM/9qM3JL4FL+YS4h3xXYZ3JEZFs6flEqmfyJA==", // &3"_L;5bQa@P9@.%V/C9
+                    SecurityStamp = "WBEAEXDMYU2H2RA4NYGER26HZD6MRSWK",
+                    ConcurrencyStamp = "4eeaeb62-d399-4760-95cb-f8f7965aab9f",
+                    PhoneNumber = "044 823 7590",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(boyanUser);
+
+                var petarUser = new User
+                {
+                    Id = new Guid("DA474A82-F77F-4F73-4149-08DD66BDF7F7"),
+                    Name = "Петър Райчев",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("6BEA6A82-BAEE-42F3-B921-14113B2AA437"),
+                    UserName = "petarUser",
+                    NormalizedUserName = "PETARUSER",
+                    Email = "petar@gmail.com",
+                    NormalizedEmail = "PETAR@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAEJ6EtVeeDS9caHu4WcIP70TaaCP7OetvAL0iOUgX8aXpaKkaKuPOY+2U8RooYlP2AA==", // c\gxmS@-3g"-4iH,;.U`
+                    SecurityStamp = "2GLVLQMKY6X7GSVT4SNVPGH7YXU276AY",
+                    ConcurrencyStamp = "d59e3c64-5f55-4e2c-9e7f-aea001822bdc",
+                    PhoneNumber = "088 164 7689",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(petarUser);
+
+                var nikolaUser = new User
+                {
+                    Id = new Guid("F10A4DC2-CA7C-4737-414A-08DD66BDF7F7"),
+                    Name = "Никола Чингаров",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("6BEA6A82-BAEE-42F3-B921-14113B2AA437"),
+                    UserName = "nikolaUser",
+                    NormalizedUserName = "NIKOLAUSER",
+                    Email = "nikola@gmail.com",
+                    NormalizedEmail = "NIKOLA@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAEIOunCoXVTCZ8WI58JNzG2PRWnc9n7tMaBBqXaHt865oBH+ZJ4hoLMHw2q3DNS06Ag==", // mK@3yuS/b5'iW.^tH29'
+                    SecurityStamp = "MHZA7YCFNBG3GT2TFJ7TFW63NB6IKMH6",
+                    ConcurrencyStamp = "6c032ad1-b16a-487d-99e4-8632f4b883f0",
+                    PhoneNumber = "077 435 8568",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(nikolaUser);
+
+                var daniUser = new User
+                {
+                    Id = new Guid("41B5964D-AFEE-448F-414B-08DD66BDF7F7"),
+                    Name = "Данаил Маринов",
+                    Role = RoleEnum.User,
+                    TownId = new Guid("6BEA6A82-BAEE-42F3-B921-14113B2AA437"),
+                    UserName = "daniUser",
+                    NormalizedUserName = "DANIUSER",
+                    Email = "daniBanani@gmail.com",
+                    NormalizedEmail = "DANIBANANI@GMAIL.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAIAAYagAAAAELmu8yEMDJ2gbl/Wj5CQ2W8uzDAsaGxOtN1fBP8jJOPwhAN6kcLmW/KyYcBgp8GtfQ==", // ra%,;4'mpm"e,yQN$-'Z
+                    SecurityStamp = "3XHUFLIZPOGYPNR34D6BU34IAJNBSAVJ",
+                    ConcurrencyStamp = "1691dbbc-6085-427b-9f77-d5b840913182",
+                    PhoneNumber = "088 296 4592",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnd = null,
+                    LockoutEnabled = true,
+                    AccessFailedCount = 0
+                };
+                userList.Add(daniUser);
+
+                await userContext.CreateAsync(userList);
                 #endregion
 
                 #region PETS SEED
@@ -219,7 +387,7 @@ namespace DataLayer
                     "Обича да се крие в тунелите си и да събира храна в бузите си. " +
                     "Макар да е плах, с време става дружелюбен. ",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = nikolaiUser.Id,
                     PhotoPath = "/pet/933ec530-6127-477a-ae51-e50d67fad831.jpg",
                     AddedOn = DateTime.Now.AddDays(-15),
                     AdoptedOn = null,
@@ -240,7 +408,7 @@ namespace DataLayer
                     "Много социална и обича да бъде гушкана. " +
                     "Козината ѝ е мека като памук и изисква редовно разресване. ",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = toshoUser.Id,
                     PhotoPath = "/pet/9d5bd6ea-5611-4aac-88c4-f2d45674eb87.jpg",
                     AddedOn = DateTime.Now.AddDays(-5),
                     AdoptedOn = null,
@@ -261,7 +429,7 @@ namespace DataLayer
                     "Той обича да похапва пресни зеленчуци и да издава писукащи звуци, когато е щастлив. " +
                     "Изисква внимателна грижа и обича вниманието на стопаните си. ",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = vasilUser.Id,
                     PhotoPath = "/pet/24c20cbd-b4f0-4087-911a-daf8d5f79956.jpg",
                     AddedOn = DateTime.Now.AddDays(-50),
                     AdoptedOn = null,
@@ -280,7 +448,7 @@ namespace DataLayer
                     Description =
                     "Току-що родено джербилче. Полът не може да се определи в такава възраст.",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = viktoriaUser.Id,
                     PhotoPath = "/pet/3f3c1b7a-5c7c-420f-8546-c1f11034cd27.jpg",
                     AddedOn = DateTime.Now.AddDays(-5),
                     AdoptedOn = null,
@@ -301,7 +469,7 @@ namespace DataLayer
 				   "Обича да яде маргаритки. " +
 				   "Дресирано куче. ",
 					IncludesCage = false,
-					UserId = toshoUser.Id,
+					UserId = boyanUser.Id,
 					PhotoPath = "/pet/0a385f59-4cf4-4bb6-b3d6-426faf159e22.jpg",
 					AddedOn = DateTime.Now.AddDays(-10),
 					AdoptedOn = null,
@@ -322,7 +490,7 @@ namespace DataLayer
 					"Обича да яде всякакво месо. " +
 					"Много е активен всяка вечер. ",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = daniUser.Id,
                     PhotoPath = "/pet/d09315ef-b81d-4896-873d-0e43add2b010.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
@@ -341,7 +509,7 @@ namespace DataLayer
                     Description =
                     "Обича да яде чехли и чорапи. Прави се на смел, но всъщност е много страшлив",
                     IncludesCage = true,
-                    UserId = toshoUser.Id,
+                    UserId = nikolaUser.Id,
                     PhotoPath = "/pet/afcb4bc6-b67b-49c5-b5e8-b6c533719cf1.jpg",
                     AddedOn = DateTime.Now.AddDays(-39),
                     AdoptedOn = null,
@@ -362,7 +530,7 @@ namespace DataLayer
                    "Обича дългите разходки и тренировките. " +
                    "Отличава се с интелигентност и лесно се поддава на обучение. ",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = goshoUser.Id,
                     PhotoPath = "/pet/db74c626-2172-467b-b880-bc88f9d67eb6.jpg",
                     AddedOn = DateTime.Now.AddDays(-50),
                     AdoptedOn = null,
@@ -383,7 +551,7 @@ namespace DataLayer
                    "Винаги носи със себе си някаква играчка, която предлага на всеки нов приятел. " +
                    "Отличава се със златиста козина и вечна усмивка. ",
                     IncludesCage = true,
-                    UserId = toshoUser.Id,
+                    UserId = vasilUser.Id,
                     PhotoPath = "/pet/e5f77f66-fe12-48e0-8695-962e1d30cd4c.jpg",
                     AddedOn = DateTime.Now.AddDays(-54),
                     AdoptedOn = null,
@@ -404,7 +572,7 @@ namespace DataLayer
                    "Обича да бъде в центъра на вниманието и винаги е готов за игра. " +
                    "Късата му муцуна му придава характерен израз, който винаги носи усмивки. ",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = petarUser.Id,
                     PhotoPath = "/pet/d1a47268-3e4d-40f8-aa76-3835869984bc.jpg",
                     AddedOn = DateTime.Now.AddDays(-24),
                     AdoptedOn = null,
@@ -425,7 +593,7 @@ namespace DataLayer
 					"Бивш състезателен кон. " +
 					"Обича да яде моркови и сирене. ",
 					IncludesCage = false,
-					UserId = toshoUser.Id,
+					UserId = boyanUser.Id,
 					PhotoPath = "/pet/e651944f-ba07-4cca-aec4-88eee5080b50.jpg",
 					AddedOn = DateTime.Now.AddDays(-300),
 					AdoptedOn = null,
@@ -467,7 +635,7 @@ namespace DataLayer
                     "я е дружелюбна и подходяща за деца. " +
                     "Обича да бъде глезена с лакомства и редовно разресвана.",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = goshoUser.Id,
                     PhotoPath = "/pet/0b825209-1dd6-48a5-83e1-99b0714f3f55.jpg",
                     AddedOn = DateTime.Now.AddDays(-156),
                     AdoptedOn = null,
@@ -488,7 +656,7 @@ namespace DataLayer
                     "Той е силен, енергичен и подходящ за ездови спортове. " +
                     "Въпреки внушителния си вид, е много спокоен и лесно се поддава на обучение.",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = nikolaUser.Id,
                     PhotoPath = "/pet/625f7189-0677-47ba-bb7a-4842182cbe17.jpg",
                     AddedOn = DateTime.Now.AddDays(-300),
                     AdoptedOn = null,
@@ -513,7 +681,7 @@ namespace DataLayer
 					"Плашлива е, скача от прозорци. " +
 					"Мрази всякаква порода кучета. ",
 					IncludesCage = false,
-					UserId = goshoUser.Id,
+					UserId = nikolaiUser.Id,
 					PhotoPath = "/pet/a713331d-dc25-421f-95d9-8a352cfd6b8a.jpg",
 					AddedOn = DateTime.Now.AddDays(-210),
 					AdoptedOn = null,
@@ -533,7 +701,7 @@ namespace DataLayer
                     "Национален шампион по борба, тежка категория. 6 килограма (с лятна козина). Най-велик улов - кактус." +
                     "цвят на козината - рижаво таби",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = petarUser.Id,
                     PhotoPath = "/pet/60db9245-ff5f-4981-b2f1-8c7bd180a204.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
@@ -552,7 +720,7 @@ namespace DataLayer
                     Description =
                    "Ще покани всички жени в къщата ти на вечеря.",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = daniUser.Id,
                     PhotoPath = "/pet/edb9935c-cc14-40e9-8e94-ffd794e92d52.jpg",
                     AddedOn = DateTime.Now.AddDays(-37),
                     AdoptedOn = null,
@@ -571,7 +739,7 @@ namespace DataLayer
                     Description =
 					"Малко коте, но в бъдеще ще си носи името с гордост.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = toshoUser.Id,
                     PhotoPath = "/pet/62282089-a6fe-4be0-97e2-e4d879c97d70.jpg",
                     AddedOn = DateTime.Now.AddDays(-37),
                     AdoptedOn = null,
@@ -590,7 +758,7 @@ namespace DataLayer
                     Description =
                     "Луна е спокойна и дружелюбна котка, която обича да се излежава на слънце. Обича да бъде гушкана и често мърка, когато е доволна. Има красиви златисти очи и мека, плюшена козина.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = viktoriaUser.Id,
                     PhotoPath = "/pet/630595bf-1502-461d-8dcb-327752efe685.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
@@ -609,7 +777,7 @@ namespace DataLayer
                     Description =
                     "Макс е голям и пухкав котарак с величествена осанка. Има дружелюбен и игрив характер, но също така е много интелигентен. Обича да се катери на високи места и да наблюдава какво се случва около него.",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = vasilUser.Id,
                     PhotoPath = "/pet/0ff28d39-d91e-414d-95a5-cdb4f5c7a75f.jpg",
                     AddedOn = DateTime.Now.AddDays(-50),
                     AdoptedOn = null,
@@ -628,7 +796,7 @@ namespace DataLayer
                     Description =
                     "Бела е енергична и любопитна котка, която обича вниманието. Има характерни сини очи и контрастна окраска. Лесно се привързва към стопаните си и обича да „разговаря“ с тях с нежни мяукания.",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = viktoriaUser.Id,
                     PhotoPath = "/pet/4af67d2e-e0f6-4dae-b9c7-5ef3c0755c2a.jpg",
                     AddedOn = DateTime.Now.AddDays(-5),
                     AdoptedOn = null,
@@ -647,7 +815,7 @@ namespace DataLayer
                     Description =
                     "Мъфин е малко, пухкаво котенце със затворени очички и меко, кремаво-бежово козинче. То прекарва по-голямата част от времето си в сън, сгушено до майка си и братчетата си. Въпреки крехката си възраст, вече започва да мърда лапичките си в опити да се придвижва по-гъвкаво.",
                     IncludesCage = false,
-                    UserId = toshoUser.Id,
+                    UserId = goshoUser.Id,
                     PhotoPath = "/pet/7d73cb50-7cf6-4c8c-b624-f10f1d35da12.jpg",
                     AddedOn = DateTime.Now.AddDays(-10),
                     AdoptedOn = null,
@@ -667,7 +835,7 @@ namespace DataLayer
                     Description =
                     "Рио е игрив и социален папагал, който обича да имитира звуци. Той е интелигентен и може да научи няколко думи. Обича да се люлее на клончето си и да си играе с огледало.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = daniUser.Id,
                     PhotoPath = "/pet/b267a516-8d2e-49af-acdf-7d8562796ec0.jpg",
                     AddedOn = DateTime.Now.AddDays(-12),
                     AdoptedOn = null,
@@ -686,7 +854,7 @@ namespace DataLayer
                     Description =
                    "Пика е нежна и любопитна птица с красива жълта качулка. Обича да комуникира със стопанина си и да свири мелодии. Лесно се привързва към хората и обича да бъде извън клетката си.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = toshoUser.Id,
                     PhotoPath = "/pet/5889107c-621e-440f-a329-739605f7c344.jpg",
                     AddedOn = DateTime.Now.AddDays(-40),
                     AdoptedOn = null,
@@ -705,7 +873,7 @@ namespace DataLayer
                     Description =
                    "Чарли е малка и пъстра птичка, която обича да пее. Той е много социален и обича компанията на други птици. Харесва му да си играе с малки играчки и да лети в просторна клетка.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = petarUser.Id,
                     PhotoPath = "/pet/4954bfeb-4f0c-43d5-a51c-a5f99f52698b.jpg",
                     AddedOn = DateTime.Now.AddDays(-7),
                     AdoptedOn = null,
@@ -725,7 +893,7 @@ namespace DataLayer
                     Description =
                     "Немо е малка, но живописна рибка с ярки оранжеви и бели ивици. Обича да плува около анемоните и е активен през целия ден. Лесен е за отглеждане и придава екзотичен вид на всеки аквариум.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = viktoriaUser.Id,
                     PhotoPath = "/pet/849db0ef-7acf-4e46-9834-bd92ec131971.jpg",
                     AddedOn = DateTime.Now.AddDays(-14),
                     AdoptedOn = null,
@@ -744,7 +912,7 @@ namespace DataLayer
                     Description =
                     "Дори е красива бойна рибка с дълги, вълнообразни перки в наситен син цвят. Тя е самостоятелна и обича да плува в уединени пространства. Въпреки малкия си размер, има впечатляващо присъствие.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = petarUser.Id,
                     PhotoPath = "/pet/c80fccf3-d089-4751-95e2-85ed83b48167.jpg",
                     AddedOn = DateTime.Now.AddDays(-20),
                     AdoptedOn = null,
@@ -763,7 +931,7 @@ namespace DataLayer
                     Description =
                    " Голди е класическа златна рибка с блестящи люспи и спокоен темперамент. Тя обича да изследва аквариума си и да се храни с гранулирана храна. Гледането ѝ носи спокойствие и хармония.",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = viktorAdmin.Id,
                     PhotoPath = "/pet/43ac113f-4eeb-4d0d-bf1a-b3e94bdf8ce5.jpg",
                     AddedOn = DateTime.Now.AddDays(-9),
                     AdoptedOn = null,
@@ -783,7 +951,7 @@ namespace DataLayer
                     Description =
                     "Роки е спокоен и любознателен гущер, който обича да се припича на топло място. Той има златистокафяви люспи и впечатляващ гребен около главата си. Обича да похапва зеленчуци и насекоми.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = nikolaUser.Id,
                     PhotoPath = "/pet/77b91e8b-7045-445d-82ca-98b47f53f845.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
@@ -802,7 +970,7 @@ namespace DataLayer
                     Description =
                     "Зара е стройна и елегантна змия с червено-оранжева окраска. Тя е напълно безвредна и лесна за отглеждане. Обича да се увива около клончета и да се крие в укритията си.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = nikolaiUser.Id,
                     PhotoPath = "/pet/c6428db0-f081-4c19-9052-33a65036ff86.jpg",
                     AddedOn = DateTime.Now.AddDays(-32),
                     AdoptedOn = null,
@@ -821,7 +989,7 @@ namespace DataLayer
                     Description =
                     "Лео е малък и пъстър гекон с характерни черни петна по тялото. Той е спокоен и лесен за хващане, тъй като не е агресивен. Обича нощния живот и предпочита да се крие през деня.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = toshoUser.Id,
                     PhotoPath = "/pet/c23a78e3-55cf-4618-a30c-bae789416ab0.jpg",
                     AddedOn = DateTime.Now.AddDays(-15),
                     AdoptedOn = null,
@@ -841,7 +1009,7 @@ namespace DataLayer
                     Description =
                     "Бъбълс е малка и игрива жабка, която прекарва повечето си време плувайки в аквариума.Твърде е млада,за да се определи пола. В момента е още в етап на развитие и кожата ѝ е гладка и полупрозрачна. Обича да си играе с водните растения и да се крие под камъни.",
                     IncludesCage = true,
-                    UserId = goshoUser.Id,
+                    UserId = boyanUser.Id,
                     PhotoPath = "/pet/2c58a1f6-7417-48df-b906-146662f1f613.jpg",
                     AddedOn = DateTime.Now.AddDays(-27),
                     AdoptedOn = null,
@@ -860,7 +1028,7 @@ namespace DataLayer
                     Description =
                     "Оливър е дребна, но ярко оцветена жаба със зеленикаво-кафяв гръб и яркочервен корем. Той е активен и често издава специфични звуци, когато е развълнуван. Обича влажни среди и прекарва времето си както във водата, така и на сушата.",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = vasilUser.Id,
                     PhotoPath = "/pet/3456612d-08e4-4c3f-91f9-2521fb117896.jpg",
                     AddedOn = DateTime.Now.AddDays(-12),
                     AdoptedOn = null,
@@ -879,31 +1047,107 @@ namespace DataLayer
                     Description =
                     "Лили е нощно активно земноводно с големи, златисти очи. Тя обича да се катери по клони и да ловува малки насекоми. Кожата ѝ е гладка и леко лепкава, което ѝ помага да се придържа към повърхности.",
                     IncludesCage = false,
-                    UserId = goshoUser.Id,
+                    UserId = daniUser.Id,
                     PhotoPath = "/pet/bc8442a3-7395-4bdd-9745-01313d0f1021.jpg",
                     AddedOn = DateTime.Now.AddDays(-45),
                     AdoptedOn = null,
                     Breed = "кубинска дървесна жаба"
                 };
                 petList.Add(lilyPet);
-
+                // други
+                var grutPet = new Pet
+                {
+                    Id = new Guid("8c0ba0ec-027a-4957-b938-1ebe197feb82"),
+                    IsActive = true,
+                    Name = "Грут",
+                    Birthday = DateTime.Now.AddMonths(-2),
+                    PetType = PetTypeEnum.Other,
+                    Gender = GenderEnum.Male,
+                    Description =
+                    "Грут е игриво и любопитно прасенце с розова муцунка и малки, черни очички. Той обича да ровичка в земята и да похапва плодове и зеленчуци. Въпреки малкия си размер, вече показва голям характер и обича да следва стопанина си навсякъде.",
+                    IncludesCage = true,
+                    UserId = petarUser.Id,
+                    PhotoPath = "/pet/3600a15f-19b5-4c4c-ad79-d0b41ab6b7f4.jpg",
+                    AddedOn = DateTime.Now.AddDays(-56),
+                    AdoptedOn = null,
+                    Breed = "Мини пиг"
+                };
+                petList.Add(grutPet);
+                var bigiPet = new Pet
+                {
+                    Id = new Guid("b2778691-c648-48d6-bd82-1ecb9d22521b"),
+                    IsActive = true,
+                    Name = "Бъги",
+                    Birthday = DateTime.Now.AddMonths(-24),
+                    PetType = PetTypeEnum.Other,
+                    Gender = GenderEnum.Male,
+                    Description =
+                   "Бъги е дребно кенгуру, което е изключително пъргаво и обича да скача наоколо. Въпреки че е малко плашливо с непознати, с времето става игриво и дружелюбно. Най-много обича да похапва пресни зеленчуци и да прекарва време на открито.",
+                    IncludesCage = false,
+                    UserId = daniUser.Id,
+                    PhotoPath = "/pet/b34bead1-28b7-4bfe-8394-c6833736810d.jpg",
+                    AddedOn = DateTime.Now.AddDays(-15),
+                    AdoptedOn = null,
+                    Breed = "кенгуру"
+                };
+                petList.Add(bigiPet);
                 await petContext.CreateAsync(petList);
 
                 #endregion
 
+                #region REQUESTS SEED
+                var requestsList = new List<UserRequest>();
                 var userRequestTropcho = new UserRequest
 				{
 					PetId = tropchoPet.Id,
 					CreatedOn = DateTime.Now,
 					SenderId = toshoUser.Id,
 					RecipientId = tropchoPet.UserId,
-					RequestMessage = "Много ми харесва и ще е чудесна компания са моят джербил"
+					RequestMessage = "Много ми харесва и ще е чудесна компания на моят джербил."
 				};
-                // Todo add 2-3 more for currently owned pets (tests) 
-                // Todo and a few more for others sprinkled in
-				await requestContext.CreateAsync(userRequestTropcho);
-			}
-		}
+                requestsList.Add(userRequestTropcho);
+                var userRequestMiles = new UserRequest
+                {
+                    PetId = milesPet.Id,
+                    CreatedOn = DateTime.Now,
+                    SenderId = petarUser.Id,
+                    RecipientId = milesPet.UserId,
+                    RequestMessage = "Ще станат големи приятели с моето мини прасенце Грут."
+                };
+                requestsList.Add(userRequestMiles);
+                var userRequestGoldy = new UserRequest
+                {
+                    PetId = goldyPet.Id,
+                    CreatedOn = DateTime.Now,
+                    SenderId = viktoriaUser.Id,
+                    RecipientId = goldyPet.UserId,
+                    RequestMessage = "Много ми харесва рибката, ще си намери място в моят голям аквариум."
+                };
+                requestsList.Add(userRequestGoldy);
+
+                var userRequestLeo = new UserRequest
+                {
+                    PetId = leoPet.Id,
+                    CreatedOn = DateTime.Now,
+                    SenderId = petarUser.Id,
+                    RecipientId = leoPet.UserId,
+                    RequestMessage = "Искам да приютя този сладък гущер!"
+                };
+                requestsList.Add(userRequestLeo);
+                var userRequestRay = new UserRequest
+                {
+                    PetId = rayPet.Id,
+                    CreatedOn = DateTime.Now,
+                    SenderId = viktorAdmin.Id,
+                    RecipientId = rayPet.UserId,
+                    RequestMessage = "Много ми харесва това куче. Имам голям двор на село, където може да се разхожда безгрижно."
+                };
+                requestsList.Add(userRequestRay);
+
+                await requestContext.CreateAsync(requestsList);
+                #endregion
+            }
+        }
 	}
 	#endregion
 }

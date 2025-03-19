@@ -67,13 +67,22 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             /// </summary>
             /// 
             [Required]
-            [Display(Name = "Потребител")]
+            [Display(Name = "Потребителско име")]
             public string Username { get; set; }
+
+            [Required]
+            [Display(Name = "Име")]
+            public string Name { get; set; }
 
             [Required]
             [EmailAddress]
             [Display(Name = "Имейл")]
             public string Email { get; set; }
+
+            [Required]
+            [Phone]
+            [Display(Name = "Телефон")]
+            public string PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -120,6 +129,8 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
                 await _userManager.SetEmailAsync(user, Input.Email);
                 user.Town = await _townService.ReadAsync(Input.TownId,false);
                 user.TownId = user.Town.Id;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.Name = Input.Name;
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
