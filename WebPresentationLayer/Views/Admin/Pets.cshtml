@@ -1,5 +1,147 @@
 ﻿@{
-    ViewData["Title"] = "Pets";
-    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+	ViewData["Title"] = "Pets";
+	Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+	var items = (List<Pet>)ViewBag.petItems;
+	var currentPage = (int)ViewBag.petPage;
+	var pageSize = (int)ViewBag.petPageSize;
 }
-<div>Pets</div>
+<h2 class="page-title">Домашни любимци</h2>
+<form method="get" name="filter">
+	<input type="hidden" name="page" value="@currentPage" />
+	<table class="table table-bordered table-striped w-100">
+		<thead>
+			<tr>
+				<th style="width:60px;"></th>
+				<th style="width:70px">име</th>
+				<th style="width:130px">добавен на</th>
+				<th style="width:130px">осиновен на</th>
+				<th>порода</th>
+				<th style="width:170px">тип животно</th>
+				<th style="width:170px">пол</th>
+				<th style="width:150px">собственик</th>
+				<th>aктивност</th>
+			</tr>
+			<tr>
+				<th>
+					<button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+						</svg>
+					</button>
+				</th>
+				<th>
+					<input name="name" class="form-control form-control-sm w-100" value="@ViewBag.petName">
+				</th>
+				<th></th>
+				<th></th>
+				<th>
+					<input name="breed" class="form-control form-control-sm w-100" value="@ViewBag.petBreed">
+				</th>
+				<th>
+					<select name="type"  asp-items="ViewBag.PetTypeOptions" onchange="this.form.submit()" class="form-select">
+					 <option value="">всички</option>
+					 </select>
+				</th>
+				<th>
+					<select name="gender"  asp-items="ViewBag.GenderOptions" onchange="this.form.submit()" class="form-select">
+					<option value="">всички</option>
+					</select>
+				</th>
+				<th>
+					<input name="ownerName" class="form-control form-control-sm w-100" value="@ViewBag.petOwnerName">
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in items)
+			{
+				<tr>
+					<td>
+						<a href="/admin/pets/@(item.Id)?returnUrl=@ViewBag.ReturnUrl" class="btn btn-outline-secondary">
+							<svg class="bi" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+								<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+							</svg>
+						</a>
+					</td>
+					<td>@item.Name</td>
+					<td>@item.AddedOn.ToShortDateString()</td>
+					<td>
+						@if (item.AdoptedOn == null)
+							{
+								<text>не е осиновен</text>
+							}
+						else
+						{
+								@item.AdoptedOn?.ToShortDateString()
+						 }
+					</td>
+					<td>@item.Breed</td>
+					<td>@item.PetType.ToDescriptionString()</td>
+					<td>
+					@if(item.Gender == GenderEnum.Male)
+					{
+						<span title="мъжки">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-male" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8" />
+						</svg>
+						Мъжки
+						</span>
+					}
+					else if(item.Gender == GenderEnum.Female)
+					{
+						<span title="женски">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-female" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5" />
+						</svg>
+						Женски
+						</span>
+					}
+					else if(item.Gender == GenderEnum.Other)
+					{
+						<span title="не се знае">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question" viewBox="0 0 16 16">
+						<path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+						</svg>
+						Не се знае
+						</span>
+					}
+					</td>
+					<td>@item.User.Name</td>
+					<td style="text-align: center;">
+						@if (item.IsActive)
+						{
+							<span class="badge bg-success" style="display: inline-block;">Активен</span>
+						}
+						else
+						{
+						<span class="badge bg-danger" style="display: inline-block;">Неактивен</span>
+						}
+					</td>
+				</tr>
+			}
+			@if (items.Count == 0)
+			{
+				<tr>
+					<td colspan="9">няма домашни любимци отговарящи на твоята заявка</td>
+				</tr>
+			}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="9">
+					<nav>
+						<ul class="pagination mb-0">
+							<li class="page-item @(currentPage == 1 ? "disabled" : "")">
+								<button type="button" class="page-link" data-type="previous">Previous</button>
+							</li>
+							<li class="page-item @(items.Count < pageSize ? "disabled" : "")">
+								<button type="button" class="page-link" data-type="next">Next</button>
+							</li>
+						</ul>
+					</nav>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</form>

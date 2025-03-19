@@ -1,6 +1,8 @@
-﻿using DataLayer;
+﻿using Azure;
+using DataLayer;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Data;
+using System.Drawing.Printing;
 
 namespace BusinessLayer
 {
@@ -12,7 +14,10 @@ namespace BusinessLayer
         {
             _PetContext = new PetDbContext(_ProjectContext);
         }
-
+        public async Task<List<Pet>> ReadAllWithFilterAsync(string name,string petBreed, string petType, string gender, string ownerName,int  page,int pageSize,bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            return await _PetContext.ReadAllWithFilterAsync(name, petBreed, petType, gender, ownerName, page, pageSize, useNavigationalProperties, isReadOnly);
+        }
         #region CRUD
         public async Task CreateAsync(Pet entity)
         {

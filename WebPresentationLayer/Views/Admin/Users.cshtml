@@ -46,6 +46,7 @@
 				</th>
 				<th></th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -81,13 +82,13 @@
 			@if (items.Count == 0)
 			{
 				<tr>
-					<td colspan="8">няма потребители отговарящи на твоята заявка</td>
+					<td colspan="9">няма потребители отговарящи на твоята заявка</td>
 				</tr>
 			}
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="8">
+				<td colspan="9">
 					<nav>
 						<ul class="pagination mb-0">
 							<li class="page-item @(currentPage == 1 ? "disabled" : "")">

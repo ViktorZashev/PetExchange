@@ -15,16 +15,19 @@ namespace WebPresentationLayer.Controllers;
 public class AdminController : Controller
 {
 	private readonly UserService _userSrv;
+	private readonly PetService _petSrv;
 	private readonly TownService _townSrv;
 	private readonly FileService _fileSrv;
 
-	public AdminController(UserService userService,
+	public AdminController(UserService userService, PetService petService,
 		TownService townService, FileService fileService)
 	{
 		_userSrv = userService;
 		_townSrv = townService;
 		_fileSrv = fileService;
-	}
+		_petSrv = petService;
+
+    }
 	public async Task<IActionResult> Users(
 		[FromQuery] string username = null,
 		[FromQuery] string name = null,
@@ -41,7 +44,7 @@ public class AdminController : Controller
 			email,
 			town,
 			role,
-			page,
+			page:page,
 			pageSize: pageSize,
 			useNavigationalProperties: true,
 			isReadOnly: true
@@ -137,12 +140,59 @@ public class AdminController : Controller
 	}
 
 
-	public IActionResult Pets()
-	{
-		return View();
-	}
+    public async Task<IActionResult> Pets(
+        [FromQuery] string name = null,
+		[FromQuery] string breed = null,
+        [FromQuery] string type = null,
+        [FromQuery] string gender = null,
+        [FromQuery] string ownerName = null,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10
+    )
+    {
+        ViewBag.petItems = await _petSrv.ReadAllWithFilterAsync(
+            name,
+			breed,
+            type,
+            gender,
+            ownerName,
+            page,
+            pageSize,
+            useNavigationalProperties: true,
+            isReadOnly: true
+        );
+        ViewBag.petName = name;
+        ViewBag.petBreed = breed;
+        ViewBag.petType = type;
+        ViewBag.petGender = gender;
+        ViewBag.petOwnerName = ownerName;
+        ViewBag.petPage = page;
+        ViewBag.petPageSize = pageSize;
+		ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+					.Cast<GenderEnum>()
+					.Select(rt => new SelectListItem
+					{
+						Value = rt.ToDescriptionString(),
+						Text = rt.ToDescriptionString(),
+						Selected = gender == rt.ToDescriptionString() ? true : false
+					})
+					.ToList();
 
-	public IActionResult Requests()
+	    ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+                    .Cast<PetTypeEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToDescriptionString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = type == rt.ToDescriptionString() ? true : false
+                    })
+                    .ToList();
+
+        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+        return View();
+    }
+
+    public IActionResult Requests()
 	{
 		return View();
 	}
