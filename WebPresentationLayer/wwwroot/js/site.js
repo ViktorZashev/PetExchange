@@ -1,4 +1,4 @@
-﻿
+﻿//Filters
 function onFilterClick(option) {
 	if (option.classList.contains("selected")) {
 		unSelectFilter(option);
@@ -60,6 +60,8 @@ function applyChangeToUrl(queryName, value, isRemove) {
 		}
 		params[queryName] = values;
 	}
+	if (params.page)
+		delete params.page;
 	var paramList = [];
 	for (var propName in params) {
 		paramList.push(propName + "=" + params[propName].join(","))
@@ -81,6 +83,7 @@ function clearFiltersClick() {
 	window.location.href = window.location.pathname;
 }
 
+//Paging
 function onPaginationButtonClick(button) {
 	var type = "previous";
 	if (button.dataset.type) {

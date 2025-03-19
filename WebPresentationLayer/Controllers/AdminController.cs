@@ -139,7 +139,7 @@ public class AdminController : Controller
 		}
 	}
 
-
+	// Домашни любимци
     public async Task<IActionResult> Pets(
         [FromQuery] string name = null,
 		[FromQuery] string breed = null,
@@ -190,6 +190,95 @@ public class AdminController : Controller
 
         ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
         return View();
+    }
+
+    [HttpGet("/admin/pets/{petId:guid}")]
+    public async Task<IActionResult> PetManage(
+        [FromRoute] Guid petId,
+        [FromQuery] string returnUrl)
+    {
+        ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
+        var dbPet = await _petSrv.ReadAsync(petId, true, true);
+        var pet = new PetManage
+        {
+            Name = dbPet.Name,
+            AddedOn = dbPet.AddedOn,
+            AdoptedOn = dbPet.AdoptedOn,
+            Birthday = dbPet.Birthday,
+            Breed = dbPet.Breed,
+            PhotoPath = dbPet.PhotoPath,
+            isActive = dbPet.IsActive,
+            PetType = dbPet.PetType,
+            Gender = dbPet.Gender,
+            Description = dbPet.Description,
+			IncludesCage = dbPet.IncludesCage,
+			UserRequests = dbPet.UserRequests
+        };
+        ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+                    .Cast<GenderEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = dbPet.Gender == rt ? true : false
+                    })
+                    .ToList();
+
+        ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+                    .Cast<PetTypeEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = dbPet.PetType == rt ? true : false
+                    })
+                    .ToList();
+        return View(pet);
+    }
+
+    [HttpPost("/admin/pets/{petId:guid}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> PetManage([FromRoute] Guid petId,
+        [FromQuery] string returnUrl,
+        PetManage pet)
+    {
+        if (ModelState.IsValid)
+        {
+            var dbPet = await _petSrv.ReadAsync(petId, false);
+            if (pet.Image is not null)
+            {
+                var fileBytes = new MemoryStream();
+                await pet.Image.CopyToAsync(fileBytes);
+                var extension = Path.GetExtension(pet.Image.FileName);
+                //Save new photo file
+                var imageName = $"{Guid.NewGuid()}{extension}";
+                _fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
+                //Delete old photo file
+                if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath))
+                    _fileSrv.DeleteFile(dbPet.PhotoPath);
+
+                dbPet.PhotoPath = $"/pet/{imageName}";
+            }
+            dbPet.Name = pet.Name;
+            dbPet.AddedOn = pet.AddedOn;
+            dbPet.AdoptedOn = pet.AdoptedOn;
+            dbPet.Birthday = pet.Birthday;
+            dbPet.Breed = pet.Breed;
+            dbPet.IsActive = pet.isActive;
+            dbPet.PetType = pet.PetType;
+            dbPet.Gender = pet.Gender;
+            dbPet.Description = pet.Description;
+            dbPet.IncludesCage = pet.IncludesCage;
+            dbPet.UserRequests = pet.UserRequests;
+            await _petSrv.UpdateAsync(dbPet);
+            var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
+            return LocalRedirect(backUrl);
+        }
+        else
+        {
+            ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
+            return View(pet);
+        }
     }
 
     public IActionResult Requests()

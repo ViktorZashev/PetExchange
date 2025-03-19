@@ -1,0 +1,125 @@
+﻿@model PetManage
+@{
+	ViewData["Title"] = "Pets";
+	Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h2 class="page-title">Редакция на домашен любимец</h2>
+
+<form method="post" asp-name="filter" enctype="multipart/form-data">
+	<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="Name" class="form-label"></label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="Birthday" class="form-label"></label>
+						<input type="date" asp-for="Birthday" class="form-control" />
+						<span asp-validation-for="Birthday" class="text-danger"></span>
+					</div>
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="AddedOn" class="form-label"></label>
+						<input type="date" disabled asp-for="AddedOn" class="form-control"/>
+						<span asp-validation-for="AddedOn" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-6">
+
+					<div class="mb-3">
+						<label asp-for="AdoptedOn" class="form-label"></label>
+						@if (Model.AdoptedOn is null)
+						{
+							<br />
+							<span class="badge bg-danger" style="display: inline-block;">He e осиновен!</span>
+						}
+						else
+						{
+							<input disabled asp-for="AdoptedOn" class="form-control" />
+						}
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="Breed" class="form-label"></label>
+						<input asp-for="Breed" class="form-control" />
+						<span asp-validation-for="Breed" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="PetType" class="form-label"></label>
+						<select asp-for="PetType" asp-items="ViewBag.PetTypeOptions" class="form-select ">
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="Gender" class="form-label"></label>
+						<select asp-for="Gender" asp-items="ViewBag.GenderOptions" class="form-select"></select>
+					</div>
+				</div>
+				<div class="col-6">
+				</div> 
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="mb-3">
+						<label asp-for="Description" class="form-label"></label>
+						<textarea asp-for="Description" class="form-control"></textarea>
+						<span asp-validation-for="Description" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<img src="@Model.PhotoPath" class="img-thumbnail" style="max-width:100%;max-height:80px" />
+					<input type="hidden" asp-for="PhotoPath" />
+				</div>
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="Image" class="form-label"></label>
+						<input type="file" asp-for="Image" accept=".jpg,.jpeg,.png" class="form-control" />
+						<span asp-validation-for="Image" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<div class="mb-3">
+						<label asp-for="isActive" class="form-label">Активност</label>
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" asp-for="isActive" role="switch" id="flexSwitchCheckDefault">
+						</div>
+						<span asp-validation-for="isActive" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<button type="submit" class="btn btn-primary me-3">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy" viewBox="0 0 16 16">
+					<path d="M11 2H9v3h2z" />
+					<path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
+				</svg>
+				Запази
+			</button>
+			<a href="@ViewBag.CancelUrl" class="btn btn-outline-secondary">Отказ</a>
+		</div>
+	</div>
+</form>
