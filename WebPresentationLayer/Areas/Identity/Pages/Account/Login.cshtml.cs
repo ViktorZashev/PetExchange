@@ -10,13 +10,15 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        private readonly UserService _userService;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserService userService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userService = userService;
         }
 
         /// <summary>
@@ -100,10 +102,13 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                if(_signInManager.Find
-                //TODO VIKTOR: find user by username
-                //if user exist check if Active if not fail the login with 
-                //ModelState.AddModelError(string.Empty, "Потребителят е блокиран");
+                var allUsers = await _userService.ReadAllAsync();
+                var foundUserByUsername = allUsers.Find(x => x.UserName == Input.Username);
+                if (foundUserByUsername.IsActive == false)
+                {
+                    ModelState.AddModelError(string.Empty, "Потребителят е блокиран.");
+                    return Page();
+                }
 
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)

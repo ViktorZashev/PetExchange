@@ -14,9 +14,10 @@
 				<th style="width:60px;"></th>
 				<th>потребител</th>
 				<th>имейл</th>
-				<th>име</th>
+				<th style="width:150px">име</th>
 				<th>град</th>
 				<th>роля</th>
+				<th>активност</th>
 				<th style="width:80px;">искания</th>
 				<th style="width:80px;">любимци</th>
 			</tr>
@@ -63,6 +64,16 @@
 					<td>@item.Name</td>
 					<td>@item.Town.Name</td>
 					<td>@item.Role.ToDescriptionString()</td>
+					<td style="text-align: center;">
+						@if (item.IsActive)
+						{
+							<span class="badge bg-success" style="display: inline-block;">Активен</span>
+						}
+						else
+						{
+						<span class="badge bg-danger" style="display: inline-block;">Неактивен</span>
+						}
+					</td>
 					<td>@item.RequestOutbox.Count</td>
 					<td>@item.Pets.Count</td>
 				</tr>
