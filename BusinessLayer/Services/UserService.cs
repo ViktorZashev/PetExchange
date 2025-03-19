@@ -16,7 +16,7 @@ namespace BusinessLayer
             _UserContext = new UserDbContext(_ProjectContext);
         }
 
-        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, bool ascendingUsername, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role,int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             return await _UserContext.ReadAllWithFilterAsync(
             username: username,
@@ -24,7 +24,6 @@ namespace BusinessLayer
             email: email,
             town: town,
             role: role,
-            ascendingUsername: ascendingUsername,
             page: page,
             pageSize: pageSize,
             useNavigationalProperties: useNavigationalProperties,

@@ -41,7 +41,6 @@ public class AdminController : Controller
 			email,
 			town,
 			role,
-			ascendingUsername: true,
 			page,
 			pageSize: pageSize,
 			useNavigationalProperties: true,
@@ -74,6 +73,7 @@ public class AdminController : Controller
 			Name = dbUser.Name,
 			PhotoPath = dbUser.PhotoPath,
 			Role = dbUser.Role,
+			isActive = dbUser.IsActive,
 			TownId = dbUser.TownId,
 		};
 		var roles = new List<SelectListItem>();
@@ -116,6 +116,7 @@ public class AdminController : Controller
 			dbUser.PhoneNumber = user.PhoneNumber;
 			dbUser.TownId = user.TownId;
 			dbUser.Role = user.Role;
+			dbUser.IsActive = user.isActive;
 			await _userSrv.UpdateAsync(dbUser);
 			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/users";
 			return LocalRedirect(backUrl);

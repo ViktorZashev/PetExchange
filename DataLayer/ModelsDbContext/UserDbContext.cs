@@ -31,7 +31,7 @@ namespace DataLayer
             await _dbcontext.SaveChangesAsync();
         }
 
-        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, bool ascendingUsername, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             try
             {
@@ -41,13 +41,9 @@ namespace DataLayer
                         (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
                         && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))
                         && (String.IsNullOrWhiteSpace(email) || x.Email.Contains(email))
-                        && (String.IsNullOrWhiteSpace(town) || x.Town.ToString() == town)
-                        && (String.IsNullOrWhiteSpace(role) || x.Role.ToString() == role)
+                        && (String.IsNullOrWhiteSpace(town) || x.Town.Name.ToLower().Contains(town.ToLower()))
+                        && (String.IsNullOrWhiteSpace(role) || x.Role.ToDescriptionString().ToLower().Contains(role.ToLower()))
                         ).ToList();
-                // sorting
-                if (ascendingUsername == true) {
-                    filteredUsers = filteredUsers.OrderBy(x => x.UserName).ThenBy(x => x.Name).ToList();
-                }
                 // paging
                 filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList(); 
                 return filteredUsers;

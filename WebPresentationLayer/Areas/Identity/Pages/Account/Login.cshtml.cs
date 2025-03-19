@@ -100,6 +100,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                if(_signInManager.Find
                 //TODO VIKTOR: find user by username
                 //if user exist check if Active if not fail the login with 
                 //ModelState.AddModelError(string.Empty, "Потребителят е блокиран");

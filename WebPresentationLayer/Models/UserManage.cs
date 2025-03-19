@@ -27,7 +27,10 @@ public class UserManage
 
 	public string? PhotoPath { get; set; } = null;
 
-	[DisplayName("Роля")]
+    [DisplayName("Активност на профила")]
+    public bool isActive { get; set; } = true;
+
+    [DisplayName("Роля")]
 	[Required(ErrorMessage = "задължително")]
 	public RoleEnum Role { get; set; } = RoleEnum.User;
 
