@@ -125,7 +125,7 @@
 	</div>
 </div>
 
-@if (item.IsActive && item.SenderId == currentUser.Id)
+@if (item.IsActive && currentUser is not null && item.SenderId == currentUser.Id)
 {
 	@* Cancel *@
 	<button type="submit" form="@("form-cancel-" + item.Id)" onclick="return confirm('Наистина ли искате да отмените това искане?');" class="btn btn-outline-danger" title="отмени">
@@ -138,7 +138,7 @@
 		<input type="hidden" name="requestId" value="@item.Id" />
 	</form>
 }
-else if (item.IsActive && item.RecipientId == currentUser.Id)
+else if (item.IsActive && currentUser is not null && item.RecipientId == currentUser.Id)
 {
 	@* Accept *@
 	<a class="btn btn-outline-success" href="#" data-bs-toggle="modal" data-bs-target="@("#accept-" + item.Id)" title="приеми">

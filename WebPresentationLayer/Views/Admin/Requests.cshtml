@@ -42,8 +42,8 @@
 		{
 
 			<tr>
-				               <!-- To give readonly privillages, I create a new user and give it to UserRequestsActions-->
-				<td>@await Component.InvokeAsync("UserRequestActions", new { item = item, currentUser = new User() })</td>
+				              
+				<td>@await Component.InvokeAsync("UserRequestActions", new { item = item, currentUser = (User)null })</td>
 				<td>
 					@if (item.AcceptedOn.HasValue)
 					{

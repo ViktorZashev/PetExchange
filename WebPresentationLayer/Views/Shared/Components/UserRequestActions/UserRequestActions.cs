@@ -1,7 +1,7 @@
 ﻿namespace WebPresentationLayer.Components;
 public class UserRequestActions : ViewComponent
 {
-	public async Task<IViewComponentResult> InvokeAsync(UserRequest item, User currentUser)
+	public async Task<IViewComponentResult> InvokeAsync(UserRequest item, User? currentUser)
 	{
 		ViewBag.Item = item;
 		ViewBag.CurrentUser = currentUser;
