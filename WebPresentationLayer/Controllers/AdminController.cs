@@ -191,7 +191,7 @@ public class AdminController : Controller
                     .ToList();
 
         ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
-        return View();
+        return View("Views/Admin/Pets.cshtml");
     }
 
     [HttpGet("/admin/pets/{petId:guid}")]
@@ -262,7 +262,6 @@ public class AdminController : Controller
                 dbPet.PhotoPath = $"/pet/{imageName}";
             }
             dbPet.Name = pet.Name;
-            dbPet.AddedOn = pet.AddedOn;
             dbPet.AdoptedOn = pet.AdoptedOn;
             dbPet.Birthday = pet.Birthday;
             dbPet.Breed = pet.Breed;

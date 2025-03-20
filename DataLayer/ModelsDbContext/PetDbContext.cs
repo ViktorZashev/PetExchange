@@ -33,6 +33,30 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public async Task<List<Pet>> ReadAllWithFilterAsyncOfUser(Guid userId, string name, string petBreed, string petType, string gender, int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            try
+            {
+                var allPets = await ReadAllAsync(useNavigationalProperties, isReadOnly);
+                // filtering
+                var filteredPets = allPets.Where(x =>
+                (String.IsNullOrWhiteSpace(name) || x.Name.ToLower().Contains(name.ToLower()))
+                && (String.IsNullOrWhiteSpace(petBreed) || x.Breed.ToLower().Contains(petBreed.ToLower()))
+                && (String.IsNullOrWhiteSpace(petType) || x.PetType.ToDescriptionString().ToLower().Contains(petType.ToLower()))
+                && (String.IsNullOrWhiteSpace(gender) || x.Gender.ToDescriptionString().ToLower().Contains(gender.ToLower()))
+				&& x.UserId == userId
+                ).ToList();
+                // paging
+                filteredPets = filteredPets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                return filteredPets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #region CRUD
         public async Task CreateAsync(Pet entity)
 		{

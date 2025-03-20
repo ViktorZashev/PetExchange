@@ -159,12 +159,156 @@ public class AccountController : Controller
         return RedirectToAction("ChangePassword");
     }
 
-    public IActionResult Pets()
-	{
-		return View();
-	}
+    public async Task<IActionResult> Pets(
+      [FromQuery] string name = null,
+      [FromQuery] string breed = null,
+      [FromQuery] string type = null,
+      [FromQuery] string gender = null,
+      [FromQuery] int page = 1,
+      [FromQuery] int pageSize = 10
+  )
+    {
+        User? currentUser = null;
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext?.User is not null)
+        {
+            var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is not null)
+            {
+                currentUser = await _userManager.FindByIdAsync(userId);
+            }
+        }
+        if (currentUser is null) return Unauthorized();
 
-	public async Task<IActionResult> RequestInbox()
+        ViewBag.petItems = await _petService.ReadAllWithFilterAsyncOfUser(currentUser.Id,
+            name,
+            breed,
+            type,
+            gender,
+            page,
+            pageSize,
+            useNavigationalProperties: true,
+            isReadOnly: true
+        );
+        ViewBag.petName = name;
+        ViewBag.petBreed = breed;
+        ViewBag.petType = type;
+        ViewBag.petGender = gender;
+        ViewBag.petPage = page;
+        ViewBag.petPageSize = pageSize;
+        ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+                    .Cast<GenderEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToDescriptionString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = gender == rt.ToDescriptionString() ? true : false
+                    })
+                    .ToList();
+
+        ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+                    .Cast<PetTypeEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToDescriptionString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = type == rt.ToDescriptionString() ? true : false
+                    })
+                    .ToList();
+
+        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+        return View("Views/Account/Pets.cshtml");
+    }
+
+    [HttpGet("/account/pets/{petId:guid}")]
+    public async Task<IActionResult> PetManage(
+       [FromRoute] Guid petId,
+       [FromQuery] string returnUrl)
+    {
+        ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+        var dbPet = await _petService.ReadAsync(petId, true, true);
+        var pet = new PetManage
+        {
+            Name = dbPet.Name,
+            AddedOn = dbPet.AddedOn,
+            AdoptedOn = dbPet.AdoptedOn,
+            Birthday = dbPet.Birthday,
+            Breed = dbPet.Breed,
+            PhotoPath = dbPet.PhotoPath,
+            isActive = dbPet.IsActive,
+            PetType = dbPet.PetType,
+            Gender = dbPet.Gender,
+            Description = dbPet.Description,
+            IncludesCage = dbPet.IncludesCage,
+            UserRequests = dbPet.UserRequests
+        };
+        ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+                    .Cast<GenderEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = dbPet.Gender == rt ? true : false
+                    })
+                    .ToList();
+
+        ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+                    .Cast<PetTypeEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToString(),
+                        Text = rt.ToDescriptionString(),
+                        Selected = dbPet.PetType == rt ? true : false
+                    })
+                    .ToList();
+        return View(pet);
+    }
+
+    [HttpPost("/account/pets/{petId:guid}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> PetManage([FromRoute] Guid petId,
+        [FromQuery] string returnUrl,
+        PetManage pet)
+    {
+        if (ModelState.IsValid)
+        {
+            var dbPet = await _petService.ReadAsync(petId, false);
+            if (pet.Image is not null)
+            {
+                var fileBytes = new MemoryStream();
+                await pet.Image.CopyToAsync(fileBytes);
+                var extension = Path.GetExtension(pet.Image.FileName);
+                //Save new photo file
+                var imageName = $"{Guid.NewGuid()}{extension}";
+                _fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
+                //Delete old photo file
+                if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath))
+                    _fileSrv.DeleteFile(dbPet.PhotoPath);
+
+                dbPet.PhotoPath = $"/pet/{imageName}";
+            }
+            dbPet.Name = pet.Name;
+            dbPet.AdoptedOn = pet.AdoptedOn;
+            dbPet.Birthday = pet.Birthday;
+            dbPet.Breed = pet.Breed;
+            dbPet.IsActive = pet.isActive;
+            dbPet.PetType = pet.PetType;
+            dbPet.Gender = pet.Gender;
+            dbPet.Description = pet.Description;
+            dbPet.IncludesCage = pet.IncludesCage;
+            dbPet.UserRequests = pet.UserRequests;
+            await _petService.UpdateAsync(dbPet);
+            var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+            return LocalRedirect(backUrl);
+        }
+        else
+        {
+            ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+            return View(pet);
+        }
+    }
+
+    public async Task<IActionResult> RequestInbox()
 	{
 		User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;

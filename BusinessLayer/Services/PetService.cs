@@ -18,6 +18,10 @@ namespace BusinessLayer
         {
             return await _PetContext.ReadAllWithFilterAsync(name, petBreed, petType, gender, ownerName, page, pageSize, useNavigationalProperties, isReadOnly);
         }
+        public async Task<List<Pet>> ReadAllWithFilterAsyncOfUser(Guid userId, string name, string petBreed, string petType, string gender, int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            return await _PetContext.ReadAllWithFilterAsyncOfUser(userId,name, petBreed, petType, gender, page, pageSize, useNavigationalProperties, isReadOnly);
+        }
         #region CRUD
         public async Task CreateAsync(Pet entity)
         {
