@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using System.Drawing;
 using System.Security.Claims;
 using System.Web;
 using WebPresentationLayer.Models;
@@ -33,6 +34,7 @@ public class AccountController : Controller
 		_userService = userService;
 		this._fileSrv = _fileSrv;
 	}
+    #region Details & Change Password
     public async Task<IActionResult> Details()
     {
         User? currentUser = null;
@@ -159,6 +161,9 @@ public class AccountController : Controller
         return RedirectToAction("ChangePassword");
     }
 
+    #endregion
+
+    #region Pets
     public async Task<IActionResult> Pets(
       [FromQuery] string name = null,
       [FromQuery] string breed = null,
@@ -215,6 +220,7 @@ public class AccountController : Controller
                         Selected = type == rt.ToDescriptionString() ? true : false
                     })
                     .ToList();
+        ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
 
         ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
         return View("Views/Account/Pets.cshtml");
@@ -299,6 +305,7 @@ public class AccountController : Controller
             dbPet.UserRequests = pet.UserRequests;
             await _petService.UpdateAsync(dbPet);
             var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+            TempData["ShowEditSuccessfulMessage"] = true;
             return LocalRedirect(backUrl);
         }
         else
@@ -308,6 +315,88 @@ public class AccountController : Controller
         }
     }
 
+    [HttpGet("account/pets/create")]
+    public async Task<IActionResult> PetCreate()
+    {
+        ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+                    .Cast<GenderEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToString(),
+                        Text = rt.ToDescriptionString()
+                    })
+                    .ToList();
+
+        ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+                    .Cast<PetTypeEnum>()
+                    .Select(rt => new SelectListItem
+                    {
+                        Value = rt.ToString(),
+                        Text = rt.ToDescriptionString()
+                    })
+                    .ToList();
+        ViewBag.CancelUrl = "/account/pets";
+        return View("PetCreate");
+    }
+
+    [HttpPost("/account/pets/create")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> PetCreate(
+        [FromQuery] string returnUrl,
+        PetManage pet)
+    {
+        if (ModelState.IsValid)
+        {
+            var newPet = new Pet();
+            if (pet.Image is not null)
+            {
+                var fileBytes = new MemoryStream();
+                await pet.Image.CopyToAsync(fileBytes);
+                var extension = Path.GetExtension(pet.Image.FileName);
+                //Save new photo file
+                var imageName = $"{Guid.NewGuid()}{extension}";
+                _fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
+                //Delete old photo file
+
+                newPet.PhotoPath = $"/pet/{imageName}";
+            }
+            User? currentUser = null;
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (httpContext?.User is not null)
+            {
+                var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId is not null)
+                {
+                    currentUser = await _userManager.FindByIdAsync(userId);
+                }
+            }
+            if (currentUser is null) return Unauthorized();
+            newPet.Name = pet.Name;
+            newPet.AdoptedOn = null;
+            newPet.AddedOn = DateTime.Now;
+            newPet.Birthday = pet.Birthday;
+            newPet.Breed = pet.Breed;
+            newPet.IsActive = true;
+            newPet.PetType = pet.PetType;
+            newPet.Gender = pet.Gender;
+            newPet.Description = pet.Description;
+            newPet.IncludesCage = pet.IncludesCage;
+            newPet.User = currentUser;
+            await _petService.CreateAsync(newPet);
+            var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+            TempData["ShowEditSuccessfulMessage"] = true;
+            return LocalRedirect(backUrl);
+        }
+        else
+        {
+            ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+            return View(pet);
+        }
+    }
+
+    #endregion
+
+    #region RequestsInbox & Outbox
     public async Task<IActionResult> RequestInbox()
 	{
 		User? currentUser = null;
@@ -349,7 +438,10 @@ public class AccountController : Controller
 		return View();
 	}
 
-	[HttpPost("/account/deny-request")]
+    #endregion
+
+    #region Request Actions
+    [HttpPost("/account/deny-request")]
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> DenyRequest([FromForm] Guid requestId,
 	[FromForm] UserRequestAction request)
@@ -452,4 +544,5 @@ public class AccountController : Controller
 		}
 		return View(request);
 	}
+    #endregion
 }

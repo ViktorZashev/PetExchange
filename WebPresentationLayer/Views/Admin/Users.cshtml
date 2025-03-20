@@ -4,8 +4,13 @@
 	var items = (List<User>)ViewBag.Items;
 	var currentPage = (int)ViewBag.Page;
 	var pageSize = (int)ViewBag.PageSize;
+	var showEditSuccess = (bool?)ViewBag.ShowEditSuccess ?? false;
 }
 <h2 class="page-title">Потребители</h2>
+@if (showEditSuccess)
+{
+	<div class="alert alert-success" role="alert">Промените бяха запазени!</div>
+}
 <form method="get" name="filter">
 	<input type="hidden" name="page" value="@currentPage" />
 	<table class="table table-bordered table-striped w-100">

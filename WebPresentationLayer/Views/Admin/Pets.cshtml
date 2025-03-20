@@ -4,8 +4,13 @@
 	var items = (List<Pet>)ViewBag.petItems;
 	var currentPage = (int)ViewBag.petPage;
 	var pageSize = (int)ViewBag.petPageSize;
+	var showEditSuccess = (bool?)ViewBag.ShowEditSuccess ?? false;
 }
 <h2 class="page-title">Домашни любимци</h2>
+@if (showEditSuccess)
+{
+	<div class="alert alert-success" role="alert">Промените бяха запазени!</div>
+}
 <form method="get" name="filter">
 	<input type="hidden" name="page" value="@currentPage" />
 	<table class="table table-bordered table-striped w-100">

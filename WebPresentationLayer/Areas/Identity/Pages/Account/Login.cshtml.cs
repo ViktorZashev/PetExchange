@@ -104,7 +104,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             {
                 var allUsers = await _userService.ReadAllAsync();
                 var foundUserByUsername = allUsers.Find(x => x.UserName == Input.Username);
-                if (foundUserByUsername.IsActive == false)
+                if (foundUserByUsername != null && foundUserByUsername.IsActive == false)
                 {
                     ModelState.AddModelError(string.Empty, "Потребителят е блокиран.");
                     return Page();
