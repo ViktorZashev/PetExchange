@@ -124,13 +124,42 @@ public class AccountController : Controller
             return View(user);
         }
     }
-	
-    public IActionResult ChangePassword()
-	{
-		return View();
-	}
 
-	public IActionResult Pets()
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(string NewPassword, string ConfirmPassword)
+    {
+        if (NewPassword != ConfirmPassword)
+        {
+            TempData["ChangePasswordError"] = "Паролите не са еднакви";
+            return RedirectToAction("ChangePassword");
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, resetToken, NewPassword);
+
+        if (result.Succeeded)
+        {
+            TempData["ChangePasswordSuccess"] = true;
+            return RedirectToAction("ChangePassword");
+        }
+
+        TempData["ChangePasswordError"] = "Грешка при променянето на паролата. Опитай пак!";
+        return RedirectToAction("ChangePassword");
+    }
+
+    public IActionResult Pets()
 	{
 		return View();
 	}
