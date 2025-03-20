@@ -1,5 +1,97 @@
 ﻿@{
-    ViewData["Title"] = "Requests";
-    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+	ViewData["Title"] = "Requests";
+	Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+	var items = (List<UserRequest>)ViewBag.requestItems;
+	var currentPage = (int)ViewBag.Page;
+	var pageSize = (int)ViewBag.PageSize;
 }
-<div>Requests</div>
+<div>Искания</div>
+<form method="get" name="filter">
+<input type="hidden" name="page" value="@currentPage" />
+	<table class="table table-bordered table-striped w-100">
+	<thead>
+		<tr>
+			<th></th>
+			<th style="width:120px;">статус</th>
+			<th style="width:140px;">създадено</th>
+			<th>любимец</th>
+			<th>порода</th>
+			<th>град</th>
+			<th>Изпращач</th>
+			<th>Получател</th>
+		</tr>
+		<tr>
+			<th>
+				<button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+					</svg>
+				</button>
+			</th>
+			<th></th>
+			<th></th>
+			<th><input name="petName" class="form-control form-control-sm w-100" value="@ViewBag.petName"></th>
+			<th><input name="petBreed" class="form-control form-control-sm w-100" value="@ViewBag.petBreed"></th>
+			<th></th>
+			<th><input name="senderName" class="form-control form-control-sm w-100" value="@ViewBag.senderName"></th>
+			<th><input name="receiverName" class="form-control form-control-sm w-100" value="@ViewBag.receiverName"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in items)
+		{
+
+			<tr>
+				               <!-- To give readonly privillages, I create a new user and give it to UserRequestsActions-->
+				<td>@await Component.InvokeAsync("UserRequestActions", new { item = item, currentUser = new User() })</td>
+				<td>
+					@if (item.AcceptedOn.HasValue)
+					{
+						<span class="text-success">прието</span>
+					}
+					else if (item.DeniedOn.HasValue)
+					{
+						<span class="text-danger">отказано</span>
+					}
+					else if (item.CanceledOn.HasValue)
+					{
+						<span class="text-danger">отменено</span>
+					}
+					else
+					{
+						<span class="text-info">разглежда се</span>
+					}
+				</td>
+				<td>@item.CreatedOn.ToShortDateString()</td>
+				<td>@item.Pet.Name</td>
+				<td>@item.Pet.Breed</td>
+				<td>@item.Pet.User.Town.Name</td>
+				<td>@item.Sender.Name</td>
+				<td>@item.Pet.User.Name</td>
+			</tr>
+			}
+		@if (items.Count == 0)
+		{
+			<tr>
+				<td colspan="8">нямаш още искания</td>
+			</tr>
+		}
+	</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="8">
+					<nav>
+						<ul class="pagination mb-0">
+							<li class="page-item @(currentPage == 1 ? "disabled" : "")">
+								<button type="button" class="page-link" data-type="previous">Previous</button>
+							</li>
+							<li class="page-item @(items.Count < pageSize ? "disabled" : "")">
+								<button type="button" class="page-link" data-type="next">Next</button>
+							</li>
+						</ul>
+					</nav>
+				</td>
+			</tr>
+		</tfoot>
+</table>
+</form>

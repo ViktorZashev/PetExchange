@@ -1,0 +1,126 @@
+﻿@model UserRequest;
+@{
+	var item = (UserRequest)ViewBag.Item;
+	//var currentUser = (User)ViewBag.CurrentUser;
+}
+@* View *@
+<a class="btn btn-outline-secondary" href="#" data-bs-toggle="modal" data-bs-target="@("#details-" + item.Id)" title="детайли">
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+		<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+		<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+	</svg>
+</a>
+<div class="modal fade " id="@("details-"+item.Id)" tabindex="-1">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Детайли на Искане</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12 col-md-6">
+						<div class="pet-details">
+							<div class="image-wrapper">
+								<div class="image" style="background-image:url(@item.Pet.PhotoPath);"></div>
+							</div>
+							<div class="meta">
+								<table class="table table-bordered mt-3">
+									<tbody>
+										<tr>
+											<th style="width:200px;">Име</th>
+											<td>@item.Pet.Name</td>
+										</tr>
+										<tr>
+											<th style="width:200px;">Порода</th>
+											<td>@item.Pet.Breed</td>
+										</tr>
+										<tr>
+											<th>Собственик</th>
+											<td>@item.Recipient.Name</td>
+										</tr>
+										<tr>
+											<th>Телефон</th>
+											<td>@item.Recipient.PhoneNumber</td>
+										</tr>
+										<tr>
+											<th>Имейл</th>
+											<td>@item.Recipient.Email</td>
+										</tr>
+										<tr>
+											<th>Град</th>
+											<td>@item.Recipient.Town.Name</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-md-6">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th style="width:200px;">Създадено на</th>
+									<td>@item.CreatedOn.ToShortDateString()</td>
+								</tr>
+								@if (item.AcceptedOn.HasValue)
+								{
+									<tr>
+										<th>Прието на</th>
+										<td>@item.AcceptedOn.Value.ToShortDateString()</td>
+									</tr>
+								}
+								else if (item.DeniedOn.HasValue)
+								{
+									<tr>
+										<th>Отказано на</th>
+										<td>@item.DeniedOn.Value.ToShortDateString()</td>
+									</tr>
+								}
+								else if (item.CanceledOn.HasValue)
+								{
+									<tr>
+										<th>Отменено на</th>
+										<td>@item.CanceledOn.Value.ToShortDateString()</td>
+									</tr>
+								}
+								<tr>
+									<th style="width:200px;">Изпращач име</th>
+									<td>@item.Sender.Name</td>
+								</tr>
+								<tr>
+									<th style="width:200px;">Изпращач телефон</th>
+									<td>@item.Sender.PhoneNumber</td>
+								</tr>
+								<tr>
+									<th style="width:200px;">Изпращач имейл</th>
+									<td>@item.Sender.Email</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th colspan="2">Съобщение</th>
+								</tr>
+								<tr>
+									<td colspan="2">@(!String.IsNullOrWhiteSpace(item.RequestMessage) ? item.RequestMessage : "няма")</td>
+								</tr>
+								<tr>
+									<th colspan="2">Отговор</th>
+								</tr>
+								<tr>
+									<td colspan="2">@(!String.IsNullOrWhiteSpace(item.AnswerMessage) ? item.AnswerMessage : "няма")</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Затвори</button>
+			</div>
+		</div>
+	</div>
+</div>

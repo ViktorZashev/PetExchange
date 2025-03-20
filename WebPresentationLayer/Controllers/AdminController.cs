@@ -15,17 +15,19 @@ namespace WebPresentationLayer.Controllers;
 public class AdminController : Controller
 {
 	private readonly UserService _userSrv;
+	private readonly UserRequestsService _requestSrv;
 	private readonly PetService _petSrv;
 	private readonly TownService _townSrv;
 	private readonly FileService _fileSrv;
 
 	public AdminController(UserService userService, PetService petService,
-		TownService townService, FileService fileService)
+		TownService townService,UserRequestsService requestService, FileService fileService)
 	{
 		_userSrv = userService;
 		_townSrv = townService;
 		_fileSrv = fileService;
 		_petSrv = petService;
+        _requestSrv = requestService;
 
     }
 	public async Task<IActionResult> Users(
@@ -280,10 +282,34 @@ public class AdminController : Controller
             return View(pet);
         }
     }
+    // искания
 
-    public IActionResult Requests()
-	{
-		return View();
-	}
-
+    public async Task<IActionResult> Requests(
+        [FromQuery] string petName = null,
+        [FromQuery] string petBreed = null,
+        [FromQuery] string senderName = null,
+        [FromQuery] string receiverName = null,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10
+    )
+    {
+        ViewBag.requestItems = await _requestSrv.ReadAllWithFilterAsync(
+            petName,
+            petBreed,
+            senderName,
+            receiverName,
+            page,
+            pageSize,
+            useNavigationalProperties: true,
+            isReadOnly: true
+        );
+        ViewBag.petName = petName;
+        ViewBag.petBreed = petBreed;
+        ViewBag.senderName = senderName;
+        ViewBag.receiverName = receiverName;
+        ViewBag.page = page;
+        ViewBag.pageSize = pageSize;
+        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+        return View();
+    }
 }

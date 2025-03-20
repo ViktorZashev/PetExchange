@@ -1100,7 +1100,7 @@ namespace DataLayer
                 var userRequestTropcho = new UserRequest
 				{
 					PetId = tropchoPet.Id,
-					CreatedOn = DateTime.Now,
+					CreatedOn = DateTime.Now.AddDays(-14),
 					SenderId = toshoUser.Id,
 					RecipientId = tropchoPet.UserId,
 					RequestMessage = "Много ми харесва и ще е чудесна компания на моят джербил."
@@ -1109,7 +1109,7 @@ namespace DataLayer
                 var userRequestMiles = new UserRequest
                 {
                     PetId = milesPet.Id,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.Now.AddDays(-10),
                     SenderId = petarUser.Id,
                     RecipientId = milesPet.UserId,
                     RequestMessage = "Ще станат големи приятели с моето мини прасенце Грут."
@@ -1118,7 +1118,7 @@ namespace DataLayer
                 var userRequestGoldy = new UserRequest
                 {
                     PetId = goldyPet.Id,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.Now.AddDays(-2),
                     SenderId = viktoriaUser.Id,
                     RecipientId = goldyPet.UserId,
                     RequestMessage = "Много ми харесва рибката, ще си намери място в моят голям аквариум."
@@ -1128,7 +1128,7 @@ namespace DataLayer
                 var userRequestLeo = new UserRequest
                 {
                     PetId = leoPet.Id,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.Now.AddDays(-20),
                     SenderId = petarUser.Id,
                     RecipientId = leoPet.UserId,
                     RequestMessage = "Искам да приютя този сладък гущер!"
@@ -1137,7 +1137,7 @@ namespace DataLayer
                 var userRequestRay = new UserRequest
                 {
                     PetId = rayPet.Id,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = DateTime.Now.AddDays(-10),
                     SenderId = viktorAdmin.Id,
                     RecipientId = rayPet.UserId,
                     RequestMessage = "Много ми харесва това куче. Имам голям двор на село, където може да се разхожда безгрижно."

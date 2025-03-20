@@ -10,7 +10,32 @@ namespace DataLayer
 		{
 			_dbcontext = context;
 		}
-		public async Task CreateAsync(UserRequest entity)
+
+        public async Task<List<UserRequest>> ReadAllWithFilterAsync(string petName, string petBreed, string senderName, string receiverName,
+            int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
+        {
+            try
+            {
+                var allRequests = await ReadAllAsync(useNavigationalProperties, isReadOnly);
+                // filtering
+                var filteredRequests = allRequests.Where(x =>
+                (String.IsNullOrWhiteSpace(petName) || x.Pet.Name.ToLower().Contains(petName.ToLower()))
+                && (String.IsNullOrWhiteSpace(petBreed) || x.Pet.Breed.ToLower().Contains(petBreed.ToLower()))
+                && (String.IsNullOrWhiteSpace(senderName) || x.Sender.Name.ToLower().Contains(senderName.ToLower()))
+                && (String.IsNullOrWhiteSpace(receiverName) || x.Recipient.Name.ToLower().Contains(receiverName.ToLower()))
+                ).ToList();
+                // paging
+                filteredRequests = filteredRequests.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                return filteredRequests;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #region CRUD
+        public async Task CreateAsync(UserRequest entity)
 		{
 			try
 			{
@@ -55,9 +80,8 @@ namespace DataLayer
 				}
 				if (useNavigationalProperties)
 				{
-					query = query.Include(e => e.Pet);
-					query = query.Include(e => e.Sender);
-				}
+					query = query.Include(e => e.Pet).Include(e => e.Recipient).ThenInclude(e => e.Town).Include(e => e.Sender);
+                }
 				return await query.SingleOrDefaultAsync(e => e.Id == id);
 			}
 			catch (Exception)
@@ -78,8 +102,8 @@ namespace DataLayer
 				}
 				if (useNavigationalProperties)
 				{
-					query = query.Include(e => e.Pet);
-				}
+                    query = query.Include(e => e.Pet).Include(e => e.Recipient).ThenInclude(e => e.Town).Include(e => e.Sender);
+                }
 				return await query.ToListAsync();
 			}
 			catch (Exception)
@@ -239,5 +263,6 @@ namespace DataLayer
 				throw;
 			}
 		}
-	}
+        #endregion
+    }
 }
