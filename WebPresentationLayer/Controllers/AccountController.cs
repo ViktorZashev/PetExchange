@@ -317,7 +317,7 @@ public class AccountController : Controller
         }
     }
 
-    [HttpGet("Account/PetCreate")]
+    [HttpGet("Account/Pets/Create")]
     public async Task<IActionResult> PetCreate()
     {
         ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
