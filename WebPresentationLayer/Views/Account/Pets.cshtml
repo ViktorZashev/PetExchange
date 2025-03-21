@@ -5,13 +5,23 @@
 	var currentPage = (int)ViewBag.petPage;
 	var pageSize = (int)ViewBag.petPageSize;
 	var showEditSuccess = (bool?)ViewBag.ShowEditSuccess ?? false;
+	var showCreateSuccess = (bool?)ViewBag.ShowCreateSuccess ?? false;
+	var showDeteleSucess = (bool?)ViewBag.ShowDeleteSuccess ?? false; 
 }
 <h2 class="page-title">Моите любимци</h2>
 @if (showEditSuccess)
 {
 	<div class="alert alert-success" role="alert">Промените бяха запазени!</div>
 }
-<a href="/Account/PetCreate">
+@if (showCreateSuccess)
+{
+	<div class="alert alert-success" role="alert">Домашният любимец беше успешно регистриран!</div>
+}
+@if (showDeteleSucess)
+{
+	<div class="alert alert-success" role="alert">Домашният любимец беше успешно изтрит!</div>
+}
+<a href="/Account/Pets/Create">
 	<button type="button" class="btn btn-success mb-4">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
 			<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -24,7 +34,7 @@
 	<table class="table table-bordered table-striped w-100">
 		<thead>
 			<tr>
-				<th style="width:60px;"></th>
+				<th style="width:120px;"></th>
 				<th style="width:60px;">снимка</th>
 				<th style="width:70px">име</th>
 				<th style="width:130px">добавен на</th>
@@ -70,6 +80,12 @@
 						<a href="/account/pets/@(item.Id)?returnUrl=@ViewBag.ReturnUrl" class="btn btn-outline-secondary">
 							<svg class="bi" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
 								<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+							</svg>
+						</a>
+						<a href="#" class="btn btn-outline-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="@item.Id">
+							<svg class="bi" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+								<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+								<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
 							</svg>
 						</a>
 					</td>
@@ -146,3 +162,37 @@
 		</tfoot>
 	</table>
 </form>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="confirmDeleteModalLabel">Потвърди изтриване</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Затвори"></button>
+			</div>
+			<div class="modal-body">
+				Сигурен/a ли си, че искаш да изтриеш този запис?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
+				<form method="post" id="deleteForm">
+					<input type="hidden" name="id" id="deleteId">
+					<button type="submit" class="btn btn-danger">Изтрий</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Dynamically setting the correct client ID -->
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		document.querySelectorAll(".delete-btn").forEach(button => {
+			button.addEventListener("click", function () {
+				let PetId = this.getAttribute("data-id");
+				document.getElementById("deleteId").value = PetId;
+				document.getElementById("deleteForm").action = "/Account/Pets/Delete/" + PetId;
+			});
+		});
+	});
+</script>

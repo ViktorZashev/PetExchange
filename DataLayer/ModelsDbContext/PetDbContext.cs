@@ -46,6 +46,7 @@ namespace DataLayer
                 && (String.IsNullOrWhiteSpace(petType) || x.PetType.ToDescriptionString().ToLower().Contains(petType.ToLower()))
                 && (String.IsNullOrWhiteSpace(gender) || x.Gender.ToDescriptionString().ToLower().Contains(gender.ToLower()))
 				&& x.UserId == userId
+				&& x.IsActive == true
                 ).ToList();
                 // paging
                 filteredPets = filteredPets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -243,7 +244,7 @@ namespace DataLayer
 					throw new ArgumentException("Pet with id = " + key + " does not exist!");
 				}
 
-				_dbcontext.Pets.Remove(pet);
+				pet.IsActive = false;
 				await _dbcontext.SaveChangesAsync();
 			}
 			catch (Exception)

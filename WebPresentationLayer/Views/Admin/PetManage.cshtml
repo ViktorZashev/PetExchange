@@ -84,6 +84,13 @@
 						<textarea asp-for="Description" class="form-control"></textarea>
 						<span asp-validation-for="Description" class="text-danger"></span>
 					</div>
+					<div class="mb-3">
+						<label asp-for="IncludesCage" class="form-label">Включена клетка</label>
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" asp-for="IncludesCage" role="switch" id="flexSwitchCheckDefault">
+						</div>
+						<span asp-validation-for="IncludesCage" class="text-danger"></span>
+					</div>
 				</div>
 			</div>
 			<div class="row">
