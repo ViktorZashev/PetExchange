@@ -75,12 +75,12 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             [Required]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Това не е имейл адрес.")]
             [Display(Name = "Имейл")]
             public string Email { get; set; }
 
             [Required]
-            [Phone]
+            [Phone(ErrorMessage = "Това не е телефонен номер.")]
             [Display(Name = "Телефон")]
             public string PhoneNumber { get; set; }
 
@@ -89,7 +89,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "{0}та трябва да бъде от {2} до {1} символа.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Парола трябва да бъде минимум 6 символа и максимум 100 символа.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
             public string Password { get; set; }
@@ -118,6 +118,13 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            // Премахване на ненужни празни места в началото и краят на данните
+            Input.Email = Input.Email.Trim();
+            Input.Password = Input.Password.Trim();
+            Input.ConfirmPassword= Input.ConfirmPassword.Trim();
+            Input.PhoneNumber = Input.PhoneNumber.Trim();
+            Input.Name = Input.Name.Trim();
+
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             TownOptions = await _townService.GetTownOptions();

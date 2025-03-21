@@ -102,6 +102,9 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                // Премахване на интервали преди или след данните
+                Input.Username = Input.Username.Trim();
+                Input.Password = Input.Password.Trim();
                 var allUsers = await _userService.ReadAllAsync();
                 var foundUserByUsername = allUsers.Find(x => x.UserName == Input.Username);
                 if (foundUserByUsername != null && foundUserByUsername.IsActive == false)
@@ -113,17 +116,17 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("Потребителят се вписа успешно!.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Потребителският акаунт е заключен от достъп!");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Грешно потребителско име или парола.");
                     return Page();
                 }
             }

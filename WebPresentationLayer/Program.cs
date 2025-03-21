@@ -31,7 +31,9 @@ namespace WebPresentationLayer
 			builder.Services.AddIdentity<User, IdentityRole<Guid>>()
 				.AddRoles<IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<PetExchangeDbContext>()
-				.AddDefaultTokenProviders();
+				.AddDefaultTokenProviders()
+                .AddErrorDescriber<AppErrorDescriber>();
+            
 			builder.Services.AddLocalization();
 			builder.Services.Configure<RequestLocalizationOptions>(options =>
 		{
@@ -40,7 +42,8 @@ namespace WebPresentationLayer
 			options.SupportedCultures = supportedCultures;
 			options.SupportedUICultures = supportedCultures;
 		});
-			builder.Services.AddHttpContextAccessor();
+		
+            builder.Services.AddHttpContextAccessor();
 			builder.Services.AddRazorPages();
 			builder.Services.AddControllersWithViews();
 
