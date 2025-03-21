@@ -111,6 +111,7 @@ namespace DataLayer
 					SecurityStamp = "5SYN4D3HEFWUW6C4VBWIGJAVSN3V2FVV",
 					ConcurrencyStamp = "a50e2ef0-4b5b-4408-8810-b6ac9aa64e0f",
 					PhoneNumber = "0884296578",
+                    PhotoPath = "/accountSeeded/3943af44-e02c-4055-bdd6-c930700b4cf8.jpg",
 					PhoneNumberConfirmed = false,
 					TwoFactorEnabled = false,
 					LockoutEnd = null,
@@ -134,7 +135,8 @@ namespace DataLayer
 					SecurityStamp = "3FKOPQUKIHKROVNNLFWDKHCFWMV26RLZ",
 					ConcurrencyStamp = "9b923f0c-02ac-43cb-94bc-7ccb749c5210",
 					PhoneNumber = "0884297778",
-					PhoneNumberConfirmed = false,
+                    PhotoPath = "/accountSeeded/7e6c40f9-c001-4279-b65f-ef7c867fbc8e.jpg",
+                    PhoneNumberConfirmed = false,
 					TwoFactorEnabled = false,
 					LockoutEnd = null,
 					LockoutEnabled = true,
@@ -157,7 +159,8 @@ namespace DataLayer
 					SecurityStamp = "XKWIR572XUN74IQWEU76TOJZBSS5NKF2",
 					ConcurrencyStamp = "977fcca2-d06a-4900-b51b-e477300333b3",
 					PhoneNumber = "0884299538",
-					PhoneNumberConfirmed = false,
+                    PhotoPath = "/accountSeeded/9c3f3c11-a0b1-43ba-82e2-32260ab40aac.jpg",
+                    PhoneNumberConfirmed = false,
 					TwoFactorEnabled = false,
 					LockoutEnd = null,
 					LockoutEnabled = true,
@@ -180,6 +183,7 @@ namespace DataLayer
                     SecurityStamp = "YP6CGJSEGJ73P25J3TJFT3ATBSV5TQ2T",
                     ConcurrencyStamp = "31beaa35-c34f-42aa-9ce5-b94c980432d0",
                     PhoneNumber = "088 425 6589",
+                    PhotoPath = "/accountSeeded/97fe7f81-bbc8-4fa4-b5cd-a8efe0723d42.jpg",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnd = null,
@@ -203,6 +207,7 @@ namespace DataLayer
                     SecurityStamp = "7RNWB7P5HZQPJI65WMTCFTUPB6XCN564",
                     ConcurrencyStamp = "7aa1cf67-a000-490b-a66d-70d17443184b",
                     PhoneNumber = "085 538 0847",
+                    PhotoPath = "/accountSeeded/d3baff29-054c-402e-afa4-b729fb7b2e33.jpg",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnd = null,
@@ -226,6 +231,7 @@ namespace DataLayer
                     SecurityStamp = "WEO6FPNTGYWPHTD7YHXIQFCN3DWF6PZR",
                     ConcurrencyStamp = "3f28885e-0aa1-4ef5-9242-27fb2ae7ed53",
                     PhoneNumber = "087 273 7502",
+                    PhotoPath = "/accountSeeded/3269c6e1-a6e2-4bef-8885-012bc7f30d76.jpg",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnd = null,
@@ -249,6 +255,7 @@ namespace DataLayer
                     SecurityStamp = "WBEAEXDMYU2H2RA4NYGER26HZD6MRSWK",
                     ConcurrencyStamp = "4eeaeb62-d399-4760-95cb-f8f7965aab9f",
                     PhoneNumber = "044 823 7590",
+                    PhotoPath = "/accountSeeded/993e1cd4-400c-42be-84f4-a5857da2245b.jpg",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnd = null,
@@ -272,6 +279,7 @@ namespace DataLayer
                     SecurityStamp = "2GLVLQMKY6X7GSVT4SNVPGH7YXU276AY",
                     ConcurrencyStamp = "d59e3c64-5f55-4e2c-9e7f-aea001822bdc",
                     PhoneNumber = "088 164 7689",
+                    PhotoPath = "/accountSeeded/bb8c349d-5056-403d-8c9c-5b926461f7d2.jpg",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnd = null,
@@ -294,6 +302,7 @@ namespace DataLayer
                     PasswordHash = "AQAAAAIAAYagAAAAEIOunCoXVTCZ8WI58JNzG2PRWnc9n7tMaBBqXaHt865oBH+ZJ4hoLMHw2q3DNS06Ag==", // mK@3yuS/b5'iW.^tH29'
                     SecurityStamp = "MHZA7YCFNBG3GT2TFJ7TFW63NB6IKMH6",
                     ConcurrencyStamp = "6c032ad1-b16a-487d-99e4-8632f4b883f0",
+                    PhotoPath = "/accountSeeded/de3ce3eb-591b-436f-9b57-a9130514c69a.jpg",
                     PhoneNumber = "077 435 8568",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
@@ -318,6 +327,7 @@ namespace DataLayer
                     SecurityStamp = "3XHUFLIZPOGYPNR34D6BU34IAJNBSAVJ",
                     ConcurrencyStamp = "1691dbbc-6085-427b-9f77-d5b840913182",
                     PhoneNumber = "088 296 4592",
+                    PhotoPath = "/accountSeeded/50cb34be-ccb2-4c77-85c3-2ebf7486cbc8.jpg",
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnd = null,
@@ -348,7 +358,7 @@ namespace DataLayer
 					"Обича да яде сухи червеи. ",
 					IncludesCage = true,
 					UserId = viktorAdmin.Id,
-					PhotoPath = "/pet/0091e140-ff66-49e1-8325-9015b434065a.jpg",
+					PhotoPath = "/petSeeded/0091e140-ff66-49e1-8325-9015b434065a.jpg",
 					AddedOn = DateTime.Now.AddDays(-120),
 					AdoptedOn = null,
 					Breed = "джербил"
@@ -368,7 +378,7 @@ namespace DataLayer
 					"Сладур e, когато свикне с теб. ",
 					IncludesCage = true,
 					UserId = viktorAdmin.Id,
-					PhotoPath = "/pet/29bc0049-ee39-420f-b257-6d7f374769ae.jpg",
+					PhotoPath = "/petSeeded/29bc0049-ee39-420f-b257-6d7f374769ae.jpg",
 					AddedOn = DateTime.Now.AddDays(-30),
 					AdoptedOn = null,
 					Breed = "джербил"
@@ -388,7 +398,7 @@ namespace DataLayer
                     "Макар да е плах, с време става дружелюбен. ",
                     IncludesCage = false,
                     UserId = nikolaiUser.Id,
-                    PhotoPath = "/pet/933ec530-6127-477a-ae51-e50d67fad831.jpg",
+                    PhotoPath = "/petSeeded/933ec530-6127-477a-ae51-e50d67fad831.jpg",
                     AddedOn = DateTime.Now.AddDays(-15),
                     AdoptedOn = null,
                     Breed = "декоративен хамстер"
@@ -409,7 +419,7 @@ namespace DataLayer
                     "Козината ѝ е мека като памук и изисква редовно разресване. ",
                     IncludesCage = false,
                     UserId = toshoUser.Id,
-                    PhotoPath = "/pet/9d5bd6ea-5611-4aac-88c4-f2d45674eb87.jpg",
+                    PhotoPath = "/petSeeded/9d5bd6ea-5611-4aac-88c4-f2d45674eb87.jpg",
                     AddedOn = DateTime.Now.AddDays(-5),
                     AdoptedOn = null,
                     Breed = "миниатюрен заек"
@@ -430,7 +440,7 @@ namespace DataLayer
                     "Изисква внимателна грижа и обича вниманието на стопаните си. ",
                     IncludesCage = true,
                     UserId = vasilUser.Id,
-                    PhotoPath = "/pet/24c20cbd-b4f0-4087-911a-daf8d5f79956.jpg",
+                    PhotoPath = "/petSeeded/24c20cbd-b4f0-4087-911a-daf8d5f79956.jpg",
                     AddedOn = DateTime.Now.AddDays(-50),
                     AdoptedOn = null,
                     Breed = "морско свинче"
@@ -449,7 +459,7 @@ namespace DataLayer
                     "Току-що родено джербилче. Полът не може да се определи в такава възраст.",
                     IncludesCage = false,
                     UserId = viktoriaUser.Id,
-                    PhotoPath = "/pet/3f3c1b7a-5c7c-420f-8546-c1f11034cd27.jpg",
+                    PhotoPath = "/petSeeded/3f3c1b7a-5c7c-420f-8546-c1f11034cd27.jpg",
                     AddedOn = DateTime.Now.AddDays(-5),
                     AdoptedOn = null,
                     Breed = "джербил"
@@ -470,7 +480,7 @@ namespace DataLayer
 				   "Дресирано куче. ",
 					IncludesCage = false,
 					UserId = boyanUser.Id,
-					PhotoPath = "/pet/0a385f59-4cf4-4bb6-b3d6-426faf159e22.jpg",
+					PhotoPath = "/petSeeded/0a385f59-4cf4-4bb6-b3d6-426faf159e22.jpg",
 					AddedOn = DateTime.Now.AddDays(-10),
 					AdoptedOn = null,
 					Breed = "питбул"
@@ -491,7 +501,7 @@ namespace DataLayer
 					"Много е активен всяка вечер. ",
                     IncludesCage = false,
                     UserId = daniUser.Id,
-                    PhotoPath = "/pet/d09315ef-b81d-4896-873d-0e43add2b010.jpg",
+                    PhotoPath = "/petSeeded/d09315ef-b81d-4896-873d-0e43add2b010.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
                     Breed = "кавалер Кинг Чарлз шпаньол"
@@ -510,7 +520,7 @@ namespace DataLayer
                     "Обича да яде чехли и чорапи. Прави се на смел, но всъщност е много страшлив",
                     IncludesCage = true,
                     UserId = nikolaUser.Id,
-                    PhotoPath = "/pet/afcb4bc6-b67b-49c5-b5e8-b6c533719cf1.jpg",
+                    PhotoPath = "/petSeeded/afcb4bc6-b67b-49c5-b5e8-b6c533719cf1.jpg",
                     AddedOn = DateTime.Now.AddDays(-39),
                     AdoptedOn = null,
                     Breed = "немски спиц"
@@ -531,7 +541,7 @@ namespace DataLayer
                    "Отличава се с интелигентност и лесно се поддава на обучение. ",
                     IncludesCage = false,
                     UserId = goshoUser.Id,
-                    PhotoPath = "/pet/db74c626-2172-467b-b880-bc88f9d67eb6.jpg",
+                    PhotoPath = "/petSeeded/db74c626-2172-467b-b880-bc88f9d67eb6.jpg",
                     AddedOn = DateTime.Now.AddDays(-50),
                     AdoptedOn = null,
                     Breed = "немска овчарка"
@@ -552,7 +562,7 @@ namespace DataLayer
                    "Отличава се със златиста козина и вечна усмивка. ",
                     IncludesCage = true,
                     UserId = vasilUser.Id,
-                    PhotoPath = "/pet/e5f77f66-fe12-48e0-8695-962e1d30cd4c.jpg",
+                    PhotoPath = "/petSeeded/e5f77f66-fe12-48e0-8695-962e1d30cd4c.jpg",
                     AddedOn = DateTime.Now.AddDays(-54),
                     AdoptedOn = null,
                     Breed = "голдън ретривър"
@@ -573,7 +583,7 @@ namespace DataLayer
                    "Късата му муцуна му придава характерен израз, който винаги носи усмивки. ",
                     IncludesCage = false,
                     UserId = petarUser.Id,
-                    PhotoPath = "/pet/d1a47268-3e4d-40f8-aa76-3835869984bc.jpg",
+                    PhotoPath = "/petSeeded/d1a47268-3e4d-40f8-aa76-3835869984bc.jpg",
                     AddedOn = DateTime.Now.AddDays(-24),
                     AdoptedOn = null,
                     Breed = "френски булдог"
@@ -594,7 +604,7 @@ namespace DataLayer
 					"Обича да яде моркови и сирене. ",
 					IncludesCage = false,
 					UserId = boyanUser.Id,
-					PhotoPath = "/pet/e651944f-ba07-4cca-aec4-88eee5080b50.jpg",
+					PhotoPath = "/petSeeded/e651944f-ba07-4cca-aec4-88eee5080b50.jpg",
 					AddedOn = DateTime.Now.AddDays(-300),
 					AdoptedOn = null,
 					Breed = "арабски жребец"
@@ -615,7 +625,7 @@ namespace DataLayer
 					"Обича дългите разходки и бързия галоп по открити пространства.",
 					IncludesCage = false,
 					UserId = toshoUser.Id,
-					PhotoPath = "/pet/4cfd1ed5-6417-45ed-8f1a-8cd82f4f0a0e.jpg",
+					PhotoPath = "/petSeeded/4cfd1ed5-6417-45ed-8f1a-8cd82f4f0a0e.jpg",
 					AddedOn = DateTime.Now.AddDays(-100),
 					AdoptedOn = null,
 					Breed = "мустанг"
@@ -636,7 +646,7 @@ namespace DataLayer
                     "Обича да бъде глезена с лакомства и редовно разресвана.",
                     IncludesCage = false,
                     UserId = goshoUser.Id,
-                    PhotoPath = "/pet/0b825209-1dd6-48a5-83e1-99b0714f3f55.jpg",
+                    PhotoPath = "/petSeeded/0b825209-1dd6-48a5-83e1-99b0714f3f55.jpg",
                     AddedOn = DateTime.Now.AddDays(-156),
                     AdoptedOn = null,
                     Breed = "уелско пони"
@@ -657,7 +667,7 @@ namespace DataLayer
                     "Въпреки внушителния си вид, е много спокоен и лесно се поддава на обучение.",
                     IncludesCage = false,
                     UserId = nikolaUser.Id,
-                    PhotoPath = "/pet/625f7189-0677-47ba-bb7a-4842182cbe17.jpg",
+                    PhotoPath = "/petSeeded/625f7189-0677-47ba-bb7a-4842182cbe17.jpg",
                     AddedOn = DateTime.Now.AddDays(-300),
                     AdoptedOn = null,
                     Breed = "фризийски кон"
@@ -682,7 +692,7 @@ namespace DataLayer
 					"Мрази всякаква порода кучета. ",
 					IncludesCage = false,
 					UserId = nikolaiUser.Id,
-					PhotoPath = "/pet/a713331d-dc25-421f-95d9-8a352cfd6b8a.jpg",
+					PhotoPath = "/petSeeded/a713331d-dc25-421f-95d9-8a352cfd6b8a.jpg",
 					AddedOn = DateTime.Now.AddDays(-210),
 					AdoptedOn = null,
 					Breed = "персийска котка"
@@ -702,7 +712,7 @@ namespace DataLayer
                     "цвят на козината - рижаво таби",
                     IncludesCage = true,
                     UserId = petarUser.Id,
-                    PhotoPath = "/pet/60db9245-ff5f-4981-b2f1-8c7bd180a204.jpg",
+                    PhotoPath = "/petSeeded/60db9245-ff5f-4981-b2f1-8c7bd180a204.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
                     Breed = "американска късокосместа"
@@ -721,7 +731,7 @@ namespace DataLayer
                    "Ще покани всички жени в къщата ти на вечеря.",
                     IncludesCage = false,
                     UserId = daniUser.Id,
-                    PhotoPath = "/pet/edb9935c-cc14-40e9-8e94-ffd794e92d52.jpg",
+                    PhotoPath = "/petSeeded/edb9935c-cc14-40e9-8e94-ffd794e92d52.jpg",
                     AddedOn = DateTime.Now.AddDays(-37),
                     AdoptedOn = null,
                     Breed = "тонкинска котка"
@@ -740,7 +750,7 @@ namespace DataLayer
 					"Малко коте, но в бъдеще ще си носи името с гордост.",
                     IncludesCage = true,
                     UserId = toshoUser.Id,
-                    PhotoPath = "/pet/62282089-a6fe-4be0-97e2-e4d879c97d70.jpg",
+                    PhotoPath = "/petSeeded/62282089-a6fe-4be0-97e2-e4d879c97d70.jpg",
                     AddedOn = DateTime.Now.AddDays(-37),
                     AdoptedOn = null,
                     Breed = "австралийска котка Мист"
@@ -759,7 +769,7 @@ namespace DataLayer
                     "Луна е спокойна и дружелюбна котка, която обича да се излежава на слънце. Обича да бъде гушкана и често мърка, когато е доволна. Има красиви златисти очи и мека, плюшена козина.",
                     IncludesCage = true,
                     UserId = viktoriaUser.Id,
-                    PhotoPath = "/pet/630595bf-1502-461d-8dcb-327752efe685.jpg",
+                    PhotoPath = "/petSeeded/630595bf-1502-461d-8dcb-327752efe685.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
                     Breed = "британска късокосместа"
@@ -778,7 +788,7 @@ namespace DataLayer
                     "Макс е голям и пухкав котарак с величествена осанка. Има дружелюбен и игрив характер, но също така е много интелигентен. Обича да се катери на високи места и да наблюдава какво се случва около него.",
                     IncludesCage = false,
                     UserId = vasilUser.Id,
-                    PhotoPath = "/pet/0ff28d39-d91e-414d-95a5-cdb4f5c7a75f.jpg",
+                    PhotoPath = "/petSeeded/0ff28d39-d91e-414d-95a5-cdb4f5c7a75f.jpg",
                     AddedOn = DateTime.Now.AddDays(-50),
                     AdoptedOn = null,
                     Breed = "мейн Куун"
@@ -797,7 +807,7 @@ namespace DataLayer
                     "Бела е енергична и любопитна котка, която обича вниманието. Има характерни сини очи и контрастна окраска. Лесно се привързва към стопаните си и обича да „разговаря“ с тях с нежни мяукания.",
                     IncludesCage = false,
                     UserId = viktoriaUser.Id,
-                    PhotoPath = "/pet/4af67d2e-e0f6-4dae-b9c7-5ef3c0755c2a.jpg",
+                    PhotoPath = "/petSeeded/4af67d2e-e0f6-4dae-b9c7-5ef3c0755c2a.jpg",
                     AddedOn = DateTime.Now.AddDays(-5),
                     AdoptedOn = null,
                     Breed = "сиамска котка"
@@ -816,7 +826,7 @@ namespace DataLayer
                     "Мъфин е малко, пухкаво котенце със затворени очички и меко, кремаво-бежово козинче. То прекарва по-голямата част от времето си в сън, сгушено до майка си и братчетата си. Въпреки крехката си възраст, вече започва да мърда лапичките си в опити да се придвижва по-гъвкаво.",
                     IncludesCage = false,
                     UserId = goshoUser.Id,
-                    PhotoPath = "/pet/7d73cb50-7cf6-4c8c-b624-f10f1d35da12.jpg",
+                    PhotoPath = "/petSeeded/7d73cb50-7cf6-4c8c-b624-f10f1d35da12.jpg",
                     AddedOn = DateTime.Now.AddDays(-10),
                     AdoptedOn = null,
                     Breed = "оранжево таби"
@@ -836,7 +846,7 @@ namespace DataLayer
                     "Рио е игрив и социален папагал, който обича да имитира звуци. Той е интелигентен и може да научи няколко думи. Обича да се люлее на клончето си и да си играе с огледало.",
                     IncludesCage = true,
                     UserId = daniUser.Id,
-                    PhotoPath = "/pet/b267a516-8d2e-49af-acdf-7d8562796ec0.jpg",
+                    PhotoPath = "/petSeeded/b267a516-8d2e-49af-acdf-7d8562796ec0.jpg",
                     AddedOn = DateTime.Now.AddDays(-12),
                     AdoptedOn = null,
                     Breed = "вълнисто папагалче"
@@ -855,7 +865,7 @@ namespace DataLayer
                    "Пика е нежна и любопитна птица с красива жълта качулка. Обича да комуникира със стопанина си и да свири мелодии. Лесно се привързва към хората и обича да бъде извън клетката си.",
                     IncludesCage = true,
                     UserId = toshoUser.Id,
-                    PhotoPath = "/pet/5889107c-621e-440f-a329-739605f7c344.jpg",
+                    PhotoPath = "/petSeeded/5889107c-621e-440f-a329-739605f7c344.jpg",
                     AddedOn = DateTime.Now.AddDays(-40),
                     AdoptedOn = null,
                     Breed = "корела"
@@ -874,7 +884,7 @@ namespace DataLayer
                    "Чарли е малка и пъстра птичка, която обича да пее. Той е много социален и обича компанията на други птици. Харесва му да си играе с малки играчки и да лети в просторна клетка.",
                     IncludesCage = true,
                     UserId = petarUser.Id,
-                    PhotoPath = "/pet/4954bfeb-4f0c-43d5-a51c-a5f99f52698b.jpg",
+                    PhotoPath = "/petSeeded/4954bfeb-4f0c-43d5-a51c-a5f99f52698b.jpg",
                     AddedOn = DateTime.Now.AddDays(-7),
                     AdoptedOn = null,
                     Breed = "aмадина"
@@ -894,7 +904,7 @@ namespace DataLayer
                     "Немо е малка, но живописна рибка с ярки оранжеви и бели ивици. Обича да плува около анемоните и е активен през целия ден. Лесен е за отглеждане и придава екзотичен вид на всеки аквариум.",
                     IncludesCage = true,
                     UserId = viktoriaUser.Id,
-                    PhotoPath = "/pet/849db0ef-7acf-4e46-9834-bd92ec131971.jpg",
+                    PhotoPath = "/petSeeded/849db0ef-7acf-4e46-9834-bd92ec131971.jpg",
                     AddedOn = DateTime.Now.AddDays(-14),
                     AdoptedOn = null,
                     Breed = "клоунова рибка"
@@ -913,7 +923,7 @@ namespace DataLayer
                     "Дори е красива бойна рибка с дълги, вълнообразни перки в наситен син цвят. Тя е самостоятелна и обича да плува в уединени пространства. Въпреки малкия си размер, има впечатляващо присъствие.",
                     IncludesCage = true,
                     UserId = petarUser.Id,
-                    PhotoPath = "/pet/c80fccf3-d089-4751-95e2-85ed83b48167.jpg",
+                    PhotoPath = "/petSeeded/c80fccf3-d089-4751-95e2-85ed83b48167.jpg",
                     AddedOn = DateTime.Now.AddDays(-20),
                     AdoptedOn = null,
                     Breed = "син танг"
@@ -932,7 +942,7 @@ namespace DataLayer
                    " Голди е класическа златна рибка с блестящи люспи и спокоен темперамент. Тя обича да изследва аквариума си и да се храни с гранулирана храна. Гледането ѝ носи спокойствие и хармония.",
                     IncludesCage = false,
                     UserId = viktorAdmin.Id,
-                    PhotoPath = "/pet/43ac113f-4eeb-4d0d-bf1a-b3e94bdf8ce5.jpg",
+                    PhotoPath = "/petSeeded/43ac113f-4eeb-4d0d-bf1a-b3e94bdf8ce5.jpg",
                     AddedOn = DateTime.Now.AddDays(-9),
                     AdoptedOn = null,
                     Breed = "златна рибка"
@@ -952,7 +962,7 @@ namespace DataLayer
                     "Роки е спокоен и любознателен гущер, който обича да се припича на топло място. Той има златистокафяви люспи и впечатляващ гребен около главата си. Обича да похапва зеленчуци и насекоми.",
                     IncludesCage = true,
                     UserId = nikolaUser.Id,
-                    PhotoPath = "/pet/77b91e8b-7045-445d-82ca-98b47f53f845.jpg",
+                    PhotoPath = "/petSeeded/77b91e8b-7045-445d-82ca-98b47f53f845.jpg",
                     AddedOn = DateTime.Now.AddDays(-25),
                     AdoptedOn = null,
                     Breed = "брадат дракон"
@@ -971,7 +981,7 @@ namespace DataLayer
                     "Зара е стройна и елегантна змия с червено-оранжева окраска. Тя е напълно безвредна и лесна за отглеждане. Обича да се увива около клончета и да се крие в укритията си.",
                     IncludesCage = true,
                     UserId = nikolaiUser.Id,
-                    PhotoPath = "/pet/c6428db0-f081-4c19-9052-33a65036ff86.jpg",
+                    PhotoPath = "/petSeeded/c6428db0-f081-4c19-9052-33a65036ff86.jpg",
                     AddedOn = DateTime.Now.AddDays(-32),
                     AdoptedOn = null,
                     Breed = "царевичен смок"
@@ -990,7 +1000,7 @@ namespace DataLayer
                     "Лео е малък и пъстър гекон с характерни черни петна по тялото. Той е спокоен и лесен за хващане, тъй като не е агресивен. Обича нощния живот и предпочита да се крие през деня.",
                     IncludesCage = true,
                     UserId = toshoUser.Id,
-                    PhotoPath = "/pet/c23a78e3-55cf-4618-a30c-bae789416ab0.jpg",
+                    PhotoPath = "/petSeeded/c23a78e3-55cf-4618-a30c-bae789416ab0.jpg",
                     AddedOn = DateTime.Now.AddDays(-15),
                     AdoptedOn = null,
                     Breed = "леопардов гекон"
@@ -1010,7 +1020,7 @@ namespace DataLayer
                     "Бъбълс е малка и игрива жабка, която прекарва повечето си време плувайки в аквариума.Твърде е млада,за да се определи пола. В момента е още в етап на развитие и кожата ѝ е гладка и полупрозрачна. Обича да си играе с водните растения и да се крие под камъни.",
                     IncludesCage = true,
                     UserId = boyanUser.Id,
-                    PhotoPath = "/pet/2c58a1f6-7417-48df-b906-146662f1f613.jpg",
+                    PhotoPath = "/petSeeded/2c58a1f6-7417-48df-b906-146662f1f613.jpg",
                     AddedOn = DateTime.Now.AddDays(-27),
                     AdoptedOn = null,
                     Breed = "африканска водна жаба"
@@ -1029,7 +1039,7 @@ namespace DataLayer
                     "Оливър е дребна, но ярко оцветена жаба със зеленикаво-кафяв гръб и яркочервен корем. Той е активен и често издава специфични звуци, когато е развълнуван. Обича влажни среди и прекарва времето си както във водата, така и на сушата.",
                     IncludesCage = false,
                     UserId = vasilUser.Id,
-                    PhotoPath = "/pet/3456612d-08e4-4c3f-91f9-2521fb117896.jpg",
+                    PhotoPath = "/petSeeded/3456612d-08e4-4c3f-91f9-2521fb117896.jpg",
                     AddedOn = DateTime.Now.AddDays(-12),
                     AdoptedOn = null,
                     Breed = "червенокоремна бумка"
@@ -1048,7 +1058,7 @@ namespace DataLayer
                     "Лили е нощно активно земноводно с големи, златисти очи. Тя обича да се катери по клони и да ловува малки насекоми. Кожата ѝ е гладка и леко лепкава, което ѝ помага да се придържа към повърхности.",
                     IncludesCage = false,
                     UserId = daniUser.Id,
-                    PhotoPath = "/pet/bc8442a3-7395-4bdd-9745-01313d0f1021.jpg",
+                    PhotoPath = "/petSeeded/bc8442a3-7395-4bdd-9745-01313d0f1021.jpg",
                     AddedOn = DateTime.Now.AddDays(-45),
                     AdoptedOn = null,
                     Breed = "кубинска дървесна жаба"
@@ -1067,7 +1077,7 @@ namespace DataLayer
                     "Грут е игриво и любопитно прасенце с розова муцунка и малки, черни очички. Той обича да ровичка в земята и да похапва плодове и зеленчуци. Въпреки малкия си размер, вече показва голям характер и обича да следва стопанина си навсякъде.",
                     IncludesCage = true,
                     UserId = petarUser.Id,
-                    PhotoPath = "/pet/3600a15f-19b5-4c4c-ad79-d0b41ab6b7f4.jpg",
+                    PhotoPath = "/petSeeded/3600a15f-19b5-4c4c-ad79-d0b41ab6b7f4.jpg",
                     AddedOn = DateTime.Now.AddDays(-56),
                     AdoptedOn = null,
                     Breed = "Мини пиг"
@@ -1085,7 +1095,7 @@ namespace DataLayer
                    "Бъги е дребно кенгуру, което е изключително пъргаво и обича да скача наоколо. Въпреки че е малко плашливо с непознати, с времето става игриво и дружелюбно. Най-много обича да похапва пресни зеленчуци и да прекарва време на открито.",
                     IncludesCage = false,
                     UserId = daniUser.Id,
-                    PhotoPath = "/pet/b34bead1-28b7-4bfe-8394-c6833736810d.jpg",
+                    PhotoPath = "/petSeeded/b34bead1-28b7-4bfe-8394-c6833736810d.jpg",
                     AddedOn = DateTime.Now.AddDays(-15),
                     AdoptedOn = null,
                     Breed = "кенгуру"

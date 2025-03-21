@@ -111,7 +111,7 @@ public class AdminController : Controller
 				var imageName = $"{Guid.NewGuid()}{extension}";
 				_fileSrv.SaveMemoryStreamToFile(fileBytes, "account", imageName);
 				//Delete old photo file
-				if(!String.IsNullOrWhiteSpace(dbUser.PhotoPath))
+				if(!String.IsNullOrWhiteSpace(dbUser.PhotoPath) && !dbUser.PhotoPath.Contains("Seeded"))
 					_fileSrv.DeleteFile(dbUser.PhotoPath);
 
 				dbUser.PhotoPath = $"/account/{imageName}";
@@ -259,7 +259,7 @@ public class AdminController : Controller
                 var imageName = $"{Guid.NewGuid()}{extension}";
                 _fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
                 //Delete old photo file
-                if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath))
+                if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath) && !dbPet.PhotoPath.Contains("Seeded"))
                     _fileSrv.DeleteFile(dbPet.PhotoPath);
 
                 dbPet.PhotoPath = $"/pet/{imageName}";
