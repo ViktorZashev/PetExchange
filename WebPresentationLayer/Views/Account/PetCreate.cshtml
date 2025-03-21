@@ -28,27 +28,11 @@
 			</div>
 			<div class="row">
 				<div class="col-6">
-					<div class="mb-3">
-						<label asp-for="AddedOn" class="form-label"></label>
-						<input type="date" disabled asp-for="AddedOn" class="form-control"/>
-						<span asp-validation-for="AddedOn" class="text-danger"></span>
-					</div>
+					
 				</div>
 				<div class="col-6">
 
-					<div class="mb-3">
-						<label asp-for="AdoptedOn" class="form-label"></label>
-						@if (Model.AdoptedOn is null)
-						{
-								<br />
-								<span class="badge bg-danger" style="display: inline-block;">He e осиновен!</span>
-						}
-						else
-						{
-								<input disabled asp-for="AdoptedOn" class="form-control" />
-						}
-
-					</div>
+					
 				</div>
 			</div>
 			<div class="row">
@@ -83,6 +67,13 @@
 						<label asp-for="Description" class="form-label"></label>
 						<textarea asp-for="Description" class="form-control"></textarea>
 						<span asp-validation-for="Description" class="text-danger"></span>
+					</div>
+					<div class="mb-3">
+						<label asp-for="IncludesCage" class="form-label">Включена клетка</label>
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" asp-for="IncludesCage" role="switch" id="flexSwitchCheckDefault">
+						</div>
+						<span asp-validation-for="IncludesCage" class="text-danger"></span>
 					</div>
 				</div>
 			</div>

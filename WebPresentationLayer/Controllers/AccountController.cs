@@ -221,7 +221,8 @@ public class AccountController : Controller
                     })
                     .ToList();
         ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
-
+        ViewBag.ShowCreateSuccess = TempData["ShowCreateSuccessMessage"];
+        ViewBag.ShowDeleteSuccess = TempData["ShowPetDeleteSuccess"];
         ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
         return View("Views/Account/Pets.cshtml");
     }
@@ -303,6 +304,7 @@ public class AccountController : Controller
             dbPet.Description = pet.Description;
             dbPet.IncludesCage = pet.IncludesCage;
             dbPet.UserRequests = pet.UserRequests;
+            dbPet.IncludesCage = pet.IncludesCage;
             await _petService.UpdateAsync(dbPet);
             var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
             TempData["ShowEditSuccessfulMessage"] = true;
@@ -336,13 +338,16 @@ public class AccountController : Controller
                     })
                     .ToList();
         ViewBag.CancelUrl = "/account/pets";
-        return View("PetCreate");
+        var petManage = new PetManage()
+        {
+            Birthday = DateTime.Now,
+        };
+        return View("PetCreate", petManage);
     }
 
-    [HttpPost("/account/pets/create")]
+    [HttpPost("/Account/Pets/Create")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> PetCreate(
-        [FromQuery] string returnUrl,
         PetManage pet)
     {
         if (ModelState.IsValid)
@@ -383,17 +388,26 @@ public class AccountController : Controller
             newPet.IncludesCage = pet.IncludesCage;
             newPet.User = currentUser;
             await _petService.CreateAsync(newPet);
-            var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
-            TempData["ShowEditSuccessfulMessage"] = true;
+            var backUrl = "/account/pets";
+            TempData["ShowCreateSuccessMessage"] = true;
             return LocalRedirect(backUrl);
         }
         else
         {
-            ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
+            ViewBag.CancelUrl = "/account/pets";
             return View(pet);
         }
     }
-
+    [HttpPost("/account/pets/delete/{petId:guid}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeletePet([FromRoute] Guid petId)
+    {
+        await _petService.DeleteAsync(petId);
+        
+        TempData["ShowPetDeleteSuccess"] = true;
+        var backUrl = "/account/pets";
+        return LocalRedirect(backUrl);
+    }
     #endregion
 
     #region RequestsInbox & Outbox
