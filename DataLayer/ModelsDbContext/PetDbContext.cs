@@ -130,7 +130,8 @@ namespace DataLayer
 			}
 		}
 
-		public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types, List<GenderEnum> genders, List<PetAgeEnum> ages, bool? withCage)
+		public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types, List<GenderEnum> genders, List<PetAgeEnum> ages, 
+			bool? withCage, int page = 1, int pageSize = 8)
 		{
 			try
 			{
@@ -162,7 +163,7 @@ namespace DataLayer
 					query = query.Where(e => e.IncludesCage);
 				}
 
-				return await query.ToListAsync();
+				return await query.Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
 			}
 			catch (Exception)
 			{

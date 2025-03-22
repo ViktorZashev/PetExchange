@@ -23,8 +23,13 @@ public class PetsController : Controller
 			types:selection.Types,
 			genders:selection.Gender,
 			ages:selection.Age,
-			withCage:selection.HasCage
+			withCage:selection.HasCage,
+			page: selection.Page,
+			pageSize:8
 		);
+		ViewBag.Page = selection.Page;
+		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,selection.Page-1);
+		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,selection.Page+1);
 		return View();
 	}
 

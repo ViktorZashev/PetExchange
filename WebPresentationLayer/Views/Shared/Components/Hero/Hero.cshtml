@@ -57,6 +57,50 @@ else if (Model.Page == "aboutus")
 		</div>
 	</section>
 }
+else if (Model.Page == "contacts")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Контакти</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "privacy")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Поверителност</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "terms")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Политика и Условия</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "error")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Грешка</li>
+			</ol>
+		</div>
+	</section>
+}
 else if (Model.Page == "admin-users" || Model.Page == "admin-usermanage")
 {
 	<section class="hero-wrapper">
@@ -145,3 +189,4 @@ else if (Model.Page == "account-requestinbox")
 		</div>
 	</section>
 }
+

@@ -8,6 +8,7 @@ public class FilterUtility
 	public static string genderQueryName = "gender";
 	public static string ageQueryName = "age";
 	public static string cageQueryName = "cage";
+	public static string pageQueryName = "page";
 	public List<FilterGroup> GetFilters(string url)
 	{
 		var result = new List<FilterGroup>();
@@ -143,6 +144,17 @@ public class FilterUtility
 				result.HasCage = outBool;
 			}
 		}
+
+		if (queryDict[pageQueryName] is not null)
+		{
+			var value = queryDict[pageQueryName];
+			if (!String.IsNullOrWhiteSpace(value)
+				&& int.TryParse(value, out int outInt))
+			{
+				result.Page = outInt;
+			}
+		}
+
 		return result;
 	}
 

@@ -6,4 +6,5 @@ public class FilterSelection
 	public List<GenderEnum> Gender { get; set; } = new();
 	public List<PetAgeEnum> Age { get; set; } = new();
 	public bool HasCage { get; set; } = false;
+	public int Page { get; set; } = 1;
 }

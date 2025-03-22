@@ -2,6 +2,8 @@
 	ViewData["Title"] = "Pets";
 	var pets = (List<Pet>)ViewBag.Pets;
 	var filters = (List<FilterGroup>)ViewBag.Filters;
+	var currentPage = (int)ViewBag.Page;
+	var pageSize = 8;
 }
 <div class="container">
 	<div class="card-list">
@@ -24,6 +26,16 @@
 						</div>
 					}
 				</div>
+				<nav>
+					<ul class="pagination mb-0">
+						<li class="page-item @(currentPage == 1 ? "disabled" : "")">
+							<a href="@ViewBag.PrevPageUrl" class="page-link" data-type="previous">Назад</a>
+						</li>
+						<li class="page-item @(pets.Count < pageSize ? "disabled" : "")">
+							<a href="@ViewBag.NextPageUrl" class="page-link" data-type="next">Напред</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 		</div>
 	</div>

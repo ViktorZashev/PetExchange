@@ -58,7 +58,7 @@
 			</div>
 		}
 		<div class="age">
-			@Utility.ConvertDaysToString(pet.AgeDays, true)
+			@ViewUtility.ConvertDaysToString(pet.AgeDays, true)
 		</div>
 	</div>
 	<div class="card-footer text-muted">
@@ -104,7 +104,7 @@
 								<tr>
 									<th>Възраст</th>
 									<td>
-										<span>@(Utility.ConvertDaysToString(pet.AgeDays))</span>
+										<span>@(ViewUtility.ConvertDaysToString(pet.AgeDays))</span>
 										<span class="badge text-bg-secondary ms-2">@pet.AgeEnum.ToDescriptionString()</span>
 									</td>
 								</tr>

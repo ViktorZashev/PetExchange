@@ -5,7 +5,11 @@
 
 @if (Type == MenuItemType.NavLink)
 {
-	if (!String.IsNullOrWhiteSpace(Item.Area))
+	if (Item.IsDivider)
+	{
+		<hr class="divider">
+	}
+	else if (!String.IsNullOrWhiteSpace(Item.Area))
 	{
 		<a asp-area="@Item.Area" asp-page="@Item.Page" class="nav-link @(Item.IsActive ? "active" : "")">@Item.Title</a>
 	}
@@ -19,7 +23,7 @@
 	}
 }
 
-@if (Type == MenuItemType.DropdownItem)
+else if (Type == MenuItemType.DropdownItem)
 {
 	if (Item.IsDivider)
 	{
@@ -39,9 +43,13 @@
 	}
 }
 
-@if (Type == MenuItemType.Button)
+else if (Type == MenuItemType.Button)
 {
-	if (!String.IsNullOrWhiteSpace(Item.Area))
+	if (Item.IsDivider)
+	{
+		@* <hr class="divider"> *@
+	}
+	else if (!String.IsNullOrWhiteSpace(Item.Area))
 	{
 		<a asp-area="@Item.Area" asp-page="@Item.Page" class="btn w-100 my-1 @(Item.IsActive ? "btn-outline-primary" : "btn-outline-secondary")">@Item.Title</a>
 	}

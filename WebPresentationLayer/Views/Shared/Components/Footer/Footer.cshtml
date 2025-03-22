@@ -1,8 +1,18 @@
 ﻿<footer>
-    <div class="container">
-        "Нов дом за щастливи опашки" 2025
-        <a style = "margin:0.5em" asp-area="" asp-controller="Site" asp-action="Contacts">Контакти</a>
-        <a style="margin:0.5em" asp-area="" asp-controller="Site" asp-action="Privacy">Поверителност</a>
-        <a style="margin:0.5em" asp-area="" asp-controller="Site" asp-action="Terms">Политика и Условия</a>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start">
+				<ul class="nav">
+					<li class="nav-item"><span class="nav-link disabled">Нов дом за щастливи опашки @DateTime.Now.Year <sup>©</sup></span></li>
+				</ul>
+			</div>
+			<div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+				<ul class="nav">
+					<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Site" asp-action="Contacts">Контакти</a></li>
+					<li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Site" asp-action="Privacy">Поверителност</a></li>
+					<li class="nav-item"> <a class="nav-link" asp-area="" asp-controller="Site" asp-action="Terms">Политика и Условия</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </footer>

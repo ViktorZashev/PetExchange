@@ -4,6 +4,6 @@ public enum MenuItemType
 {
 	NavLink = 0,
 	DropdownItem = 1,
-	Button = 2,
+	Button = 2
 }
 

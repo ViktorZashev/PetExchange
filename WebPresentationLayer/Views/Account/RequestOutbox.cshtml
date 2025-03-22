@@ -23,6 +23,7 @@
 	<thead>
 		<tr>
 			<th style="width:160px;"></th>
+			<th style="width:60px;">снимка</th>
 			<th style="width:120px;">статус</th>
 			<th style="width:140px;">създадено</th>
 			<th>любимец</th>
@@ -36,6 +37,9 @@
 
 			<tr>
 				<td>@await Component.InvokeAsync("UserRequestActions", new { item = item, currentUser = currentUser })</td>
+				<td>
+					<img src="@item.Pet.PhotoPath" class="img-thumbnail" style="max-width:100%;max-height:60px" />
+				</td>
 				<td>
 					@if (item.AcceptedOn.HasValue)
 					{
@@ -63,7 +67,7 @@
 		@if (items.Count == 0)
 		{
 			<tr>
-				<td colspan="6">нямаш още искания</td>
+				<td colspan="7">нямаш още искания</td>
 			</tr>
 		}
 	</tbody>

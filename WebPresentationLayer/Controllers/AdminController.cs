@@ -21,15 +21,15 @@ public class AdminController : Controller
 	private readonly FileService _fileSrv;
 
 	public AdminController(UserService userService, PetService petService,
-		TownService townService,UserRequestsService requestService, FileService fileService)
+		TownService townService, UserRequestsService requestService, FileService fileService)
 	{
 		_userSrv = userService;
 		_townSrv = townService;
 		_fileSrv = fileService;
 		_petSrv = petService;
-        _requestSrv = requestService;
+		_requestSrv = requestService;
 
-    }
+	}
 	public async Task<IActionResult> Users(
 		[FromQuery] string username = null,
 		[FromQuery] string name = null,
@@ -46,7 +46,7 @@ public class AdminController : Controller
 			email,
 			town,
 			role,
-			page:page,
+			page: page,
 			pageSize: pageSize,
 			useNavigationalProperties: true,
 			isReadOnly: true
@@ -59,8 +59,10 @@ public class AdminController : Controller
 		ViewBag.Page = page;
 		ViewBag.PageSize = pageSize;
 		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
-        ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
-        return View();
+		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
+		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
+		ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
+		return View();
 	}
 
 	[HttpGet("/admin/users/{userId:guid}")]
@@ -111,7 +113,7 @@ public class AdminController : Controller
 				var imageName = $"{Guid.NewGuid()}{extension}";
 				_fileSrv.SaveMemoryStreamToFile(fileBytes, "account", imageName);
 				//Delete old photo file
-				if(!String.IsNullOrWhiteSpace(dbUser.PhotoPath) && !dbUser.PhotoPath.Contains("Seeded"))
+				if (!String.IsNullOrWhiteSpace(dbUser.PhotoPath) && !dbUser.PhotoPath.Contains("Seeded"))
 					_fileSrv.DeleteFile(dbUser.PhotoPath);
 
 				dbUser.PhotoPath = $"/account/{imageName}";
@@ -125,8 +127,8 @@ public class AdminController : Controller
 			dbUser.IsActive = user.isActive;
 			await _userSrv.UpdateAsync(dbUser);
 			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/users";
-            TempData["ShowEditSuccessfulMessage"] = true;
-            return LocalRedirect(backUrl);
+			TempData["ShowEditSuccessfulMessage"] = true;
+			return LocalRedirect(backUrl);
 		}
 		else
 		{
@@ -144,34 +146,34 @@ public class AdminController : Controller
 	}
 
 	// Домашни любимци
-    public async Task<IActionResult> Pets(
-        [FromQuery] string name = null,
+	public async Task<IActionResult> Pets(
+		[FromQuery] string name = null,
 		[FromQuery] string breed = null,
-        [FromQuery] string type = null,
-        [FromQuery] string gender = null,
-        [FromQuery] string ownerName = null,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 10
-    )
-    {
-        ViewBag.petItems = await _petSrv.ReadAllWithFilterAsync(
-            name,
+		[FromQuery] string type = null,
+		[FromQuery] string gender = null,
+		[FromQuery] string ownerName = null,
+		[FromQuery] int page = 1,
+		[FromQuery] int pageSize = 10
+	)
+	{
+		ViewBag.petItems = await _petSrv.ReadAllWithFilterAsync(
+			name,
 			breed,
-            type,
-            gender,
-            ownerName,
-            page,
-            pageSize,
-            useNavigationalProperties: true,
-            isReadOnly: true
-        );
-        ViewBag.petName = name;
-        ViewBag.petBreed = breed;
-        ViewBag.petType = type;
-        ViewBag.petGender = gender;
-        ViewBag.petOwnerName = ownerName;
-        ViewBag.petPage = page;
-        ViewBag.petPageSize = pageSize;
+			type,
+			gender,
+			ownerName,
+			page,
+			pageSize,
+			useNavigationalProperties: true,
+			isReadOnly: true
+		);
+		ViewBag.petName = name;
+		ViewBag.petBreed = breed;
+		ViewBag.petType = type;
+		ViewBag.petGender = gender;
+		ViewBag.petOwnerName = ownerName;
+		ViewBag.petPage = page;
+		ViewBag.petPageSize = pageSize;
 		ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
 					.Cast<GenderEnum>()
 					.Select(rt => new SelectListItem
@@ -182,137 +184,160 @@ public class AdminController : Controller
 					})
 					.ToList();
 
-	    ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
-                    .Cast<PetTypeEnum>()
-                    .Select(rt => new SelectListItem
-                    {
-                        Value = rt.ToDescriptionString(),
-                        Text = rt.ToDescriptionString(),
-                        Selected = type == rt.ToDescriptionString() ? true : false
-                    })
-                    .ToList();
+		ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+					.Cast<PetTypeEnum>()
+					.Select(rt => new SelectListItem
+					{
+						Value = rt.ToDescriptionString(),
+						Text = rt.ToDescriptionString(),
+						Selected = type == rt.ToDescriptionString() ? true : false
+					})
+					.ToList();
 
-        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
-        ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
-        return View("Views/Admin/Pets.cshtml");
-    }
+		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
+		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
+		ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
+		return View("Views/Admin/Pets.cshtml");
+	}
 
-    [HttpGet("/admin/pets/{petId:guid}")]
-    public async Task<IActionResult> PetManage(
-        [FromRoute] Guid petId,
-        [FromQuery] string returnUrl)
-    {
-        ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
-        var dbPet = await _petSrv.ReadAsync(petId, true, true);
-        var pet = new PetManage
-        {
-            Name = dbPet.Name,
-            AddedOn = dbPet.AddedOn,
-            AdoptedOn = dbPet.AdoptedOn,
-            Birthday = dbPet.Birthday,
-            Breed = dbPet.Breed,
-            PhotoPath = dbPet.PhotoPath,
-            isActive = dbPet.IsActive,
-            PetType = dbPet.PetType,
-            Gender = dbPet.Gender,
-            Description = dbPet.Description,
+	[HttpGet("/admin/pets/{petId:guid}")]
+	public async Task<IActionResult> PetManage(
+		[FromRoute] Guid petId,
+		[FromQuery] string returnUrl)
+	{
+		ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
+		var dbPet = await _petSrv.ReadAsync(petId, true, true);
+		var pet = new PetManage
+		{
+			Name = dbPet.Name,
+			AddedOn = dbPet.AddedOn,
+			AdoptedOn = dbPet.AdoptedOn,
+			Birthday = dbPet.Birthday,
+			Breed = dbPet.Breed,
+			PhotoPath = dbPet.PhotoPath,
+			isActive = dbPet.IsActive,
+			PetType = dbPet.PetType,
+			Gender = dbPet.Gender,
+			Description = dbPet.Description,
 			IncludesCage = dbPet.IncludesCage,
 			UserRequests = dbPet.UserRequests
-        };
-        ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
-                    .Cast<GenderEnum>()
-                    .Select(rt => new SelectListItem
-                    {
-                        Value = rt.ToString(),
-                        Text = rt.ToDescriptionString(),
-                        Selected = dbPet.Gender == rt ? true : false
-                    })
-                    .ToList();
+		};
+		ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+					.Cast<GenderEnum>()
+					.Select(rt => new SelectListItem
+					{
+						Value = rt.ToString(),
+						Text = rt.ToDescriptionString(),
+						Selected = dbPet.Gender == rt ? true : false
+					})
+					.ToList();
 
-        ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
-                    .Cast<PetTypeEnum>()
-                    .Select(rt => new SelectListItem
-                    {
-                        Value = rt.ToString(),
-                        Text = rt.ToDescriptionString(),
-                        Selected = dbPet.PetType == rt ? true : false
-                    })
-                    .ToList();
-        return View(pet);
-    }
+		ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+					.Cast<PetTypeEnum>()
+					.Select(rt => new SelectListItem
+					{
+						Value = rt.ToString(),
+						Text = rt.ToDescriptionString(),
+						Selected = dbPet.PetType == rt ? true : false
+					})
+					.ToList();
+		return View(pet);
+	}
 
-    [HttpPost("/admin/pets/{petId:guid}")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> PetManage([FromRoute] Guid petId,
-        [FromQuery] string returnUrl,
-        PetManage pet)
-    {
-        if (ModelState.IsValid)
-        {
-            var dbPet = await _petSrv.ReadAsync(petId, false);
-            if (pet.Image is not null)
-            {
-                var fileBytes = new MemoryStream();
-                await pet.Image.CopyToAsync(fileBytes);
-                var extension = Path.GetExtension(pet.Image.FileName);
-                //Save new photo file
-                var imageName = $"{Guid.NewGuid()}{extension}";
-                _fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
-                //Delete old photo file
-                if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath) && !dbPet.PhotoPath.Contains("Seeded"))
-                    _fileSrv.DeleteFile(dbPet.PhotoPath);
+	[HttpPost("/admin/pets/{petId:guid}")]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> PetManage([FromRoute] Guid petId,
+		[FromQuery] string returnUrl,
+		PetManage pet)
+	{
+		var dbPet = await _petSrv.ReadAsync(petId, false);
+		if (ModelState.IsValid)
+		{
+			if (pet.Image is not null)
+			{
+				var fileBytes = new MemoryStream();
+				await pet.Image.CopyToAsync(fileBytes);
+				var extension = Path.GetExtension(pet.Image.FileName);
+				//Save new photo file
+				var imageName = $"{Guid.NewGuid()}{extension}";
+				_fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
+				//Delete old photo file
+				if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath) && !dbPet.PhotoPath.Contains("Seeded"))
+					_fileSrv.DeleteFile(dbPet.PhotoPath);
 
-                dbPet.PhotoPath = $"/pet/{imageName}";
-            }
-            dbPet.Name = pet.Name;
-            dbPet.AdoptedOn = pet.AdoptedOn;
-            dbPet.Birthday = pet.Birthday;
-            dbPet.Breed = pet.Breed;
-            dbPet.IsActive = pet.isActive;
-            dbPet.PetType = pet.PetType;
-            dbPet.Gender = pet.Gender;
-            dbPet.Description = pet.Description;
-            dbPet.IncludesCage = pet.IncludesCage;
-            dbPet.UserRequests = pet.UserRequests;
-            await _petSrv.UpdateAsync(dbPet);
-            var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
-            TempData["ShowEditSuccessfulMessage"] = true;
-            return LocalRedirect(backUrl);
-        }
-        else
-        {
-            ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
-            return View(pet);
-        }
-    }
-    // искания
+				dbPet.PhotoPath = $"/pet/{imageName}";
+			}
+			dbPet.Name = pet.Name;
+			dbPet.AdoptedOn = pet.AdoptedOn;
+			dbPet.Birthday = pet.Birthday;
+			dbPet.Breed = pet.Breed;
+			dbPet.IsActive = pet.isActive;
+			dbPet.PetType = pet.PetType;
+			dbPet.Gender = pet.Gender;
+			dbPet.Description = pet.Description;
+			dbPet.IncludesCage = pet.IncludesCage;
+			dbPet.UserRequests = pet.UserRequests;
+			await _petSrv.UpdateAsync(dbPet);
+			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
+			TempData["ShowEditSuccessfulMessage"] = true;
+			return LocalRedirect(backUrl);
+		}
+		else
+		{
+			ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
+						.Cast<GenderEnum>()
+						.Select(rt => new SelectListItem
+						{
+							Value = rt.ToString(),
+							Text = rt.ToDescriptionString(),
+							Selected = dbPet.Gender == rt ? true : false
+						})
+						.ToList();
 
-    public async Task<IActionResult> Requests(
-        [FromQuery] string petName = null,
-        [FromQuery] string petBreed = null,
-        [FromQuery] string senderName = null,
-        [FromQuery] string receiverName = null,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 10
-    )
-    {
-        ViewBag.requestItems = await _requestSrv.ReadAllWithFilterAsync(
-            petName,
-            petBreed,
-            senderName,
-            receiverName,
-            page,
-            pageSize,
-            useNavigationalProperties: true,
-            isReadOnly: true
-        );
-        ViewBag.petName = petName;
-        ViewBag.petBreed = petBreed;
-        ViewBag.senderName = senderName;
-        ViewBag.receiverName = receiverName;
-        ViewBag.page = page;
-        ViewBag.pageSize = pageSize;
-        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
-        return View();
-    }
+			ViewBag.PetTypeOptions = Enum.GetValues(typeof(PetTypeEnum))
+						.Cast<PetTypeEnum>()
+						.Select(rt => new SelectListItem
+						{
+							Value = rt.ToString(),
+							Text = rt.ToDescriptionString(),
+							Selected = dbPet.PetType == rt ? true : false
+						})
+						.ToList();
+			ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
+			return View(pet);
+		}
+	}
+	// искания
+
+	public async Task<IActionResult> Requests(
+		[FromQuery] string petName = null,
+		[FromQuery] string petBreed = null,
+		[FromQuery] string senderName = null,
+		[FromQuery] string receiverName = null,
+		[FromQuery] int page = 1,
+		[FromQuery] int pageSize = 10
+	)
+	{
+		ViewBag.requestItems = await _requestSrv.ReadAllWithFilterAsync(
+			petName,
+			petBreed,
+			senderName,
+			receiverName,
+			page,
+			pageSize,
+			useNavigationalProperties: true,
+			isReadOnly: true
+		);
+		ViewBag.petName = petName;
+		ViewBag.petBreed = petBreed;
+		ViewBag.senderName = senderName;
+		ViewBag.receiverName = receiverName;
+		ViewBag.page = page;
+		ViewBag.pageSize = pageSize;
+		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
+		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
+		return View();
+	}
 }

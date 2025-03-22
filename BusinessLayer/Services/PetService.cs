@@ -42,9 +42,10 @@ namespace BusinessLayer
             return await _PetContext.ReadAllAsync(useNavigationalProperties, isReadOnly);
         }
 
-        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types,List<GenderEnum> genders, List<PetAgeEnum> ages, bool? withCage)
+        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types,List<GenderEnum> genders, List<PetAgeEnum> ages, bool? withCage,
+            int page = 1, int pageSize = 8)
         {
-            return await _PetContext.ReadWithFiltersAsync(types,genders,ages,withCage);
+            return await _PetContext.ReadWithFiltersAsync(types,genders,ages,withCage, page, pageSize);
         }
 
         public async Task<List<Pet>>? Read4NewestAsync()

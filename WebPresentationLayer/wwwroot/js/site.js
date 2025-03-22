@@ -83,29 +83,6 @@ function clearFiltersClick() {
 	window.location.href = window.location.pathname;
 }
 
-//Paging
-function onPaginationButtonClick(button) {
-	var type = "previous";
-	if (button.dataset.type) {
-		type = button.dataset.type;
-	}
-	var formEl = button.closest("form");
-	if (!formEl) { return; }
-	var pageInput = formEl.querySelector("input[name='page']");
-	if (!pageInput) { return; }
-	var page = parseInt(pageInput.value);
-	if (type == "previous") {
-		page = page - 1;
-	}
-	else {
-		page = page + 1;
-	}
-	if (page < 1) {
-		page = 1;
-	}
-	pageInput.value = page;
-	formEl.submit();
-}
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -124,16 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			ev.preventDefault();
 			var filterOption = ev.target.closest(".filter-option");
 			onFilterClick(filterOption);
-		});
-	});
-
-	var paginationButtons = document.querySelectorAll(".pagination button");
-	paginationButtons.forEach(function (button) {
-		button.addEventListener("click", function (ev) {
-			ev.stopPropagation();
-			ev.preventDefault();
-			var pageButton = ev.target.closest("button");
-			onPaginationButtonClick(pageButton);
 		});
 	});
 })

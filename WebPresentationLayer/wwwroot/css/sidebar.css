@@ -1,5 +1,4 @@
 ﻿.sidebar {
-	width:280px;
 }
 
 .sidebar .nav{
@@ -8,7 +7,6 @@
 	border:1px solid #adb5bd;
 	background:#dee2e6;
 	border-radius:5px;
-	min-height:300px;
 }
 
 	.sidebar .nav-link.active {

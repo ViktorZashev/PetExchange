@@ -58,7 +58,8 @@
 				<div class="col-6">
 					<div class="mb-3">
 						<label asp-for="Role" class="form-label"></label>
-						<select disabled asp-for="Role" asp-items="@roles" class="form-select"></select>
+						<select asp-for="Role" asp-items="@roles" class="form-select" disabled></select>
+						<input type="hidden" asp-for="Role"/>
 						<span asp-validation-for="Role" class="text-danger"></span>
 					</div>
 				</div>
@@ -66,6 +67,7 @@
 			<div class="row">
 				<div class="col-6">
 					<img src="@Model.PhotoPath" class="img-thumbnail" style="max-width:100%;max-height:80px" />
+					<input type="hidden" asp-for="PhotoPath" />
 				</div>
 				<div class="col-6">
 					<div class="mb-3">

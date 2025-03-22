@@ -20,8 +20,8 @@ public class Header : ViewComponent
 	public User? CurrentUser { get; set; } = null;
 	public async Task<IViewComponentResult> InvokeAsync()
 	{
-		PageName = new Utility.Utility().GetActivePage(HttpContext);
-		ControllerName = new Utility.Utility().GetActiveController(HttpContext);
+		PageName = new Utility.ViewUtility().GetActivePage(HttpContext);
+		ControllerName = new Utility.ViewUtility().GetActiveController(HttpContext);
 		//Site Menu
 		SiteMenu.Add(new MenuItem()
 		{

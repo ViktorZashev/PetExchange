@@ -7,7 +7,6 @@
 }
 <h2 class="page-title">Искания</h2>
 <form method="get" name="filter">
-<input type="hidden" name="page" value="@currentPage" />
 	<table class="table table-bordered table-striped w-100">
 	<thead>
 		<tr>
@@ -83,10 +82,10 @@
 					<nav>
 						<ul class="pagination mb-0">
 							<li class="page-item @(currentPage == 1 ? "disabled" : "")">
-								<button type="button" class="page-link" data-type="previous">Назад</button>
+								<a href="@ViewBag.PrevPageUrl" class="page-link" data-type="previous">Назад</a>
 							</li>
 							<li class="page-item @(items.Count < pageSize ? "disabled" : "")">
-								<button type="button" class="page-link" data-type="next">Назад</button>
+								<a href="@ViewBag.NextPageUrl" class="page-link" data-type="next">Назад</a>
 							</li>
 						</ul>
 					</nav>
