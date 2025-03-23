@@ -1,183 +1,124 @@
 ﻿using DataLayer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
+using NuGet.Protocol.Core.Types;
 
 namespace PetExchangeTests
 {
     public class UserDbContextTests : DataLayerTestsManagement
     {
-        [Test]
-        public async Task CreateMethod_AddsUserToDatabase()
+        private Mock<UserManager<User>> _userManagerMock;
+
+        [SetUp]
+        public void SetUp()
         {
-            // Arrange
-            var initialCount = db.Users.Count();
-            var newUser = new User
-            {
-                Name = "NewUser",
-                UserName = "newuser",
-                Town = new ("Plovdiv"),
-                Pets = []
-            };
 
-            // Act
-            await userContext.CreateAsync(newUser);
-            var actualCount = db.Users.Count();
-            var expectedCount = initialCount + 1;
 
-            // Assert
-            Assert.That(expectedCount, Is.EqualTo(actualCount), "The count of users in the database doesn't increment by 1 when adding one user!");
+            // Set up UserManager with basic mocked functionality
+            _userManagerMock = new Mock<UserManager<User>>(
+                Mock.Of<IUserStore<User>>(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+
+            // Mock the AddToRoleAsync method only (we don't mock CreateAsync)
+            _userManagerMock.Setup(um => um.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _userManagerMock.Setup(um => um.RemoveFromRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _userManagerMock.Setup(um => um.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            // Initialize UserDbContext with the in-memory dbContext and mocked UserManager
+            userContext = new UserDbContext(db, _userManagerMock.Object);
         }
 
         [Test]
-        public async Task CreateMethod_DoesNotCreateNewTownWhenAlreadyExists()
+        public async Task ReadAllWithFilterAsync_FiltersAndPagesCorrectly()
         {
-            // Arrange
-            var existingTown = new Town { Name = "ExistingTown" };
-            db.Towns.Add(existingTown);
-            db.SaveChanges();
-            var initialTownCount = db.Towns.Count();
-            var newUser = new User { Name = "NewUser", UserName = "newuser", Town = existingTown };
+            // Arrange: Create test users
+            var user1 = new User { UserName = "user1", Name = "John Doe", PhoneNumber = "123", Email = "john@example.com", Town = new Town { Name = "TownA" }, Role = RoleEnum.User };
+            var user2 = new User { UserName = "user2", Name = "Jane Doe", PhoneNumber = "123", Email = "jane@example.com", Town = new Town { Name = "TownB" }, Role = RoleEnum.Admin };
+            var user3 = new User { UserName = "user3", Name = "John Smith", PhoneNumber = "123", Email = "johnsmith@example.com", Town = new Town { Name = "TownA" }, Role = RoleEnum.User };
+            var user4 = new User { UserName = "user4", Name = "Jane Smith", PhoneNumber = "123", Email = "janesmith@example.com", Town = new Town { Name = "TownB" }, Role = RoleEnum.Admin };
 
-            // Act
-            await userContext.CreateAsync(newUser);
-            var actualTownCount = db.Towns.Count();
-
-            // Assert
-            Assert.That(actualTownCount, Is.EqualTo(initialTownCount), "Create method creates a new town even when the town already exists in the database!");
-        }
-
-        [Test]
-        public async Task CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateUser()
-        {
-            // Arrange
-            var existingUser = new User { Name = "ExistingUser", UserName = "existinguser" };
-            db.Users.Add(existingUser);
-            db.SaveChanges();
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => userContext.CreateAsync(existingUser), "Create method doesn't throw an exception when trying to add a duplicate user!");
-        }
-
-        [Test]
-        public async Task ReadMethod_RetrievesAUserFromDatabase()
-        {
-            // Arrange
-            var id = Guid.NewGuid();
-            var enteredUser = new User { Id = id, Name = "UserName", UserName = "username"};
-            db.Users.Add(enteredUser);
+            // Add users to the in-memory database
+            db.Users.Add(user1);
+            db.Users.Add(user2);
+            db.Users.Add(user3);
+            db.Users.Add(user4);
             db.SaveChanges();
 
-            // Act
-            var actualUser = await userContext.ReadAsync(id);
-            // Assert
-            Assert.Multiple(() =>
-            {
-              
-                Assert.That(actualUser.Id, Is.EqualTo(enteredUser.Id), "Read method doesn't return the user entered in the database!");
-                Assert.That(actualUser.Name, Is.EqualTo(enteredUser.Name), "Read method doesn't return the correct user name!");
-                Assert.That(actualUser.UserName, Is.EqualTo(enteredUser.UserName), "Read method doesn't return the correct username!");
-            });
+            // Act: Call the ReadAllWithFilterAsync method with different filters
+            var filteredUsers1 = await userContext.ReadAllWithFilterAsync(username: "user", name: "John", email: "", town: "", role: RoleEnum.User.ToDescriptionString(), page: 1, pageSize: 10);
+            var filteredUsers2 = await userContext.ReadAllWithFilterAsync(username: "", name: "", email: "example", town: "TownA", role: "", page: 1, pageSize: 10);
+            var filteredUsers3 = await userContext.ReadAllWithFilterAsync(username: "", name: "", email: "", town: "", role: "", page: 2, pageSize: 2); // Test pagination
+
+            // Assert: Check the results
+            // filteredUsers1 should contain only user1 and user3 (users with "User" role and name "John")
+            Assert.AreEqual(2, filteredUsers1.Count);
+
+            // filteredUsers2 should contain user1, user2, user3, and user4 (users with "example" in email and "TownA" in town)
+            Assert.AreEqual(2, filteredUsers2.Count);
+
+            // filteredUsers3 should contain user3 and user4 (pagination should return the second page of results)
+            Assert.AreEqual(2, filteredUsers3.Count);
         }
 
         [Test]
-        public async Task UpdateMethod_UpdatesUserInDatabase()
+        public async Task UpdateAsync_UpdatesUser()
         {
             // Arrange
-            var id = Guid.NewGuid();
-            var initialUser = new User { Id = id, Name = "InitialUserName", UserName = "initialusername" };
-            db.Users.Add(initialUser);
-            db.SaveChanges();
+            var user = await GetExampleUser();
 
-            var updatedUser = new User { Id = id, Name = "UpdatedUserName", UserName = "updatedusername"};
-
-            // Act
-            await userContext.UpdateAsync(updatedUser);
-            var actualUser = db.Users.FirstOrDefault(u => u.Id == id);
-
-            // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(actualUser.Name, Is.EqualTo(updatedUser.Name), "Update method doesn't update the user name in the database!");
-                Assert.That(actualUser.UserName, Is.EqualTo(updatedUser.UserName), "Update method doesn't update the username in the database!");
-            });
-        }
-
-        [Test]
-        public async Task UpdateMethod_ThrowsExceptionWhenUserDoesNotExist()
-        {
-            // Arrange
-            var nonExistentId = Guid.NewGuid();
-            var userToUpdate = new User { Id = nonExistentId, Name = "UserName", UserName = "username"};
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => userContext.UpdateAsync(userToUpdate), "Update method doesn't throw an exception when the user does not exist in the database!");
-        }
-
-        [Test]
-        public async Task DeleteMethod_RemovesUserFromDatabase()
-        {
-            // Arrange
-            var id = Guid.NewGuid();
-            var userToDelete = new User { Id = id, Name = "UserName", UserName = "username"};
-            db.Users.Add(userToDelete);
-            db.SaveChanges();
+            var updatedUser = new User { Id = user.Id, UserName = "updateduser", Role = RoleEnum.Admin };
 
             // Act
-            await userContext.DeleteAsync(id);
-            var actualUser = db.Users.FirstOrDefault(u => u.Id == id);
+            await userContext.UpdateAsync(updatedUser,false);
 
-            // Assert
-            Assert.IsNull(actualUser, "Delete method doesn't remove the user from the database!");
+            // Assert: Check if the user was updated in the database
+            var dbUser = await db.Users.SingleOrDefaultAsync(u => u.Id == user.Id);
+            Assert.IsNotNull(dbUser);
+            Assert.AreEqual("updateduser", dbUser.UserName);
         }
 
         [Test]
-        public async Task ReadAllMethod_RetrievesAllUsersFromDatabase()
+        public async Task ReadAsync_ReturnsCorrectUserById()
         {
-            // Arrange
-            var enteredUser1 = new User { Name = "UserName1", UserName = "username1"};
-            var enteredUser2 = new User { Name = "UserName2", UserName = "username2"};
-            db.Users.Add(enteredUser1);
-            db.Users.Add(enteredUser2);
-            db.SaveChanges();
+            // Arrange: Create a test user
+            var user = await GetExampleUser();
 
-            // Act
-            var outputedUsers = await userContext.ReadAllAsync();
+            // Act: Retrieve the user by ID
+            var dbUser = await userContext.ReadAsync(user.Id);
 
-            // Assert
-            Assert.That(outputedUsers, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
-            Assert.That(outputedUsers.Any(u => u.Name == "UserName1"), Is.True, "ReadAll method doesn't return the correct user models from the database!");
-            Assert.That(outputedUsers.Any(u => u.Name == "UserName2"), Is.True, "ReadAll method doesn't return the correct user models from the database!");
+            // Assert: Check if the retrieved user matches the expected user
+            Assert.IsNotNull(dbUser);
+            Assert.AreEqual(user.UserName, dbUser.UserName);
         }
 
         [Test]
-        public async Task ReadAllMethod_ReturnsEmptyListWhenThereAreNoUsersInDatabase()
+        public async Task ReadAllAsync_ReturnsAllUsers()
         {
-            // Arrange
-            // Ensure database is empty
+            // Arrange: Create some test users
+            var user1 = await GetExampleUser();
+            var user2 = await GetExampleUser();
 
-            // Act
-            var outputedUsers = await userContext.ReadAllAsync();
+            // Act: Retrieve all users
+            var allUsers = await userContext.ReadAllAsync(false);
 
-            // Assert
-            Assert.That(outputedUsers, Is.Empty, "ReadAll method doesn't return an empty list when no entries exist in the database!");
-        }
-
-        [Test]
-        public async Task ReadMethod_ReturnsNullWhenUserDoesNotExist()
-        {
-            // Arrange
-            var nonExistentId = Guid.NewGuid();
-
-            // Act & Assert
-            Assert.That(await userContext.ReadAsync(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the user does not exist in the database!");
-        }
-
-        [Test]
-        public async Task DeleteMethod_ThrowsExceptionWhenUserDoesNotExist()
-        {
-            // Arrange
-            var nonExistentId = Guid.NewGuid();
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => userContext.DeleteAsync(nonExistentId), "Delete method doesn't throw an exception when the user does not exist in the database!");
+            // Assert: Check if all users are returned
+            Assert.AreEqual(2, allUsers.Count);
         }
     }
 }

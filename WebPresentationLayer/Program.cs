@@ -71,7 +71,7 @@ namespace WebPresentationLayer
 				options.Password.RequireUppercase = false;
 				options.Password.RequireLowercase = false;
 				options.Password.RequireDigit = false;
-				options.Password.RequiredLength = 1;
+				options.Password.RequiredLength = 6;
 			});
 			builder.Services.Configure<FormOptions>(options =>
 			{
@@ -80,8 +80,7 @@ namespace WebPresentationLayer
 
 			builder.Services.ConfigureApplicationCookie(o =>
 			{
-				// Change TimeSpan later due to security reasons
-				o.ExpireTimeSpan = TimeSpan.FromMinutes(505);
+				o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 				o.LoginPath = "/Identity/Account/Login";
 				o.AccessDeniedPath = "/Identity/Account/Login";
 			}
@@ -97,7 +96,6 @@ namespace WebPresentationLayer
 			else
 			{
 				app.UseExceptionHandler("/Error/System");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
 

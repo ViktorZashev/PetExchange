@@ -6,6 +6,7 @@ namespace WebPresentationLayer.Models
 	public class ChangePasswordModel
 	{
 		[Required(ErrorMessage = "задължително")]
+		[MinLength(6, ErrorMessage = "паролата трябва да съдържа минимум 6 символа")]
 		[DisplayName("Нова парола")]
 		public string NewPassword { get; set; } = string.Empty;
 

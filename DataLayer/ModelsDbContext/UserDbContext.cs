@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 namespace DataLayer
 {
     public class UserDbContext : IDbWithNav<User, Guid>
-	{
+    {
         private readonly PetExchangeDbContext _dbcontext;
         private readonly UserManager<User> userManager;
         private readonly RoleEnum adminRole = RoleEnum.Admin;
@@ -33,25 +33,18 @@ namespace DataLayer
 
         public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
-            try
-            {
-                var allUsers = await ReadAllAsync(useNavigationalProperties,isReadOnly);
-                // filtering
-                var filteredUsers = allUsers.Where(x =>
-                        (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
-                        && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))
-                        && (String.IsNullOrWhiteSpace(email) || x.Email.Contains(email))
-                        && (String.IsNullOrWhiteSpace(town) || x.Town.Name.ToLower().Contains(town.ToLower()))
-                        && (String.IsNullOrWhiteSpace(role) || x.Role.ToDescriptionString().ToLower().Contains(role.ToLower()))
-                        ).ToList();
-                // paging
-                filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList(); 
-                return filteredUsers;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var allUsers = await ReadAllAsync(useNavigationalProperties, isReadOnly);
+            // filtering
+            var filteredUsers = allUsers.Where(x =>
+                    (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
+                    && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))
+                    && (String.IsNullOrWhiteSpace(email) || x.Email.Contains(email))
+                    && (String.IsNullOrWhiteSpace(town) || x.Town.Name.ToLower().Contains(town.ToLower()))
+                    && (String.IsNullOrWhiteSpace(role) || x.Role.ToDescriptionString().ToLower().Contains(role.ToLower()))
+                    ).ToList();
+            // paging
+            filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return filteredUsers;
         }
 
         #region CRUD
@@ -60,146 +53,103 @@ namespace DataLayer
             await userManager.CreateAsync(entity, passWord);
             if (entity.Role == adminRole)
             {
-                await userManager.AddToRoleAsync(entity,adminRole.ToString());
+                await userManager.AddToRoleAsync(entity, adminRole.ToString());
             }
             else if (entity.Role == userRole)
             {
-                await userManager.AddToRoleAsync(entity,userRole.ToString());
+                await userManager.AddToRoleAsync(entity, userRole.ToString());
             }
             await _dbcontext.SaveChangesAsync();
         }
 
         public async Task CreateAsync(User entity)
         {
-            try
+            await _dbcontext.Users.AddAsync(entity);
+            await _dbcontext.SaveChangesAsync();
+            if (entity.Role == adminRole)
             {
-                await _dbcontext.Users.AddAsync(entity);
-                await _dbcontext.SaveChangesAsync();
-                if (entity.Role == adminRole)
-                {
-                    await userManager.AddToRoleAsync(entity, adminRole.ToString());
-                }
-                else if (entity.Role == userRole)
-                {
-                    await userManager.AddToRoleAsync(entity, userRole.ToString());
-                }
+                await userManager.AddToRoleAsync(entity, adminRole.ToString());
             }
-            catch (Exception)
+            else if (entity.Role == userRole)
             {
-                throw;
+                await userManager.AddToRoleAsync(entity, userRole.ToString());
             }
         }
 
         public async Task CreateAsync(List<User> users)
         {
-            try
+            foreach (var user in users)
             {
-                foreach (var user in users)
-                {
-                    await CreateAsync(user);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                await CreateAsync(user);
             }
         }
 
-        public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<User>? ReadAsync(Guid id, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
-            try
+            IQueryable<User> query = _dbcontext.Users;
+            if (isReadOnly)
             {
-                IQueryable<User> query = _dbcontext.Users;
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-                if (useNavigationalProperties)
-                {
-                    query = query.Include(e => e.Town).Include(e => e.RequestOutbox).Include(e => e.Pets);
-                }
-                return await query.SingleOrDefaultAsync(e => e.Id == id);
+                query = query.AsNoTrackingWithIdentityResolution();
             }
-            catch (Exception)
+            if (useNavigationalProperties)
             {
-                throw;
+                query = query.Include(e => e.Town).Include(e => e.RequestOutbox).Include(e => e.Pets);
             }
+            return await query.SingleOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<List<User>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<List<User>> ReadAllAsync(bool useNavigationalProperties = true, bool isReadOnly = true)
         {
-            try
-            {
-                IQueryable<User> query = _dbcontext.Users;
+            IQueryable<User> query = _dbcontext.Users;
 
-                if (isReadOnly)
-                {
-                    query = query.AsNoTrackingWithIdentityResolution();
-                }
-                if (useNavigationalProperties)
-                {
-                    query = query.Include(e => e.Town).Include(e => e.RequestOutbox).Include(e => e.Pets);
-                }
-                return await query.ToListAsync();
-            }
-            catch (Exception)
+            if (isReadOnly)
             {
-                throw;
+                query = query.AsNoTrackingWithIdentityResolution();
             }
+            if (useNavigationalProperties)
+            {
+                query = query.Include(e => e.Town).Include(e => e.RequestOutbox).Include(e => e.Pets);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task UpdateAsync(User user, bool useNavigationalProperties = true)
         {
-            try
-            {
-                User userFromDb = await ReadAsync(user.Id, useNavigationalProperties, false);
+            User userFromDb = await ReadAsync(user.Id, useNavigationalProperties, false);
 
-                if (userFromDb is null)
-                {
-                    throw new ArgumentException("User with id = " + user.Id + "does not exist!");
-                }
-                if (useNavigationalProperties) _dbcontext.Users.Update(user); // updates all linked entities
-                else
-                {
-                    _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // updates only the core entity
-                }
- 
-                if(user.Role == adminRole && user.Role != userFromDb.Role)
-                {
-                    await userManager.RemoveFromRoleAsync(user, userRole.ToString());
-                    await userManager.AddToRoleAsync(user, adminRole.ToString());
-                }
-                else if(user.Role == userRole && user.Role != userFromDb.Role)
-                {
-                    await userManager.RemoveFromRoleAsync(user, adminRole.ToString());
-                    await userManager.AddToRoleAsync(user, userRole.ToString());
-                }
-                await _dbcontext.SaveChangesAsync();
-            }
-            catch (Exception)
+            if (userFromDb is null)
             {
-
-                throw;
+                throw new ArgumentException("User with id = " + user.Id + "does not exist!");
             }
+            if (useNavigationalProperties) _dbcontext.Users.Update(user); // updates all linked entities
+            else
+            {
+                _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // updates only the core entity
+            }
+
+            if (user.Role == adminRole && user.Role != userFromDb.Role)
+            {
+                await userManager.RemoveFromRoleAsync(user, userRole.ToString());
+                await userManager.AddToRoleAsync(user, adminRole.ToString());
+            }
+            else if (user.Role == userRole && user.Role != userFromDb.Role)
+            {
+                await userManager.RemoveFromRoleAsync(user, adminRole.ToString());
+                await userManager.AddToRoleAsync(user, userRole.ToString());
+            }
+            await _dbcontext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid key)
         {
-            try
-            {
-                User user = await ReadAsync(key, false, false);
+            User user = await ReadAsync(key, false, false);
 
-                if (user is null)
-                {
-                    throw new ArgumentException("User with id = " + key + " does not exist!");
-                }
-                await userManager.DeleteAsync(user);
-                await _dbcontext.SaveChangesAsync();
-            }
-            catch (Exception)
+            if (user is null)
             {
-                throw;
+                throw new ArgumentException("User with id = " + key + " does not exist!");
             }
+            await userManager.DeleteAsync(user);
+            await _dbcontext.SaveChangesAsync();
         }
         #endregion
     }

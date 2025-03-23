@@ -13,10 +13,6 @@ namespace BusinessLayer
             _TownContext = new TownDbContext(_ProjectContext);
         }
 
-        public async Task<List<Tuple<Town, int>>> ReadAllWithFilterAsync(bool ascendingNumberUsers, int page = 1, int pageSize = 10, bool isReadOnly = true)
-        {
-            return await _TownContext.ReadAllWithFilterAsync(ascendingNumberUsers, page, pageSize, isReadOnly);
-        }
         public async Task<List<SelectOption>> GetTownOptions()
         {
             var result = new List<SelectOption>();

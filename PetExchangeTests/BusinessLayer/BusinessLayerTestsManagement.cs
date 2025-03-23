@@ -60,5 +60,21 @@ namespace PetExchangeTests
             db.Dispose();
         }
 
+        public User GetExampleUser()
+        {
+            var town = new Town();
+            return new User
+            {
+                Email = "example@example.com",
+                PhoneNumber = "1234567890",
+                UserName = "ExampleUser",
+                Name = "ExampleName",
+                PhotoPath = "path/to/photo.jpg",
+                IsActive = true,
+                Role = RoleEnum.User,
+                TownId = town.Id,
+                Town = town
+            };
+        }
     }
 }

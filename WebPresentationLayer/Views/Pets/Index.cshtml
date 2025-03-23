@@ -19,6 +19,12 @@
 			</div>
 			<div class="col content">
 				<div class="row">
+					@if(pets.Count == 0)
+					{
+						<div class="mb-3">
+							Няма домашни любимци отговарящи на критериите!
+						</div>
+					}
 					@foreach (var pet in pets)
 					{
 						<div class="col-12 col-md-6 col-lg-4 col-xl-3 pb-4">

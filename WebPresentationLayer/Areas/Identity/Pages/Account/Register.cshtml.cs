@@ -75,12 +75,12 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             [Required]
-            [EmailAddress(ErrorMessage = "Това не е имейл адрес.")]
+            [EmailAddress(ErrorMessage = "това не е имейл адрес.")]
             [Display(Name = "Имейл")]
             public string Email { get; set; }
 
             [Required]
-            [Phone(ErrorMessage = "Това не е телефонен номер.")]
+            [Phone(ErrorMessage = "това не е телефонен номер.")]
             [Display(Name = "Телефон")]
             public string PhoneNumber { get; set; }
 
@@ -89,7 +89,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "Парола трябва да бъде минимум 6 символа и максимум 100 символа.", MinimumLength = 6)]
+            [MinLength(6, ErrorMessage = "парола трябва да бъде минимум 6 символа.")]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
             public string Password { get; set; }
@@ -100,7 +100,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Потвърди парола")]
-            [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
+            [Compare("Password", ErrorMessage = "паролите не съвпадат.")]
             public string ConfirmPassword { get; set; }
 
             [Required]
@@ -141,7 +141,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("Потребителят беше създаден успешно.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

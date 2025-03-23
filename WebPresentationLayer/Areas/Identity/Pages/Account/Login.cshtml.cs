@@ -59,7 +59,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [Display(Name = "Потребител")]
-            public string Username { get; set; } = "vbzashev";
+            public string Username { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -68,7 +68,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
             [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Парола")]
-            public string Password { get; set; } = "4_sQYgeyu:Cx5-@\"TT.e";
+            public string Password { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

@@ -60,5 +60,31 @@ namespace PetExchangeTests
         {
             db.Dispose();
         }
+
+        public async Task<User> GetExampleUser(bool saveUser = true)
+        {
+            var town = new Town("Example Town");
+            var user = new User()
+            {
+                Email = "example@example.com",
+                PhoneNumber = "1234567890",
+                UserName = "ExampleUser",
+                Name = "ExampleName",
+                PhotoPath = "path/to/photo.jpg",
+                PasswordHash = "PassowrdHashExample",
+                IsActive = true,
+                Role = RoleEnum.User,
+                TownId = town.Id,
+                Town = town
+            }; 
+            if (saveUser)
+            {
+                db.Towns.Add(town);
+                db.Users.Add(user);
+                db.SaveChanges();
+            }
+
+            return user;
+        }
     }
 }

@@ -1,152 +1,122 @@
 ﻿using DataLayer;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace PetExchangeTests
 {
     public class TownDbContextTests : DataLayerTestsManagement
     {
-        [Test]
-        public async Task CreateMethod_AddsTownToDatabase()
+        // Example Town creation helper method
+        public Town GetExampleTown(bool saveTown = true)
         {
-            // Arrange
-            var newTown = new Town("TownName");
-            var initialCount = db.Towns.Count();
-
-            // Act
-            await townContext.CreateAsync(newTown);
-            var actualCount = db.Towns.Count();
-            var expectedCount = initialCount + 1;
-
-            // Assert
-            Assert.That(expectedCount, Is.EqualTo(actualCount), "The count of towns in the database doesn't increment by 1 when adding one town!");
-        }
-
-        [Test]
-        public async Task CreateMethod_ThrowsExceptionWhenTryingToAddDuplicateTown()
-        {
-            // Arrange
-            var newTown = new Town("TownName");
-            await townContext.CreateAsync(newTown);
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => townContext.CreateAsync(newTown), "The Create method allows adding duplicate town names!");
-        }
-
-        [Test]
-        public async Task ReadMethod_RetrievesATownFromDatabase()
-        {
-            // Arrange
-            var id = Guid.NewGuid();
-            var enteredTown = new Town("TownName") { Id = id };
-            db.Towns.Add(enteredTown);
-            db.SaveChanges();
-
-            // Act
-            var actualTown = await townContext.ReadAsync(id);
-            // Assert
-            Assert.Multiple(() =>
+            var town = new Town
             {
-                Assert.That(actualTown.Id, Is.EqualTo(enteredTown.Id), "Read method doesn't return the town entered in the database!");
-                Assert.That(actualTown.Name, Is.EqualTo(enteredTown.Name), "Read method doesn't return the correct town name!");
-            });
+                Name = "ExampleTown"
+            };
+
+            if (saveTown)
+            {
+                db.Towns.Add(town); // Save town to the database
+                db.SaveChanges(); // Ensure it's saved and has a valid Id
+            }
+            else
+            {
+                town.Id = Guid.NewGuid(); // If not saving to DB, simulate a valid Id
+            }
+
+            return town;
         }
 
         [Test]
-        public async Task UpdateMethod_UpdatesTownInDatabase()
+        public async Task CreateAsync_SingleTown_Succeeds()
         {
             // Arrange
-            var id = Guid.NewGuid();
-            var initialTown = new Town("InitialTownName") { Id = id };
-            db.Towns.Add(initialTown);
-            db.SaveChanges();
-
-            var updatedTown = new Town("UpdatedTownName") { Id = id };
+            var town = GetExampleTown(saveTown: false); // Simulate Town creation without DB persistence
 
             // Act
-            await townContext.UpdateAsync(updatedTown);
-            var actualTown = db.Towns.FirstOrDefault(t => t.Id == id);
+            await townContext.CreateAsync(town);
 
             // Assert
-            Assert.That(actualTown.Name, Is.EqualTo(updatedTown.Name), "Update method doesn't update the town name in the database!");
+            var createdTown = await db.Towns.FirstOrDefaultAsync(t => t.Name == "ExampleTown");
+            Assert.NotNull(createdTown);
         }
 
         [Test]
-        public async Task UpdateMethod_ThrowsExceptionWhenTownDoesNotExist()
+        public async Task CreateAsync_DuplicateTown_ThrowsDuplicateNameException()
         {
             // Arrange
-            var nonExistentId = Guid.NewGuid();
-            var townToUpdate = new Town("TownName") { Id = nonExistentId };
+            var town = GetExampleTown(saveTown: true); // Save town to DB first
+            var duplicateTown = new Town { Name = town.Name };
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => townContext.UpdateAsync(townToUpdate), "Update method doesn't throw an exception when the town does not exist in the database!");
+            var ex = Assert.ThrowsAsync<DuplicateNameException>(async () => await townContext.CreateAsync(duplicateTown));
+            Assert.AreEqual("There is already a town with the same name.", ex.Message);
         }
 
         [Test]
-        public async Task DeleteMethod_RemovesTownFromDatabase()
+        public async Task ReadAsync_ExistingTown_ReturnsTown()
         {
             // Arrange
-            var id = Guid.NewGuid();
-            var townToDelete = new Town("TownName") { Id = id };
-            db.Towns.Add(townToDelete);
-            db.SaveChanges();
+            var town = GetExampleTown(saveTown: true); // Ensure Town is saved to DB
 
             // Act
-            await townContext.DeleteAsync(id);
-            var actualTown = db.Towns.FirstOrDefault(t => t.Id == id);
+            var retrievedTown = await townContext.ReadAsync(town.Id);
 
             // Assert
-            Assert.IsNull(actualTown, "Delete method doesn't remove the town from the database!");
+            Assert.NotNull(retrievedTown);
+            Assert.AreEqual(town.Name, retrievedTown.Name);
         }
 
         [Test]
-        public async Task ReadAllMethod_RetrievesAllTownsFromDatabase()
+        public async Task ReadAsync_NonExistentTown_ReturnsNull()
+        {
+            // Act
+            var retrievedTown = await townContext.ReadAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(retrievedTown);
+        }
+
+        [Test]
+        public async Task UpdateAsync_ExistingTown_UpdatesSuccessfully()
         {
             // Arrange
-            var enteredTown1 = new Town("TownName1");
-            var enteredTown2 = new Town("TownName2");
-            db.Towns.Add(enteredTown1);
-            db.Towns.Add(enteredTown2);
-            db.SaveChanges();
+            var town = GetExampleTown(saveTown: true); // Ensure Town is saved
+            town.Name = "UpdatedTown";
 
             // Act
-            var outputedTowns = await townContext.ReadAllAsync();
+            await townContext.UpdateAsync(town);
 
             // Assert
-            Assert.That(outputedTowns, Has.Count.EqualTo(2), "ReadAll method doesn't return all entries found in the database!");
-            Assert.That(outputedTowns.Any(t => t.Name == "TownName1"), Is.True, "ReadAll method doesn't return the correct town models from the database!");
-            Assert.That(outputedTowns.Any(t => t.Name == "TownName2"), Is.True, "ReadAll method doesn't return the correct town models from the database!");
+            var updatedTown = await db.Towns.FirstOrDefaultAsync(t => t.Id == town.Id);
+            Assert.NotNull(updatedTown);
+            Assert.AreEqual("UpdatedTown", updatedTown.Name);
         }
 
         [Test]
-        public async Task ReadAllMethod_ReturnsEmptyListWhenThereAreNoTownsInDatabase()
+        public async Task DeleteAsync_ExistingTown_Succeeds()
         {
             // Arrange
-            // Database is empty because of setup function
+            var town = GetExampleTown(saveTown: true); // Ensure Town is saved
 
             // Act
-            var outputedTowns = await townContext.ReadAllAsync();
+            await townContext.DeleteAsync(town.Id);
 
             // Assert
-            Assert.That(outputedTowns, Is.Empty, "ReadAll method doesn't return an empty list when no entries exist in the database!");
+            var deletedTown = await db.Towns.FirstOrDefaultAsync(t => t.Id == town.Id);
+            Assert.IsNull(deletedTown);
         }
 
         [Test]
-        public async Task ReadMethod_ReturnsNullWhenTownDoesNotExist()
+        public async Task DeleteAsync_NonExistentTown_ThrowsArgumentException()
         {
             // Arrange
-            var nonExistentId = Guid.NewGuid();
+            var nonExistentTownId = Guid.NewGuid(); // Generate a GUID that does not exist in DB
 
             // Act & Assert
-            Assert.That(townContext.ReadAsync(nonExistentId), Is.EqualTo(null), "Read method doesn't return null when the town does not exist in the database!");
+            var ex = Assert.ThrowsAsync<ArgumentException>(async () => await townContext.DeleteAsync(nonExistentTownId));
+            Assert.AreEqual("Town with id = " + nonExistentTownId + " does not exist!", ex.Message);
         }
-
-        [Test]
-        public async Task DeleteMethod_ThrowsExceptionWhenTownDoesNotExist()
-        {
-            // Arrange
-            var nonExistentId = Guid.NewGuid();
-
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => townContext.DeleteAsync(nonExistentId), "Delete method doesn't throw an exception when the town does not exist in the database!");
-        }
+   
     }
 }

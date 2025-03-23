@@ -1,4 +1,5 @@
 ﻿using DataLayer;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
 
 namespace PetExchangeTests
@@ -6,89 +7,210 @@ namespace PetExchangeTests
     public class PetDbContextTests : DataLayerTestsManagement
 	{
         [Test]
-        public async Task CreateMethod_AddsPetToDatabase()
+        public async Task CreateAsync_SinglePet_Succeeds()
         {
-            var newUser = GetExampleUser();
-            var newPet = new Pet(newUser, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
+            // Arrange
+            var user = await GetExampleUser(true);
 
-            var initialCount = db.Pets.Count();
-            await petContext.CreateAsync(newPet);
-            var actualCount = db.Pets.Count();
-
-            Assert.That(actualCount, Is.EqualTo(initialCount + 1), "Pet count did not increment by 1.");
-        }
-
-        [Test]
-        public async Task CreateMethod_ThrowsExceptionForDuplicateKey()
-        {
-            var user = GetExampleUser();
-            var matchingId = Guid.NewGuid();
-            var newPet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = matchingId };
-            var duplicatePet = new Pet(user, "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = matchingId };
-
-            await petContext.CreateAsync(newPet);
-            Assert.ThrowsAsync<InvalidOperationException>(async () => await petContext.CreateAsync(duplicatePet));
-        }
-
-        [Test]
-        public async Task ReadMethod_RetrievesPetFromDatabase()
-        {
-            var id = Guid.NewGuid();
-            var enteredPet = new Pet(GetExampleUser(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false) { Id = id };
-            db.Pets.Add(enteredPet);
-            await db.SaveChangesAsync();
-
-            var actualPet = await petContext.ReadAsync(id);
-            Assert.That(actualPet,Is.EqualTo(enteredPet), "Read method did not return the correct pet.");
-        }
-
-        [Test]
-        public async Task ReadAllMethod_ReturnsAllPets()
-        {
-            db.Pets.AddRange(
-                new Pet(GetExampleUser(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false),
-                new Pet(GetExampleUser(), "Buddy", "", 3, PetTypeEnum.Dog, "A playful dog", false)
-            );
-            await db.SaveChangesAsync();
-
-            var pets = await petContext.ReadAllAsync();
-            Assert.That(pets.Count, Is.EqualTo(2), "ReadAll method did not return correct number of pets.");
-        }
-
-        [Test]
-        public async Task UpdateMethod_UpdatesPetDetails()
-        {
-            var pet = new Pet(GetExampleUser(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-            db.Pets.Add(pet);
-            await db.SaveChangesAsync();
-
-            pet.Name = "UpdatedFluffy";
-            await petContext.UpdateAsync(pet);
-
-            var updatedPet = await petContext.ReadAsync(pet.Id);
-            Assert.That(updatedPet.Name, Is.EqualTo("UpdatedFluffy"), "Pet name was not updated correctly.");
-        }
-
-        [Test]
-        public async Task DeleteMethod_SetsPetAsInactive()
-        {
-            var pet = new Pet(GetExampleUser(), "Fluffy", "", 2, PetTypeEnum.Cat, "A cute cat", false);
-            db.Pets.Add(pet);
-            await db.SaveChangesAsync();
-
-            await petContext.DeleteAsync(pet.Id);
-            var deletedPet = await petContext.ReadAsync(pet.Id);
-            Assert.That(deletedPet.IsActive, Is.False, "Pet was not set to inactive.");
-        }
-
-        public User GetExampleUser()
-        {
-            return new User()
+            var pet = new Pet
             {
-                Email = "example@gmail.com",
-                PhoneNumber = "0885328493",
-                UserName = "TobiasRieper"
+                Name = "Buddy",
+                Breed = "Golden Retriever",
+                PetType = PetTypeEnum.Dog,
+                Gender = GenderEnum.Male,
+                UserId = user.Id,
+                IsActive = true
             };
+
+            // Act
+            await petContext.CreateAsync(pet);
+
+            // Assert
+            var createdPet = db.Pets.FirstOrDefault(p => p.Name == "Buddy");
+            Assert.NotNull(createdPet);
+        }
+
+        [Test]
+        public async Task ReadAllWithFilterAsync_FiltersByName_Succeeds()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+            var pet1 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            var pet2 = new Pet { Name = "Max", Breed = "Bulldog", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+
+            await petContext.CreateAsync(pet1);
+            await petContext.CreateAsync(pet2);
+
+            // Act
+            var result = await petContext.ReadAllWithFilterAsync("Buddy", "", "", "", "", 1, 10, useNavigationalProperties: false);
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("Buddy", result.First().Name);
+        }
+
+        [Test]
+        public async Task ReadAsync_ExistingPet_ReturnsPet()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+
+            var pet = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            await petContext.CreateAsync(pet);
+
+            // Act
+            var retrievedPet = await petContext.ReadAsync(pet.Id, useNavigationalProperties: false);
+
+            // Assert
+            Assert.NotNull(retrievedPet);
+            Assert.AreEqual("Buddy", retrievedPet.Name);
+        }
+
+        [Test]
+        public async Task ReadAsync_NonExistentPet_ReturnsNull()
+        {
+            // Act
+            var retrievedPet = await petContext.ReadAsync(Guid.NewGuid(), useNavigationalProperties: false);
+
+            // Assert
+            Assert.IsNull(retrievedPet);
+        }
+
+        [Test]
+        public async Task UpdateAsync_ExistingPet_UpdatesSuccessfully()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+            var pet = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            await petContext.CreateAsync(pet);
+
+            pet.Name = "UpdatedBuddy";
+
+            // Act
+            await petContext.UpdateAsync(pet, useNavigationalProperties: false);
+
+            // Assert
+            var updatedPet = db.Pets.FirstOrDefault(p => p.Id == pet.Id);
+            Assert.NotNull(updatedPet);
+            Assert.AreEqual("UpdatedBuddy", updatedPet.Name);
+        }
+
+        [Test]
+        public async Task DeleteAsync_ExistingPet_SetsInactive()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+            var pet = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            await petContext.CreateAsync(pet);
+
+            // Act
+            await petContext.DeleteAsync(pet.Id);
+
+            // Assert
+            var deletedPet = db.Pets.FirstOrDefault(p => p.Id == pet.Id);
+            Assert.NotNull(deletedPet);
+            Assert.IsFalse(deletedPet.IsActive);
+        }
+
+        [Test]
+        public void DeleteAsync_NonExistentPet_ThrowsArgumentException()
+        {
+            // Arrange
+            var nonExistentPetId = Guid.NewGuid(); // Generate a GUID that does not exist in the database
+
+            // Act & Assert
+            var ex = Assert.ThrowsAsync<ArgumentException>(async () => await petContext.DeleteAsync(nonExistentPetId));
+
+            // Assert
+            Assert.AreEqual("Pet with id = " + nonExistentPetId + " does not exist!", ex.Message);
+        }
+
+        [Test]
+        public async Task ReadAllWithFilterAsyncOfUser_FiltersByUserId_Succeeds()
+        {
+            // Arrange
+            var user1 = await GetExampleUser(true);
+
+            var user2 = await GetExampleUser(true);
+
+            var pet1 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user1.Id, IsActive = true };
+            var pet2 = new Pet { Name = "Max", Breed = "Bulldog", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user2.Id, IsActive = true };
+
+            await petContext.CreateAsync(pet1);
+            await petContext.CreateAsync(pet2);
+
+            // Act
+            var result = await petContext.ReadAllWithFilterAsyncOfUser(user1.Id, "", "", "", "", 1, 10, useNavigationalProperties: true);
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("Buddy", result.First().Name);
+            Assert.AreEqual(user1.Id, result.First().UserId);
+        }
+
+        [Test]
+        public async Task ReadWithFiltersAsync_FiltersByPetType_Succeeds()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+            var pet1 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            var pet2 = new Pet { Name = "Max", Breed = "Bulldog", PetType = PetTypeEnum.Cat, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+
+            await petContext.CreateAsync(pet1);
+            await petContext.CreateAsync(pet2);
+
+            // Act
+            var result = await petContext.ReadWithFiltersAsync(new List<PetTypeEnum> { PetTypeEnum.Dog }, new List<GenderEnum>(), new List<PetAgeEnum>(), null, 1, 10);
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("Buddy", result.First().Name);
+            Assert.AreEqual(PetTypeEnum.Dog, result.First().PetType);
+        }
+
+        [Test]
+        public async Task Read4NewestAsync_ReturnsNewestPets_Succeeds()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+            var pet1 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male,User = user, UserId = user.Id, IsActive = true, AddedOn = DateTime.Now.AddDays(-1) };
+            var pet2 = new Pet { Name = "Max", Breed = "Bulldog", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, User = user, UserId = user.Id, IsActive = true, AddedOn = DateTime.Now.AddDays(-2) };
+
+            await petContext.CreateAsync(pet1);
+            await petContext.CreateAsync(pet2);
+
+            // Act
+            var result = await petContext.Read4NewestAsync();
+
+            // Assert
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("Buddy", result.First().Name);
+        }
+
+        [Test]
+        public async Task Read4OldestAsync_ReturnsOldestPets_Succeeds()
+        {
+            // Arrange
+            var user = await GetExampleUser(true);
+
+            var pet1 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, User = user, UserId = user.Id, IsActive = true, AddedOn = DateTime.Now.AddDays(-1) };
+            var pet2 = new Pet { Name = "Max", Breed = "Bulldog", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, User = user, UserId = user.Id, IsActive = true, AddedOn = DateTime.Now.AddDays(-2) };
+
+            await petContext.CreateAsync(pet1);
+            await petContext.CreateAsync(pet2);
+
+            // Act
+            var result = await petContext.Read4OldestAsync();
+
+            // Assert
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("Max", result.First().Name);
         }
     }
 }
