@@ -31,6 +31,36 @@ namespace PetExchangeTests
         }
 
         [Test]
+        public async Task CreateAsync_ListOfPets_AddsAllToDatabase()
+        {
+            // Arrange: Create a list of pets
+            var user = await GetExampleUser(true);
+
+
+            var pet1 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            var pet2 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+            var pet3 = new Pet { Name = "Buddy", Breed = "Golden Retriever", PetType = PetTypeEnum.Dog, Gender = GenderEnum.Male, UserId = user.Id, IsActive = true };
+
+            var pets = new List<Pet>
+            {
+               pet1,pet2,pet3
+            };
+
+            // Act: Call the CreateAsync(List<Pet>) method
+            await petContext.CreateAsync(pets);
+
+            // Assert: Ensure all pets are added to the database
+            var petsInDb = await db.Pets.ToListAsync();
+            Assert.AreEqual(3, petsInDb.Count, "All pets should be added to the database");
+
+            // Verify each pet exists in the database
+            foreach (var pet in pets)
+            {
+                Assert.IsTrue(petsInDb.Any(p => p.Id == pet.Id && p.Name == pet.Name),
+                    $"Pet {pet.Name} should be in the database");
+            }
+        }
+        [Test]
         public async Task ReadAllWithFilterAsync_FiltersByName_Succeeds()
         {
             // Arrange

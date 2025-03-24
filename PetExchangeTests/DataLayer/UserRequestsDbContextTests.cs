@@ -1,4 +1,5 @@
 ﻿using DataLayer;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace PetExchangeTests
@@ -76,6 +77,63 @@ namespace PetExchangeTests
             var createdRequest2 = await db.Requests.FindAsync(userRequest2.Id);
             Assert.NotNull(createdRequest1);
             Assert.NotNull(createdRequest2);
+        }
+
+        [Test]
+        public async Task ReadUserRequestOutboxAsync_WhenCalled_ReturnsRequestsSentByUser()
+        {
+            // Arrange: Create users
+            var sender = await GetExampleUser();
+            var recipient = await GetExampleUser();
+            var pet = new Pet { Id = Guid.NewGuid(), Name = "Fluffy" };
+
+            // Add requests where sender is the specified user
+            var requests = new List<UserRequest>
+            {
+                new UserRequest { Id = Guid.NewGuid(), SenderId = sender.Id, RecipientId = recipient.Id, PetId = pet.Id, CreatedOn = DateTime.UtcNow },
+                new UserRequest { Id = Guid.NewGuid(), SenderId = sender.Id, RecipientId = recipient.Id, PetId = pet.Id, CreatedOn = DateTime.UtcNow.AddMinutes(-5) },
+                new UserRequest { Id = Guid.NewGuid(), SenderId = Guid.NewGuid(), RecipientId = sender.Id, PetId = pet.Id, CreatedOn = DateTime.UtcNow.AddMinutes(-10) } // Different sender
+            };
+
+           
+            await db.Pets.AddAsync(pet);
+            await db.Requests.AddRangeAsync(requests);
+            await db.SaveChangesAsync();
+
+            // Act
+            var result = await userRequestsContext.ReadUserRequestOutboxAsync(sender.Id);
+
+            // Assert
+            Assert.AreEqual(2, result.Count, "Should return only requests sent by the given user");
+            Assert.IsTrue(result.All(r => r.SenderId == sender.Id), "All requests should have the correct sender ID");
+        }
+
+        [Test]
+        public async Task ReadUserRequestInboxAsync_WhenCalled_ReturnsRequestsReceivedByUser()
+        {
+            // Arrange: Create users
+            var sender = await GetExampleUser();
+            var recipient = await GetExampleUser();
+            var pet = new Pet { Id = Guid.NewGuid(), Name = "Buddy" };
+
+            // Add requests where recipient is the specified user
+            var requests = new List<UserRequest>
+            {
+                new UserRequest { Id = Guid.NewGuid(), SenderId = sender.Id, RecipientId = recipient.Id, PetId = pet.Id, CreatedOn = DateTime.UtcNow },
+                new UserRequest { Id = Guid.NewGuid(), SenderId = sender.Id, RecipientId = recipient.Id, PetId = pet.Id, CreatedOn = DateTime.UtcNow.AddMinutes(-5) },
+                new UserRequest { Id = Guid.NewGuid(), SenderId = recipient.Id, RecipientId = sender.Id, PetId = pet.Id, CreatedOn = DateTime.UtcNow.AddMinutes(-10) } // Different recipient
+            };
+
+            await db.Pets.AddAsync(pet);
+            await db.Requests.AddRangeAsync(requests);
+            await db.SaveChangesAsync();
+
+            // Act
+            var result = await userRequestsContext.ReadUserRequestInboxAsync(recipient.Id);
+
+            // Assert
+            Assert.AreEqual(2, result.Count, "Should return only requests received by the given user");
+            Assert.IsTrue(result.All(r => r.RecipientId == recipient.Id), "All requests should have the correct recipient ID");
         }
 
         [Test]
