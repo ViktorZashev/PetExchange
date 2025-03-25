@@ -16,8 +16,8 @@ namespace DataLayer
                 var soAttributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
                 if (soAttributes.Length > 0)
                 {
-                    // we're only getting the first description we find
-                    // others will be ignored
+                    // Достъпваме само първото поле за описание
+                    // Ще игнорираме всички други
                     description = ((DescriptionAttribute)soAttributes[0]).Description;
                 }
             }

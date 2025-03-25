@@ -7,7 +7,6 @@ namespace DataLayer
     public class Town
 	{
 		[Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; } = Guid.NewGuid();
 
 		[Required]

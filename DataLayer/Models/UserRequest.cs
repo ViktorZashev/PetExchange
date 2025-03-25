@@ -36,7 +36,8 @@ namespace DataLayer
         public string? AnswerMessage { get; set; } = null;
 
         [NotMapped]
-        public bool IsActive { get => AcceptedOn is null && DeniedOn is null && CanceledOn is null; }
+        public bool IsActive { get => AcceptedOn is null && DeniedOn is null 
+        && CanceledOn is null; }
 
         public UserRequest() { }
 
