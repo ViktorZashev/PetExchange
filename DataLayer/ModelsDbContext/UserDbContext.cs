@@ -31,10 +31,12 @@ namespace DataLayer
             await _dbcontext.SaveChangesAsync();
         }
 
-        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role, int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, 
+            string email, string town, string role, int page = 1, 
+            int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             var allUsers = await ReadAllAsync(useNavigationalProperties, isReadOnly);
-            // filtering
+            // филтриране
             var filteredUsers = allUsers.Where(x =>
                     (String.IsNullOrWhiteSpace(username) || x.UserName.Contains(username))
                     && (String.IsNullOrWhiteSpace(name) || x.Name.Contains(name))

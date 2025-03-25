@@ -11,7 +11,8 @@ namespace DataLayer
             _dbcontext = context;
         }
 
-        public async Task<List<UserRequest>> ReadAllWithFilterAsync(string petName, string petBreed, string senderName, string receiverName,
+        public async Task<List<UserRequest>> ReadAllWithFilterAsync(string petName, string petBreed, 
+            string senderName, string receiverName,
             int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             var allRequests = await ReadAllAsync(useNavigationalProperties, isReadOnly);

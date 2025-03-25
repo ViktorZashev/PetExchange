@@ -11,7 +11,9 @@ namespace DataLayer
         {
             _dbcontext = context;
         }
-        public async Task<List<Pet>> ReadAllWithFilterAsync(string name, string petBreed, string petType, string gender, string ownerName, int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<Pet>> ReadAllWithFilterAsync(string name, string petBreed, string petType, 
+            string gender, string ownerName, int page, int pageSize, bool useNavigationalProperties = true, 
+            bool isReadOnly = true)
         {
             var allPets = await ReadAllAsync(useNavigationalProperties, isReadOnly);
             // filtering
@@ -88,7 +90,8 @@ namespace DataLayer
             return await query.ToListAsync();
         }
 
-        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types, List<GenderEnum> genders, List<PetAgeEnum> ages,
+        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types, List<GenderEnum> genders, 
+            List<PetAgeEnum> ages,
             bool? withCage, int page = 1, int pageSize = 8)
         {
             IQueryable<Pet> query = _dbcontext.Pets;
