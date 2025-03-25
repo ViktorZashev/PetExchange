@@ -109,7 +109,7 @@ public class AccountController : Controller
 			dbUser.IsActive = user.isActive;
 			await _userService.UpdateAsync(dbUser);
 			var backUrl = "/Account/Details";
-			TempData["ShowEditSuccessfulMessage"] = true;
+			if(TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -141,7 +141,7 @@ public class AccountController : Controller
 		{
 			if (form.NewPassword != form.ConfirmPassword)
 			{
-				TempData["ChangePasswordError"] = "Паролите не са еднакви";
+				if(TempData is not null) TempData["ChangePasswordError"] = "Паролите не са еднакви";
 				return RedirectToAction("ChangePassword");
 			}
 
@@ -156,11 +156,11 @@ public class AccountController : Controller
 
 			if (result.Succeeded)
 			{
-				TempData["ChangePasswordSuccess"] = true;
+                if (TempData is not null) TempData["ChangePasswordSuccess"] = true;
 				return RedirectToAction("ChangePassword");
 			}
 
-			TempData["ChangePasswordError"] = "Грешка при променянето на паролата. Опитай пак!";
+            if (TempData is not null) TempData["ChangePasswordError"] = "Грешка при променянето на паролата. Опитай пак!";
 			return RedirectToAction("ChangePassword");
 		}
 		else{ 
@@ -227,10 +227,10 @@ public class AccountController : Controller
 						Selected = type == rt.ToDescriptionString() ? true : false
 					})
 					.ToList();
-		ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
-		ViewBag.ShowCreateSuccess = TempData["ShowCreateSuccessMessage"];
-		ViewBag.ShowDeleteSuccess = TempData["ShowPetDeleteSuccess"];
-		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+		ViewBag.ShowEditSuccess = TempData is not null ? TempData["ShowEditSuccessfulMessage"] : false;
+		ViewBag.ShowCreateSuccess = TempData is not null ? TempData["ShowCreateSuccessMessage"] : false;
+        ViewBag.ShowDeleteSuccess = TempData is not null ? TempData["ShowPetDeleteSuccess"] : false;
+        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
 		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
 		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
 		return View("Views/Account/Pets.cshtml");
@@ -317,7 +317,7 @@ public class AccountController : Controller
 			dbPet.IncludesCage = pet.IncludesCage;
 			await _petService.UpdateAsync(dbPet);
 			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
-			TempData["ShowEditSuccessfulMessage"] = true;
+			if(TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -417,7 +417,7 @@ public class AccountController : Controller
 			newPet.User = currentUser;
 			await _petService.CreateAsync(newPet);
 			var backUrl = "/account/pets";
-			TempData["ShowCreateSuccessMessage"] = true;
+			if(TempData is not null) TempData["ShowCreateSuccessMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -431,8 +431,7 @@ public class AccountController : Controller
 	public async Task<IActionResult> DeletePet([FromRoute] Guid petId)
 	{
 		await _petService.DeleteAsync(petId);
-
-		TempData["ShowPetDeleteSuccess"] = true;
+		if(TempData is not null) TempData["ShowPetDeleteSuccess"] = true;
 		var backUrl = "/account/pets";
 		return LocalRedirect(backUrl);
 	}
@@ -455,8 +454,8 @@ public class AccountController : Controller
 
 		ViewBag.CurrentUser = currentUser;
 		ViewBag.Requests = await _requestService.ReadUserRequestInboxAsync(currentUser.Id);
-		ViewBag.ShowAcceptSuccess = TempData["ShowRequestAcceptSuccess"];
-		ViewBag.ShowDenySuccess = TempData["ShowRequestDenySuccess"];
+		ViewBag.ShowAcceptSuccess = TempData is not null ? TempData["ShowRequestAcceptSuccess"] : false;
+		ViewBag.ShowDenySuccess = TempData is not null ? TempData["ShowRequestDenySuccess"] : false;
 		return View();
 	}
 
@@ -475,8 +474,8 @@ public class AccountController : Controller
 		if (currentUser is null) return Unauthorized();
 		ViewBag.CurrentUser = currentUser;
 		ViewBag.Requests = await _requestService.ReadUserRequestOutboxAsync(currentUser.Id);
-		ViewBag.ShowCreateSuccess = TempData["ShowRequestCreateSuccess"];
-		ViewBag.ShowCancelSuccess = TempData["ShowRequestCancelSuccess"];
+		ViewBag.ShowCreateSuccess = TempData is not null ? TempData["ShowRequestCreateSuccess"] : false;
+		ViewBag.ShowCancelSuccess = TempData is not null ? TempData["ShowRequestCancelSuccess"] : false;
 		return View();
 	}
 
@@ -492,7 +491,7 @@ public class AccountController : Controller
 		{
 			await _requestService.DenyAsync(requestId, request.Message);
 		}
-		TempData["ShowRequestDenySuccess"] = true;
+        if(TempData is not null) TempData["ShowRequestDenySuccess"] = true;
 		return LocalRedirect("/account/RequestInbox");
 	}
 
@@ -505,7 +504,7 @@ public class AccountController : Controller
 		{
 			await _requestService.AcceptAsync(requestId, request.Message);
 		}
-		TempData["ShowRequestAcceptSuccess"] = true;
+		if(TempData is not null) TempData["ShowRequestAcceptSuccess"] = true;
 		return LocalRedirect("/account/RequestInbox");
 	}
 
@@ -518,7 +517,7 @@ public class AccountController : Controller
 		{
 			await _requestService.CancelAsync(requestId);
 		}
-		TempData["ShowRequestCancelSuccess"] = true;
+		if(TempData is not null) TempData["ShowRequestCancelSuccess"] = true;
 		return LocalRedirect("/account/RequestOutbox");
 	}
 
@@ -581,7 +580,7 @@ public class AccountController : Controller
 				RecipientId = pet.UserId
 			};
 			await _requestService.CreateAsync(userReq);
-			TempData["ShowRequestCreateSuccess"] = true;
+			if(TempData is not null) TempData["ShowRequestCreateSuccess"] = true;
 			return LocalRedirect("/Account/RequestOutbox");
 		}
 		return View(request);

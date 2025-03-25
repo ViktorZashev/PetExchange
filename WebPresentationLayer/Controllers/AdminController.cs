@@ -61,7 +61,7 @@ public class AdminController : Controller
 		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
 		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
 		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
-		ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
+		ViewBag.ShowEditSuccess = TempData is not null ? TempData["ShowEditSuccessfulMessage"] : false;
 		return View();
 	}
 
@@ -127,7 +127,7 @@ public class AdminController : Controller
 			dbUser.IsActive = user.isActive;
 			await _userSrv.UpdateAsync(dbUser);
 			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/users";
-			TempData["ShowEditSuccessfulMessage"] = true;
+			if(TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -197,7 +197,7 @@ public class AdminController : Controller
 		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
 		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
 		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
-		ViewBag.ShowEditSuccess = TempData["ShowEditSuccessfulMessage"];
+		ViewBag.ShowEditSuccess = TempData is not null ? TempData["ShowEditSuccessfulMessage"] : false;
 		return View("Views/Admin/Pets.cshtml");
 	}
 
@@ -280,7 +280,7 @@ public class AdminController : Controller
 			dbPet.UserRequests = pet.UserRequests;
 			await _petSrv.UpdateAsync(dbPet);
 			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
-			TempData["ShowEditSuccessfulMessage"] = true;
+			if(TempData is not null)TempData["ShowEditSuccessfulMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
