@@ -16,7 +16,7 @@ namespace DataLayer
             bool isReadOnly = true)
         {
             var allPets = await ReadAllAsync(useNavigationalProperties, isReadOnly);
-            // filtering
+            // прилагане на филтри
             var filteredPets = allPets.Where(x =>
             (String.IsNullOrWhiteSpace(name) || x.Name.ToLower().Contains(name.ToLower()))
             && (String.IsNullOrWhiteSpace(petBreed) || x.Breed.ToLower().Contains(petBreed.ToLower()))
@@ -24,7 +24,7 @@ namespace DataLayer
             && (String.IsNullOrWhiteSpace(gender) || x.Gender.ToDescriptionString().ToLower().Contains(gender.ToLower()))
             && (String.IsNullOrWhiteSpace(ownerName) || x.User.Name.ToLower().Contains(ownerName.ToLower()))
             ).ToList();
-            // paging
+            // странициране
             filteredPets = filteredPets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return filteredPets;
         }
@@ -32,7 +32,7 @@ namespace DataLayer
         public async Task<List<Pet>> ReadAllWithFilterAsyncOfUser(Guid userId, string name, string petBreed, string petType, string gender, int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             var allPets = await ReadAllAsync(useNavigationalProperties, isReadOnly);
-            // filtering
+            // прилагане на филтри
             var filteredPets = allPets.Where(x =>
             (String.IsNullOrWhiteSpace(name) || x.Name.ToLower().Contains(name.ToLower()))
             && (String.IsNullOrWhiteSpace(petBreed) || x.Breed.ToLower().Contains(petBreed.ToLower()))
@@ -41,7 +41,7 @@ namespace DataLayer
             && x.UserId == userId
             && x.IsActive == true
             ).ToList();
-            // paging
+            // странициране
             filteredPets = filteredPets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return filteredPets;
         }
@@ -106,7 +106,7 @@ namespace DataLayer
             {
                 query = query.Where(e => genders.Contains(e.Gender));
             }
-            //Needed if only one of the age enums is requestes
+            //Необходимо е само, ако един филтър за възраст е избран
             if (ages != null && ages.Count == 1)
             {
                 var adultDate = DateTime.Now.AddDays(-90);
