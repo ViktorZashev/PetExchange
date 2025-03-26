@@ -1,6 +1,4 @@
-﻿using Azure;
-using DataLayer;
-using System.Drawing.Printing;
+﻿using DataLayer;
 
 namespace BusinessLayer
 {
@@ -12,10 +10,12 @@ namespace BusinessLayer
             _UserRequestsContext = new UserRequestsDbContext(_ProjectContext);
         }
 
-        public async Task<List<UserRequest>> ReadAllWithFilterAsync(string petName, string petBreed,string senderName,string receiverName,
-            int page, int pageSize,bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<UserRequest>> ReadAllWithFilterAsync(string petName, string petBreed,
+        string senderName,string receiverName, int page, int pageSize,
+        bool useNavigationalProperties = true, bool isReadOnly = true)
         {
-            return await _UserRequestsContext.ReadAllWithFilterAsync(petName, petBreed, senderName, receiverName, page, pageSize, useNavigationalProperties, isReadOnly);
+            return await _UserRequestsContext.ReadAllWithFilterAsync(petName, petBreed, 
+            senderName, receiverName, page, pageSize, useNavigationalProperties, isReadOnly);
         }
 
         #region CRUD

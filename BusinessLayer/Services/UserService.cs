@@ -1,6 +1,5 @@
 ﻿using DataLayer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer
 {
@@ -16,7 +15,9 @@ namespace BusinessLayer
             _UserContext = new UserDbContext(_ProjectContext);
         }
 
-        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, string email, string town, string role,int page = 1, int pageSize = 10, bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<User>> ReadAllWithFilterAsync(string username, string name, 
+        string email, string town, string role,int page = 1, int pageSize = 10, 
+        bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             return await _UserContext.ReadAllWithFilterAsync(
             username: username,
