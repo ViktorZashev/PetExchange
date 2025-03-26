@@ -11,6 +11,7 @@ namespace DataLayer
         {
             _dbcontext = context;
         }
+        
         public async Task<List<Pet>> ReadAllWithFilterAsync(string name, string petBreed, string petType, 
             string gender, string ownerName, int page, int pageSize, bool useNavigationalProperties = true, 
             bool isReadOnly = true)
@@ -29,7 +30,8 @@ namespace DataLayer
             return filteredPets;
         }
 
-        public async Task<List<Pet>> ReadAllWithFilterAsyncOfUser(Guid userId, string name, string petBreed, string petType, string gender, int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
+        public async Task<List<Pet>> ReadAllWithFilterAsyncOfUser(Guid userId, string name, string petBreed, 
+        string petType, string gender, int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             var allPets = await ReadAllAsync(useNavigationalProperties, isReadOnly);
             // прилагане на филтри
@@ -44,6 +46,67 @@ namespace DataLayer
             // странициране
             filteredPets = filteredPets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return filteredPets;
+        }
+
+        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types, List<GenderEnum> genders,
+            List<PetAgeEnum> ages,
+            bool? withCage, int page = 1, int pageSize = 8)
+        {
+            IQueryable<Pet> query = _dbcontext.Pets;
+            query = query.AsNoTrackingWithIdentityResolution();
+            query = query.Include(e => e.User).ThenInclude(e => e.Town);
+            query = query.Where(e => e.AdoptedOn == null && e.IsActive);
+            if (types != null && types.Count > 0)
+            {
+                query = query.Where(e => types.Contains(e.PetType));
+            }
+            if (genders != null && genders.Count > 0)
+            {
+                query = query.Where(e => genders.Contains(e.Gender));
+            }
+            //Необходимо е само, ако един филтър за възраст е избран
+            if (ages != null && ages.Count == 1)
+            {
+                if (ages[0] == PetAgeEnum.Young)
+                {
+                    query = query.Where(e => e.AgeEnum == PetAgeEnum.Young);
+                }
+                else if (ages[0] == PetAgeEnum.Adult)
+                {
+                    query = query.Where(e => e.AgeEnum == PetAgeEnum.Adult);
+                }
+
+            }
+            if (withCage is not null && withCage.Value)
+            {
+                query = query.Where(e => e.IncludesCage);
+            }
+
+            return await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
+
+        public async Task<List<Pet>> Read4NewestAsync()
+        {
+            IQueryable<Pet> query = _dbcontext.Pets;
+
+            query = query.AsNoTrackingWithIdentityResolution();
+            query = query.Include(e => e.User).ThenInclude(e => e.Town);
+            query = query.Where(e => e.AdoptedOn == null && e.IsActive);
+            query = query.OrderByDescending(e => e.AddedOn);
+            query = query.Take(4);
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<Pet>> Read4OldestAsync()
+        {
+            IQueryable<Pet> query = _dbcontext.Pets;
+
+            query = query.AsNoTrackingWithIdentityResolution();
+            query = query.Include(e => e.User).ThenInclude(e => e.Town);
+            query = query.Where(e => e.AdoptedOn == null && e.IsActive);
+            query = query.OrderBy(e => e.AddedOn);
+            query = query.Take(4);
+            return await query.ToListAsync();
         }
 
         #region CRUD
@@ -90,68 +153,6 @@ namespace DataLayer
             return await query.ToListAsync();
         }
 
-        public async Task<List<Pet>> ReadWithFiltersAsync(List<PetTypeEnum> types, List<GenderEnum> genders, 
-            List<PetAgeEnum> ages,
-            bool? withCage, int page = 1, int pageSize = 8)
-        {
-            IQueryable<Pet> query = _dbcontext.Pets;
-            query = query.AsNoTrackingWithIdentityResolution();
-            query = query.Include(e => e.User).ThenInclude(e => e.Town);
-            query = query.Where(e => e.AdoptedOn == null && e.IsActive);
-            if (types != null && types.Count > 0)
-            {
-                query = query.Where(e => types.Contains(e.PetType));
-            }
-            if (genders != null && genders.Count > 0)
-            {
-                query = query.Where(e => genders.Contains(e.Gender));
-            }
-            //Необходимо е само, ако един филтър за възраст е избран
-            if (ages != null && ages.Count == 1)
-            {
-                var adultDate = DateTime.Now.AddDays(-90);
-                if (ages[0] == PetAgeEnum.Young)
-                {
-                    query = query.Where(e => e.Birthday >= adultDate);
-                }
-                else if (ages[0] == PetAgeEnum.Adult)
-                {
-                    query = query.Where(e => e.Birthday < adultDate);
-                }
-
-            }
-            if (withCage is not null && withCage.Value)
-            {
-                query = query.Where(e => e.IncludesCage);
-            }
-
-            return await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-        }
-
-        public async Task<List<Pet>> Read4NewestAsync()
-        {
-            IQueryable<Pet> query = _dbcontext.Pets;
-
-            query = query.AsNoTrackingWithIdentityResolution();
-            query = query.Include(e => e.User).ThenInclude(e => e.Town);
-            query = query.Where(e => e.AdoptedOn == null && e.IsActive);
-            query = query.OrderByDescending(e => e.AddedOn);
-            query = query.Take(4);
-            return await query.ToListAsync();
-        }
-
-        public async Task<List<Pet>> Read4OldestAsync()
-        {
-            IQueryable<Pet> query = _dbcontext.Pets;
-
-            query = query.AsNoTrackingWithIdentityResolution();
-            query = query.Include(e => e.User).ThenInclude(e => e.Town);
-            query = query.Where(e => e.AdoptedOn == null && e.IsActive);
-            query = query.OrderBy(e => e.AddedOn);
-            query = query.Take(4);
-            return await query.ToListAsync();
-        }
-
         public async Task UpdateAsync(Pet pet, bool useNavigationalProperties = true)
         {
             Pet petFromDb = await ReadAsync(pet.Id, useNavigationalProperties, false);
@@ -160,10 +161,10 @@ namespace DataLayer
             {
                 throw new ArgumentException("Pet with id = " + pet.Id + "does not exist!");
             }
-            if (useNavigationalProperties) _dbcontext.Pets.Update(pet); // updates all linked entities
+            if (useNavigationalProperties) _dbcontext.Pets.Update(pet); // актуализира всички навигационни свойства
             else
             {
-                _dbcontext.Pets.Entry(petFromDb).CurrentValues.SetValues(pet); // updates only the core entity
+                _dbcontext.Pets.Entry(petFromDb).CurrentValues.SetValues(pet); // актуализира само текущият запис
             }
 
             await _dbcontext.SaveChangesAsync();
