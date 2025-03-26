@@ -113,7 +113,6 @@ namespace DataLayer
             }
             requestFromDb.CanceledOn = DateTime.Now;
 
-            _dbcontext.Requests.Update(requestFromDb);
             await _dbcontext.SaveChangesAsync();
         }
 
@@ -129,7 +128,6 @@ namespace DataLayer
             requestFromDb.AnswerMessage = message;
             requestFromDb.Pet.AdoptedOn = DateTime.Now;
 
-            _dbcontext.Requests.Update(requestFromDb);
             await _dbcontext.SaveChangesAsync();
         }
 
@@ -144,7 +142,6 @@ namespace DataLayer
             requestFromDb.DeniedOn = DateTime.Now;
             requestFromDb.AnswerMessage = message;
 
-            _dbcontext.Requests.Update(requestFromDb);
             await _dbcontext.SaveChangesAsync();
         }
 

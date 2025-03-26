@@ -123,10 +123,10 @@ namespace DataLayer
             {
                 throw new ArgumentException("User with id = " + user.Id + "does not exist!");
             }
-            if (useNavigationalProperties) _dbcontext.Users.Update(user); // updates all linked entities
+            if (useNavigationalProperties) _dbcontext.Users.Update(user); // Актуализира всички навигационни свойства
             else
             {
-                _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // updates only the core entity
+                _dbcontext.Users.Entry(userFromDb).CurrentValues.SetValues(user); // Актуализира само текущият обект
             }
 
             if (user.Role == adminRole && user.Role != userFromDb.Role)

@@ -11,6 +11,8 @@ namespace DataLayer
             _dbcontext = context;
         }
 
+        #region CRUD
+
         public async Task CreateAsync(Town entity)
         {
             if (_dbcontext.Towns.Count(x => x.Name == entity.Name) > 0)
@@ -28,7 +30,6 @@ namespace DataLayer
             }
         }
 
-        #region CRUD
         public async Task<Town>? ReadAsync(Guid id, bool isReadOnly = true)
         {
             IQueryable<Town> query = _dbcontext.Towns;
@@ -62,7 +63,7 @@ namespace DataLayer
                 throw new ArgumentException("Pet with id = " + town.Id + "does not exist!");
             }
 
-            _dbcontext.Towns.Entry(townFromDb).CurrentValues.SetValues(town); // updates only the core entity
+            _dbcontext.Towns.Entry(townFromDb).CurrentValues.SetValues(town); // Актуализира само текущия запис
             await _dbcontext.SaveChangesAsync();
         }
 
