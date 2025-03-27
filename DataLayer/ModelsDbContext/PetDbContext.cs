@@ -67,15 +67,15 @@ namespace DataLayer
             //Необходимо е само, ако един филтър за възраст е избран
             if (ages != null && ages.Count == 1)
             {
+                var adultDate = DateTime.Now.AddDays(-90);
                 if (ages[0] == PetAgeEnum.Young)
                 {
-                    query = query.Where(e => e.AgeEnum == PetAgeEnum.Young);
+                    query = query.Where(e => e.Birthday >= adultDate);
                 }
                 else if (ages[0] == PetAgeEnum.Adult)
                 {
-                    query = query.Where(e => e.AgeEnum == PetAgeEnum.Adult);
+                    query = query.Where(e => e.Birthday < adultDate);
                 }
-
             }
             if (withCage is not null && withCage.Value)
             {

@@ -37,7 +37,5 @@ public class UserManage
 	[DisplayName("Град")]
 	[Required(ErrorMessage = "задължително")]
 	public Guid TownId { get; set; }
-
-
 }
 

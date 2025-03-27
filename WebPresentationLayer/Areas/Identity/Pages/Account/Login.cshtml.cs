@@ -102,7 +102,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // Премахване на интервали преди или след данните
+                // Премахване на интервали преди и след данните
                 Input.Username = Input.Username.Trim();
                 Input.Password = Input.Password.Trim();
                 var allUsers = await _userService.ReadAllAsync();

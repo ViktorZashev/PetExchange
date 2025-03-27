@@ -18,8 +18,8 @@ namespace WebPresentationLayer
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			var connectionString = ConnectionString.Value;
+            // Инжектиране на сървиси в приложението
+            var connectionString = ConnectionString.Value;
 			builder.Services.AddDbContext<PetExchangeDbContext>(options =>
 			{
 				options.UseSqlServer(connectionString);
@@ -65,8 +65,7 @@ namespace WebPresentationLayer
 
 			builder.Services.Configure<IdentityOptions>(options =>
 			{
-				// Default Lockout settings.
-				// Fix the password requirements later
+				// Настройки за сила на паролата
 				options.Password.RequireNonAlphanumeric = false;
 				options.Password.RequireUppercase = false;
 				options.Password.RequireLowercase = false;
@@ -75,7 +74,7 @@ namespace WebPresentationLayer
 			});
 			builder.Services.Configure<FormOptions>(options =>
 			{
-				options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // Limit to 10 MB
+				options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // Слагане на максимален размер на снимка - 10 MB
 			});
 
 			builder.Services.ConfigureApplicationCookie(o =>
@@ -88,7 +87,7 @@ namespace WebPresentationLayer
 
 			var app = builder.Build();
 			app.UseRequestLocalization();
-			// Configure the HTTP request pipeline.
+
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseMigrationsEndPoint();
@@ -110,7 +109,8 @@ namespace WebPresentationLayer
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 			app.MapRazorPages();
-			// Calling seeding function
+
+			// Извикване на функция за зареждане на примерни стойности
 			using (var scope = app.Services.CreateScope())
 			{
 				var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();

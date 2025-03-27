@@ -13,7 +13,7 @@ public class FilterUtility
 	{
 		var result = new List<FilterGroup>();
 		var urlFilters = GetUrlFilters(url);
-		//type
+		//Вид
 		var typeFilter = new FilterGroup
 		{
 			Title = "Вид",
@@ -30,7 +30,7 @@ public class FilterUtility
 		}
 		result.Add(typeFilter);
 
-		//gender
+		//пол
 		var genderFilter = new FilterGroup
 		{
 			Title = "Пол",

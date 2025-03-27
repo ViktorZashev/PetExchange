@@ -139,6 +139,7 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
                 user.PhoneNumber = Input.PhoneNumber;
                 user.Name = Input.Name;
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Потребителят беше създаден успешно.");
@@ -185,15 +186,5 @@ namespace WebPresentationLayer.Areas.Identity.Pages.Account
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
-        /*
-        private IUserEmailStore<User> GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<User>)_userStore;
-        }
-        */
     }
 }

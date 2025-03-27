@@ -1,4 +1,4 @@
-﻿//Filters
+﻿//Филтри
 function onFilterClick(option) {
 	if (option.classList.contains("selected")) {
 		unSelectFilter(option);

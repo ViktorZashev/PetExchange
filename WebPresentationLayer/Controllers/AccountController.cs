@@ -92,10 +92,10 @@ public class AccountController : Controller
 				var fileBytes = new MemoryStream();
 				await user.Image.CopyToAsync(fileBytes);
 				var extension = Path.GetExtension(user.Image.FileName);
-				//Save new photo file
+				//Запазва новият файл
 				var imageName = $"{Guid.NewGuid()}{extension}";
 				_fileSrv.SaveMemoryStreamToFile(fileBytes, "account", imageName);
-				//Delete old photo file
+				//Изтрива старият файл
 				if (!String.IsNullOrWhiteSpace(dbUser.PhotoPath) && !dbUser.PhotoPath.Contains("Seeded"))
 					_fileSrv.DeleteFile(dbUser.PhotoPath);
 
@@ -122,7 +122,7 @@ public class AccountController : Controller
 			}
 			ViewBag.Roles = roles;
 			ViewBag.CancelUrl = "/account/details";
-			// If there are validation errors, redisplay the form with error messages
+			// Ако има грешки при валидация, презареди формата с валидационни съобщения
 			return View(user);
 		}
 	}
@@ -295,10 +295,10 @@ public class AccountController : Controller
 				var fileBytes = new MemoryStream();
 				await pet.Image.CopyToAsync(fileBytes);
 				var extension = Path.GetExtension(pet.Image.FileName);
-				//Save new photo file
+				//Запазва новият файл
 				var imageName = $"{Guid.NewGuid()}{extension}";
 				_fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
-				//Delete old photo file
+				//Изтрива старият файл
 				if (!String.IsNullOrWhiteSpace(dbPet.PhotoPath) && !dbPet.PhotoPath.Contains("Seeded"))
 					_fileSrv.DeleteFile(dbPet.PhotoPath);
 
@@ -387,7 +387,7 @@ public class AccountController : Controller
 				var fileBytes = new MemoryStream();
 				await pet.Image.CopyToAsync(fileBytes);
 				var extension = Path.GetExtension(pet.Image.FileName);
-				//Save new photo file
+				//Запазва новият файл
 				var imageName = $"{Guid.NewGuid()}{extension}";
 				_fileSrv.SaveMemoryStreamToFile(fileBytes, "pet", imageName);
 
