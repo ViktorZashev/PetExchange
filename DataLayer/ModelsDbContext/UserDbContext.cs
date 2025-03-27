@@ -44,7 +44,7 @@ namespace DataLayer
                     && (String.IsNullOrWhiteSpace(town) || x.Town.Name.ToLower().Contains(town.ToLower()))
                     && (String.IsNullOrWhiteSpace(role) || x.Role.ToDescriptionString().ToLower().Contains(role.ToLower()))
                     ).ToList();
-            // paging
+            // странициране
             filteredUsers = filteredUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return filteredUsers;
         }

@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using WebPresentationLayer.Models;
 
 namespace WebPresentationLayer.Controllers;
 public class PetsController : Controller
@@ -13,6 +9,7 @@ public class PetsController : Controller
 		_petSrv = petService;
 	}
 	public async Task<IActionResult> Index()
+		// Зареждане на домашните любимци за страница "Любимци"
 	{
 		var filters = new FilterUtility().GetFilters(Request.GetDisplayUrl());
 		ViewBag.Filters = filters;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PetExchangeTests.WebFrontEnd
 {
-    internal class SiteControllerTest : WebFrontEndControllerTestsManagement
+    internal class SiteControllerTests : WebFrontEndControllerTestsManagement
     {
         [Test]
         public void AboutUs_ReturnsIActionResult()

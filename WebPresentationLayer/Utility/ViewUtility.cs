@@ -26,7 +26,11 @@ public class ViewUtility
 				action = httpContext.Request.RouteValues["action"]?.ToString().ToLower();
 			}
 
-			if (controller == "site")
+            if (controller == "home" && action != "index")
+            {
+                return action;
+            }
+            else if (controller == "site")
 			{
 				return action;
 			}
@@ -61,6 +65,7 @@ public class ViewUtility
 	}
 
 	public static string ConvertDaysToString(int totalDays, bool isAbbriviation = false)
+		// Метод, който пресмята брой дни колко години/месеца са и връща това описание като стринг
 	{
 		const int DaysPerYear = 365;
 		const int DaysPerMonth = 30;
@@ -89,7 +94,6 @@ public class ViewUtility
 				return $"{months} {(months != 1 ? "месеца" : "месец")}, {days} {(days != 1 ? "дни" : "ден")}";
 
 			return $"{days} {(days != 1 ? "дни" : "ден")}";
-
 		}
 	}
 

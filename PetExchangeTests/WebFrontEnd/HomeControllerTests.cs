@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace PetExchangeTests.WebFrontEnd
 {
-    internal class ErrorControllerTests : WebFrontEndControllerTestsManagement
+    internal class HomeControllerTests : WebFrontEndControllerTestsManagement
     {
         [Test]
         public void NotFound_ReturnsIActionResult()
         {
-            var result = _errorController.NotFound();
+            var result = _homeController.NotFound();
             Assert.IsInstanceOf<IActionResult>(result);
         }
 
         [Test]
         public void System_ReturnsIActionResult()
         {
-            var result = _errorController.System();
+            var result = _homeController.System();
             Assert.IsInstanceOf<IActionResult>(result);
         }
     }

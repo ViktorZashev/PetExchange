@@ -26,22 +26,11 @@ namespace WebPresentationLayer
 				options.EnableSensitiveDataLogging();
 			});
 
-			builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 			builder.Services.AddIdentity<User, IdentityRole<Guid>>()
 				.AddRoles<IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<PetExchangeDbContext>()
 				.AddDefaultTokenProviders()
                 .AddErrorDescriber<AppErrorDescriber>();
-            
-			builder.Services.AddLocalization();
-			builder.Services.Configure<RequestLocalizationOptions>(options =>
-		{
-			var supportedCultures = new[] { new CultureInfo("bg-BG") };
-			options.DefaultRequestCulture = new RequestCulture("bg-BG");
-			options.SupportedCultures = supportedCultures;
-			options.SupportedUICultures = supportedCultures;
-		});
 		
             builder.Services.AddHttpContextAccessor();
 			builder.Services.AddRazorPages();

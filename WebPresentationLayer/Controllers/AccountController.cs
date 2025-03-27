@@ -1,13 +1,8 @@
-﻿using DataLayer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Diagnostics;
-using System.Drawing;
 using System.Security.Claims;
 using System.Web;
-using WebPresentationLayer.Models;
 using WebPresentationLayer.Services;
 
 namespace WebPresentationLayer.Controllers;
@@ -36,6 +31,7 @@ public class AccountController : Controller
 	}
 	#region Details & Change Password
 	public async Task<IActionResult> Details()
+		// Зареждат се данните на профила
 	{
 		User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;
@@ -73,7 +69,8 @@ public class AccountController : Controller
 
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Details(
+    // Актуализират се данните на профила
+    public async Task<IActionResult> Details(
 		UserManage user)
 	{
 		var httpContext = _httpContextAccessor.HttpContext;
@@ -128,7 +125,8 @@ public class AccountController : Controller
 	}
 
 	public IActionResult ChangePassword()
-	{
+		// Зареждат се полетата за сменянето на паролата
+	{ 
 		var changePasswordForm = new ChangePasswordModel();
 		return View(changePasswordForm);
 	}
@@ -136,6 +134,7 @@ public class AccountController : Controller
 	[HttpPost]
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordModel form)
+		// Актуализация на парола
 	{
 		if (ModelState.IsValid)
 		{
@@ -178,6 +177,7 @@ public class AccountController : Controller
 	  [FromQuery] string gender = null,
 	  [FromQuery] int page = 1,
 	  [FromQuery] int pageSize = 10
+		// Зареждане на домашните любимци на текущият потребител
   )
 	{
 		User? currentUser = null;
@@ -240,6 +240,7 @@ public class AccountController : Controller
 	public async Task<IActionResult> PetManage(
 	   [FromRoute] Guid petId,
 	   [FromQuery] string returnUrl)
+		// Зареждане на формата за редакция на домашен любимец
 	{
 		ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
 		var dbPet = await _petService.ReadAsync(petId, true, true);
@@ -285,6 +286,7 @@ public class AccountController : Controller
 	public async Task<IActionResult> PetManage([FromRoute] Guid petId,
 		[FromQuery] string returnUrl,
 		PetManage pet)
+		//Актуализация на домашен любимец чрез форма
 	{
 		var dbPet = await _petService.ReadAsync(petId, false);
 		if (ModelState.IsValid)
@@ -347,6 +349,7 @@ public class AccountController : Controller
 	}
 
 	[HttpGet("Account/Pets/Create")]
+	// Зареждане на форма за създаване на домашен любимец
 	public async Task<IActionResult> PetCreate()
 	{
 		ViewBag.GenderOptions = Enum.GetValues(typeof(GenderEnum))
@@ -376,6 +379,7 @@ public class AccountController : Controller
 
 	[HttpPost("/Account/Pets/Create")]
 	[ValidateAntiForgeryToken]
+	// Създаване на домашен любимец от форма
 	public async Task<IActionResult> PetCreate(
 		PetManage pet)
 	{
@@ -428,6 +432,7 @@ public class AccountController : Controller
 	}
 	[HttpPost("/account/pets/delete/{petId:guid}")]
 	[ValidateAntiForgeryToken]
+	// Изтриване на домашен любимец по първичен ключ
 	public async Task<IActionResult> DeletePet([FromRoute] Guid petId)
 	{
 		await _petService.DeleteAsync(petId);
@@ -439,6 +444,7 @@ public class AccountController : Controller
 
 	#region RequestsInbox & Outbox
 	public async Task<IActionResult> RequestInbox()
+		// Зареждане на входните искания на потребителя
 	{
 		User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;
@@ -460,8 +466,9 @@ public class AccountController : Controller
 	}
 
 	public async Task<IActionResult> RequestOutbox()
-	{
-		User? currentUser = null;
+    // Зареждане на изходните искания на потребителя
+    {
+        User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;
 		if (httpContext?.User is not null)
 		{
@@ -486,8 +493,9 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> DenyRequest([FromForm] Guid requestId,
 	[FromForm] UserRequestAction request)
-	{
-		if (ModelState.IsValid)
+    // Отказ на искане
+    {
+        if (ModelState.IsValid)
 		{
 			await _requestService.DenyAsync(requestId, request.Message);
 		}
@@ -499,8 +507,9 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> AcceptRequest([FromForm] Guid requestId,
 	[FromForm] UserRequestAction request)
-	{
-		if (ModelState.IsValid)
+    // Приемане на искане
+    {
+        if (ModelState.IsValid)
 		{
 			await _requestService.AcceptAsync(requestId, request.Message);
 		}
@@ -512,8 +521,9 @@ public class AccountController : Controller
 	[HttpPost("/account/cancel-request")]
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> CancelRequest([FromForm] Guid requestId)
-	{
-		if (ModelState.IsValid)
+    // Отхвърляне на искане
+    {
+        if (ModelState.IsValid)
 		{
 			await _requestService.CancelAsync(requestId);
 		}
@@ -523,6 +533,7 @@ public class AccountController : Controller
 
 	[HttpGet("/account/create-request")]
 	public async Task<IActionResult> CreateRequest([FromQuery] Guid petId)
+		// Зареждане на формата за създаване на искане
 	{
 		var pet = await _petService.ReadAsync(petId, useNavigationalProperties: true);
 		if (pet is null) return NotFound();
@@ -548,6 +559,7 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> CreateRequest([FromQuery] Guid petId,
 		[FromForm] UserRequestAction request)
+		// Създаване на искане от форма
 	{
 		var pet = await _petService.ReadAsync(petId, useNavigationalProperties: true);
 		if (pet is null) return NotFound();

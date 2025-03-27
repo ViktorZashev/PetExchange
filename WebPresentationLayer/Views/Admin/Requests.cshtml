@@ -39,9 +39,7 @@
 	<tbody>
 		@foreach (var item in items)
 		{
-
-			<tr>
-				              
+			<tr>       
 				<td>@await Component.InvokeAsync("UserRequestActions", new { item = item, currentUser = (User)null })</td>
 				<td>
 					@if (item.AcceptedOn.HasValue)

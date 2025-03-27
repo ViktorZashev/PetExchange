@@ -189,4 +189,25 @@ else if (Model.Page == "account-requestinbox")
 		</div>
 	</section>
 }
-
+else if (Model.Page == "notfound")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Не е намерено</li>
+			</ol>
+		</div>
+	</section>
+}
+else if (Model.Page == "system")
+{
+	<section class="hero-wrapper">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Account" asp-action="Details">Профил</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Грешка</li>
+			</ol>
+		</div>
+	</section>
+}

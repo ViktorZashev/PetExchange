@@ -6,7 +6,7 @@ namespace WebPresentationLayer.Controllers
 {
     public class SiteController : Controller
     {
-
+        // Пренасочване към 4-те страници с допълнителна информация
         public IActionResult AboutUs()
         {
             return View();

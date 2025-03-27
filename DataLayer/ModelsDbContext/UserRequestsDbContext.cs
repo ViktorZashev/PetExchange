@@ -16,14 +16,14 @@ namespace DataLayer
             int page, int pageSize, bool useNavigationalProperties = true, bool isReadOnly = true)
         {
             var allRequests = await ReadAllAsync(useNavigationalProperties, isReadOnly);
-            // filtering
+            //филтриране
             var filteredRequests = allRequests.Where(x =>
             (String.IsNullOrWhiteSpace(petName) || x.Pet.Name.ToLower().Contains(petName.ToLower()))
             && (String.IsNullOrWhiteSpace(petBreed) || x.Pet.Breed.ToLower().Contains(petBreed.ToLower()))
             && (String.IsNullOrWhiteSpace(senderName) || x.Sender.Name.ToLower().Contains(senderName.ToLower()))
             && (String.IsNullOrWhiteSpace(receiverName) || x.Recipient.Name.ToLower().Contains(receiverName.ToLower()))
             ).ToList();
-            // paging
+            // странициране
             filteredRequests = filteredRequests.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return filteredRequests;
         }

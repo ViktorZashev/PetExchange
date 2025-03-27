@@ -28,8 +28,8 @@ namespace PetExchangeTests.WebFrontEnd
 
         protected AccountController _accountController;
         protected AdminController _adminController;
-        protected ErrorController _errorController;
         protected SiteController _siteController;
+        protected HomeController _homeController;
        
         [SetUp]
         public async Task Setup()
@@ -72,8 +72,9 @@ namespace PetExchangeTests.WebFrontEnd
             _httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
             var httpContext = new DefaultHttpContext();  // Create a new HttpContext
             _accountController = new AccountController(_petService, _userRequestsService, _userManager, _townService, _userService, null, _httpContextAccessor);
-            _adminController = new AdminController(_userService, _petService, _townService, _userRequestsService,null);            _errorController = new ErrorController();
+            _adminController = new AdminController(_userService, _petService, _townService, _userRequestsService,null);     
             _siteController = new SiteController();
+            _homeController = new HomeController();
 
             user = await GetExampleUser();
             pet = new Pet
@@ -110,8 +111,8 @@ namespace PetExchangeTests.WebFrontEnd
         {
             _accountController.Dispose();
             _adminController.Dispose();
-            _errorController.Dispose();
             _siteController.Dispose();
+            _homeController.Dispose();
             _userManager.Dispose();
         }
     }

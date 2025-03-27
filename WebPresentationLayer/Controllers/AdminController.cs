@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Identity.Client;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Web;
-using WebPresentationLayer.Models;
 using WebPresentationLayer.Services;
 
 namespace WebPresentationLayer.Controllers;
@@ -39,6 +33,7 @@ public class AdminController : Controller
 		[FromQuery] int page = 1,
 		[FromQuery] int pageSize = 10
 	)
+		// Зареждане на потребители
 	{
 		ViewBag.Items = await _userSrv.ReadAllWithFilterAsync(
 			username: username,
@@ -66,6 +61,7 @@ public class AdminController : Controller
 	}
 
 	[HttpGet("/admin/users/{userId:guid}")]
+	// Зареждане на формата за редакция на потребител
 	public async Task<IActionResult> UserManage(
 		[FromRoute] Guid userId,
 		[FromQuery] string returnUrl)
@@ -98,9 +94,8 @@ public class AdminController : Controller
 	public async Task<IActionResult> UserManage([FromRoute] Guid userId,
 		[FromQuery] string returnUrl,
 		UserManage user)
+		// Актуализиране на потребител от форма
 	{
-
-
 		if (ModelState.IsValid)
 		{
 			var dbUser = await _userSrv.ReadAsync(userId, false);
@@ -155,6 +150,7 @@ public class AdminController : Controller
 		[FromQuery] int page = 1,
 		[FromQuery] int pageSize = 10
 	)
+		// Зареждане на домашни любимци
 	{
 		ViewBag.petItems = await _petSrv.ReadAllWithFilterAsync(
 			name,
@@ -206,6 +202,7 @@ public class AdminController : Controller
 		[FromRoute] Guid petId,
 		[FromQuery] string returnUrl)
 	{
+		// Зареждане на формата за редактиране на домашен любимец
 		ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin/pets";
 		var dbPet = await _petSrv.ReadAsync(petId, true, true);
 		var pet = new PetManage
@@ -250,6 +247,7 @@ public class AdminController : Controller
 	public async Task<IActionResult> PetManage([FromRoute] Guid petId,
 		[FromQuery] string returnUrl,
 		PetManage pet)
+		// Актуализиране на домашен любимец от форма
 	{
 		var dbPet = await _petSrv.ReadAsync(petId, false);
 		if (ModelState.IsValid)
@@ -318,6 +316,7 @@ public class AdminController : Controller
 		[FromQuery] int page = 1,
 		[FromQuery] int pageSize = 10
 	)
+		// Зареждане на исканията
 	{
 		ViewBag.requestItems = await _requestSrv.ReadAllWithFilterAsync(
 			petName,

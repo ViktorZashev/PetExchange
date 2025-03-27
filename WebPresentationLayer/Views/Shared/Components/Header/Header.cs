@@ -22,7 +22,7 @@ public class Header : ViewComponent
 	{
 		PageName = new Utility.ViewUtility().GetActivePage(HttpContext);
 		ControllerName = new Utility.ViewUtility().GetActiveController(HttpContext);
-		//Site Menu
+		//Меню на header
 		SiteMenu.Add(new MenuItem()
 		{
 			Title = "Начало",
@@ -45,7 +45,7 @@ public class Header : ViewComponent
 			IsActive = PageName == "aboutus"
 		});
 
-		//User Menu
+		//Потребителско меню
 		var httpContext = _httpContextAccessor.HttpContext;
 
 		if (httpContext?.User is not null)
