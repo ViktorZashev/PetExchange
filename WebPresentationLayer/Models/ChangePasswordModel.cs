@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace WebPresentationLayer.Models
 {
 	public class ChangePasswordModel
+	// Модел, служещ за дефиниране и валидация на данни при смяната на парола
 	{
 		[Required(ErrorMessage = "задължително")]
 		[MinLength(6, ErrorMessage = "паролата трябва да съдържа минимум 6 символа")]

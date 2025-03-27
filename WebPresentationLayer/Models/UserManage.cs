@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 namespace WebPresentationLayer.Models;
 
 public class UserManage
+// Клас, който служи за дефиниция на полета, които ще се визуализират
+// при работа с потребителски данни. Съдържа валидация на данните. 
 {
 
-	[Required(ErrorMessage = "задължително")]
+    [Required(ErrorMessage = "задължително")]
 	[DisplayName("Имейл")]
 	public string? Email { get; set; } = null;
 

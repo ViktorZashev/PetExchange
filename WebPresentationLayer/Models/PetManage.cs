@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 namespace WebPresentationLayer.Models
 {
     public class PetManage
+    // Клас, който служи за дефиниция на полета, които ще се визуализират
+    // при работа с домашен любимец. Съдържа валидация на данните. 
     {
         [Required(ErrorMessage = "задължително")]
         [DisplayName("Име")]
