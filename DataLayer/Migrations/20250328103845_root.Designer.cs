@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(PetExchangeDbContext))]
-    [Migration("20250319184500_root")]
+    [Migration("20250328103845_root")]
     partial class root
     {
         /// <inheritdoc />
