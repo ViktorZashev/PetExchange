@@ -1,6 +1,5 @@
 ﻿using DataLayer;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
 
 namespace PetExchangeTests
 {
