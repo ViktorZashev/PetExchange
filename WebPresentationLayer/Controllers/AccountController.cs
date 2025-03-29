@@ -31,7 +31,7 @@ public class AccountController : Controller
 	}
 	#region Details & Change Password
 	public async Task<IActionResult> Details()
-		// Зареждат се данните на профила
+	// Зареждат се данните на профила
 	{
 		User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;
@@ -69,8 +69,8 @@ public class AccountController : Controller
 
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-    // Актуализират се данните на профила
-    public async Task<IActionResult> Details(
+	// Актуализират се данните на профила
+	public async Task<IActionResult> Details(
 		UserManage user)
 	{
 		var httpContext = _httpContextAccessor.HttpContext;
@@ -106,7 +106,7 @@ public class AccountController : Controller
 			dbUser.IsActive = user.isActive;
 			await _userService.UpdateAsync(dbUser);
 			var backUrl = "/Account/Details";
-			if(TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
+			if (TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -125,8 +125,8 @@ public class AccountController : Controller
 	}
 
 	public IActionResult ChangePassword()
-		// Зареждат се полетата за сменянето на паролата
-	{ 
+	// Зареждат се полетата за сменянето на паролата
+	{
 		var changePasswordForm = new ChangePasswordModel();
 		return View(changePasswordForm);
 	}
@@ -134,13 +134,13 @@ public class AccountController : Controller
 	[HttpPost]
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordModel form)
-		// Актуализация на парола
+	// Актуализация на парола
 	{
 		if (ModelState.IsValid)
 		{
 			if (form.NewPassword != form.ConfirmPassword)
 			{
-				if(TempData is not null) TempData["ChangePasswordError"] = "Паролите не са еднакви";
+				if (TempData is not null) TempData["ChangePasswordError"] = "Паролите не са еднакви";
 				return RedirectToAction("ChangePassword");
 			}
 
@@ -155,14 +155,15 @@ public class AccountController : Controller
 
 			if (result.Succeeded)
 			{
-                if (TempData is not null) TempData["ChangePasswordSuccess"] = true;
+				if (TempData is not null) TempData["ChangePasswordSuccess"] = true;
 				return RedirectToAction("ChangePassword");
 			}
 
-            if (TempData is not null) TempData["ChangePasswordError"] = "Грешка при променянето на паролата. Опитай пак!";
+			if (TempData is not null) TempData["ChangePasswordError"] = "Грешка при променянето на паролата. Опитай пак!";
 			return RedirectToAction("ChangePassword");
 		}
-		else{ 
+		else
+		{
 			return View(form);
 		}
 	}
@@ -177,7 +178,7 @@ public class AccountController : Controller
 	  [FromQuery] string gender = null,
 	  [FromQuery] int page = 1,
 	  [FromQuery] int pageSize = 10
-		// Зареждане на домашните любимци на текущият потребител
+  // Зареждане на домашните любимци на текущият потребител
   )
 	{
 		User? currentUser = null;
@@ -229,10 +230,10 @@ public class AccountController : Controller
 					.ToList();
 		ViewBag.ShowEditSuccess = TempData is not null ? TempData["ShowEditSuccessfulMessage"] : false;
 		ViewBag.ShowCreateSuccess = TempData is not null ? TempData["ShowCreateSuccessMessage"] : false;
-        ViewBag.ShowDeleteSuccess = TempData is not null ? TempData["ShowPetDeleteSuccess"] : false;
-        ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
-		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page-1);
-		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext,page+1);
+		ViewBag.ShowDeleteSuccess = TempData is not null ? TempData["ShowPetDeleteSuccess"] : false;
+		ViewBag.ReturnUrl = HttpUtility.UrlEncode(HttpContext.Request.Path + HttpContext.Request.QueryString);
+		ViewBag.PrevPageUrl = ViewUtility.GeneratePageUrl(HttpContext, page - 1);
+		ViewBag.NextPageUrl = ViewUtility.GeneratePageUrl(HttpContext, page + 1);
 		return View("Views/Account/Pets.cshtml");
 	}
 
@@ -240,7 +241,7 @@ public class AccountController : Controller
 	public async Task<IActionResult> PetManage(
 	   [FromRoute] Guid petId,
 	   [FromQuery] string returnUrl)
-		// Зареждане на формата за редакция на домашен любимец
+	// Зареждане на формата за редакция на домашен любимец
 	{
 		ViewBag.CancelUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
 		var dbPet = await _petService.ReadAsync(petId, true, true);
@@ -286,7 +287,7 @@ public class AccountController : Controller
 	public async Task<IActionResult> PetManage([FromRoute] Guid petId,
 		[FromQuery] string returnUrl,
 		PetManage pet)
-		//Актуализация на домашен любимец чрез форма
+	//Актуализация на домашен любимец чрез форма
 	{
 		var dbPet = await _petService.ReadAsync(petId, false);
 		if (ModelState.IsValid)
@@ -319,7 +320,7 @@ public class AccountController : Controller
 			dbPet.IncludesCage = pet.IncludesCage;
 			await _petService.UpdateAsync(dbPet);
 			var backUrl = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/account/pets";
-			if(TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
+			if (TempData is not null) TempData["ShowEditSuccessfulMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -421,7 +422,7 @@ public class AccountController : Controller
 			newPet.User = currentUser;
 			await _petService.CreateAsync(newPet);
 			var backUrl = "/account/pets";
-			if(TempData is not null) TempData["ShowCreateSuccessMessage"] = true;
+			if (TempData is not null) TempData["ShowCreateSuccessMessage"] = true;
 			return LocalRedirect(backUrl);
 		}
 		else
@@ -436,7 +437,7 @@ public class AccountController : Controller
 	public async Task<IActionResult> DeletePet([FromRoute] Guid petId)
 	{
 		await _petService.DeleteAsync(petId);
-		if(TempData is not null) TempData["ShowPetDeleteSuccess"] = true;
+		if (TempData is not null) TempData["ShowPetDeleteSuccess"] = true;
 		var backUrl = "/account/pets";
 		return LocalRedirect(backUrl);
 	}
@@ -444,7 +445,7 @@ public class AccountController : Controller
 
 	#region RequestsInbox & Outbox
 	public async Task<IActionResult> RequestInbox()
-		// Зареждане на входните искания на потребителя
+	// Зареждане на входните искания на потребителя
 	{
 		User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;
@@ -466,9 +467,9 @@ public class AccountController : Controller
 	}
 
 	public async Task<IActionResult> RequestOutbox()
-    // Зареждане на изходните искания на потребителя
-    {
-        User? currentUser = null;
+	// Зареждане на изходните искания на потребителя
+	{
+		User? currentUser = null;
 		var httpContext = _httpContextAccessor.HttpContext;
 		if (httpContext?.User is not null)
 		{
@@ -493,13 +494,14 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> DenyRequest([FromForm] Guid requestId,
 	[FromForm] UserRequestAction request)
-    // Отказ на искане
-    {
-        if (ModelState.IsValid)
+	// Отказ на искане
+	{
+		if (ModelState.IsValid)
 		{
 			await _requestService.DenyAsync(requestId, request.Message);
+			if (TempData is not null) TempData["ShowRequestDenySuccess"] = true;
+
 		}
-        if(TempData is not null) TempData["ShowRequestDenySuccess"] = true;
 		return LocalRedirect("/account/RequestInbox");
 	}
 
@@ -507,13 +509,13 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> AcceptRequest([FromForm] Guid requestId,
 	[FromForm] UserRequestAction request)
-    // Приемане на искане
-    {
-        if (ModelState.IsValid)
+	// Приемане на искане
+	{
+		if (ModelState.IsValid)
 		{
 			await _requestService.AcceptAsync(requestId, request.Message);
+			if (TempData is not null) TempData["ShowRequestAcceptSuccess"] = true;
 		}
-		if(TempData is not null) TempData["ShowRequestAcceptSuccess"] = true;
 		return LocalRedirect("/account/RequestInbox");
 	}
 
@@ -521,19 +523,19 @@ public class AccountController : Controller
 	[HttpPost("/account/cancel-request")]
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> CancelRequest([FromForm] Guid requestId)
-    // Отхвърляне на искане
-    {
-        if (ModelState.IsValid)
+	// Отхвърляне на искане
+	{
+		if (ModelState.IsValid)
 		{
 			await _requestService.CancelAsync(requestId);
+			if (TempData is not null) TempData["ShowRequestCancelSuccess"] = true;
 		}
-		if(TempData is not null) TempData["ShowRequestCancelSuccess"] = true;
 		return LocalRedirect("/account/RequestOutbox");
 	}
 
 	[HttpGet("/account/create-request")]
 	public async Task<IActionResult> CreateRequest([FromQuery] Guid petId)
-		// Зареждане на формата за създаване на искане
+	// Зареждане на формата за създаване на искане
 	{
 		var pet = await _petService.ReadAsync(petId, useNavigationalProperties: true);
 		if (pet is null) return NotFound();
@@ -559,7 +561,7 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> CreateRequest([FromQuery] Guid petId,
 		[FromForm] UserRequestAction request)
-		// Създаване на искане от форма
+	// Създаване на искане от форма
 	{
 		var pet = await _petService.ReadAsync(petId, useNavigationalProperties: true);
 		if (pet is null) return NotFound();
@@ -592,7 +594,7 @@ public class AccountController : Controller
 				RecipientId = pet.UserId
 			};
 			await _requestService.CreateAsync(userReq);
-			if(TempData is not null) TempData["ShowRequestCreateSuccess"] = true;
+			if (TempData is not null) TempData["ShowRequestCreateSuccess"] = true;
 			return LocalRedirect("/Account/RequestOutbox");
 		}
 		return View(request);

@@ -43,9 +43,6 @@
 						<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 me-3">
 							<li><a asp-controller="Admin" asp-action="Users" class="nav-link @(Model.ControllerName == "admin" ? "active" : "")">Админ</a></li>
 						</ul>
-
-
-
 					}
 
 					<div class="dropdown d-flex align-items-center">
@@ -114,6 +111,11 @@
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body">
+		@if (Model.CurrentUser is not null && Model.CurrentUser.Role == RoleEnum.Admin)
+		{
+			<a asp-controller="Admin" asp-action="Users" class="btn w-100 my-1 @(Model.ControllerName == "admin" ? "btn-outline-primary" : "btn-outline-secondary")">Админ</a>
+		}
+
 		@foreach (var item in Model.UserMenu)
 		{
 			@await Component.InvokeAsync("MenuItemComponent", new { Item = item, Type = MenuItemType.Button })

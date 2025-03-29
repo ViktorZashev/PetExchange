@@ -12,7 +12,6 @@ namespace DataLayer
 		public Guid PetId { get; set; }
 
 		[DisplayName("Съобщение")]
-		[Required(ErrorMessage = "задължително")]
         public string? Message { get; set; }
 	}
 }

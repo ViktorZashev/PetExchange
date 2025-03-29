@@ -158,8 +158,7 @@ else if (item.IsActive && currentUser is not null && item.RecipientId == current
 						<input type="hidden" asp-for="PetId" />
 						<input type="hidden" asp-for="RequestId" />
 						<label asp-for="Message" class="col-form-label"></label>
-						<textarea class="form-control" asp-for=Message></textarea>
-						<span asp-validation-for="Message" class="text-danger"></span>
+						<textarea class="form-control" asp-for=Message placeholder="Напишете причина ако е необходимо"></textarea>
 					</form>
 				</div>
 				<div class="modal-footer justify-content-center">
@@ -193,8 +192,7 @@ else if (item.IsActive && currentUser is not null && item.RecipientId == current
 						<input type="hidden" asp-for="PetId" />
 						<input type="hidden" asp-for="RequestId" />
 						<label asp-for="Message" class="col-form-label"></label>
-						<textarea class="form-control" asp-for=Message></textarea>
-						<span asp-validation-for="Message" class="text-danger"></span>
+						<textarea class="form-control" asp-for=Message placeholder="Напишете причина ако е необходимо"></textarea>
 					</form>
 				</div>
 				<div class="modal-footer justify-content-center">

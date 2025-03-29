@@ -2,6 +2,9 @@
 
 namespace WebPresentationLayer.Utility;
 
+/// <summary>
+/// Помощни методи за инициализация на филтри от URL.
+/// </summary>
 public class FilterUtility
 {
 	public static string typeQueryName = "type";

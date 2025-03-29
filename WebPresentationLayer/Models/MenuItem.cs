@@ -1,5 +1,8 @@
 ﻿namespace WebPresentationLayer.Models;
 
+/// <summary>
+/// MenuItem е клас, дефиниращ характеристиките на навигационно меню
+/// </summary>
 public class MenuItem
 {
 	public string Title { get; set; } = String.Empty;
