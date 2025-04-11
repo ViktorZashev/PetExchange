@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-WebPresentationLayer-637bfec2-7eec-48b6-913a-413e62949dd7</UserSecretsId>
+	  <SatelliteResourceLanguages>en,bg</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>

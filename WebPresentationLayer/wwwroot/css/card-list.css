@@ -3,6 +3,7 @@
 }
 .pet-card {
 	transition:all ease-in 0.25s; 
+	height:100%;
 }
 .pet-card:hover{
 	box-shadow:0 .5rem 1rem rgba(0,0,0,.15)!important;

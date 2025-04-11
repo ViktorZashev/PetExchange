@@ -8,16 +8,10 @@
 <div class="container">
 	<div class="card-list">
 		<div class="row">
-			<div class="col-auto aside">
-				<div class="filter-list">
-					@foreach (var filter in filters)
-					{
-						@await Component.InvokeAsync("FilterGroupComponent", new { Group = filter })
-					}
-				</div>
-				<a href="#" class="btn btn-outline-secondary my-2 w-100" id="clear-filters">без филтри</a>
+			<div class="col-12 col-md-4 col-lg-3 col-xl-3 col-xxl-2">
+				@await Component.InvokeAsync("PetFilters", new { filters = filters })
 			</div>
-			<div class="col content">
+			<div class="col-12 col-md-8 col-lg-9 col-xl-9 col-xxl-10">
 				<div class="row">
 					@if(pets.Count == 0)
 					{

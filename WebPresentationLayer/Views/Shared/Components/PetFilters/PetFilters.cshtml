@@ -1,0 +1,35 @@
+﻿@model PetFilters;
+
+<div class="d-block d-md-none">
+    <button type="button" class="btn btn-outline-secondary w-100 mb-3 text-start" data-bs-toggle="modal" data-bs-target="#sideMenu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-bar" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+        </svg>
+        <span>Филтри</span>
+    </button>
+    <div class="modal fade" id="sideMenu" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="filter-list">
+                        @foreach (var filter in Model.Filters)
+                        {
+                            @await Component.InvokeAsync("FilterGroupComponent", new { Group = filter })
+                        }
+                    </div>
+                    <a href="#" class="btn btn-outline-secondary my-2 w-100" id="clear-filters">без филтри</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-none d-md-block">
+    <div class="filter-list">
+        @foreach (var filter in Model.Filters)
+        {
+            @await Component.InvokeAsync("FilterGroupComponent", new { Group = filter })
+        }
+    </div>
+    <a href="#" class="btn btn-outline-secondary my-2 w-100" id="clear-filters">без филтри</a>
+</div>
